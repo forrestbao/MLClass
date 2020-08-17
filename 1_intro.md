@@ -43,17 +43,17 @@ date:   \today
 
 ML is all about finding a function. 
 
-- Supervised, finding $\hat{f}(x) \approx f(x)$ with ground truth provided by human
+- Supervised, finding $\hat{f}(x) \approx f(x)$ with ground truth provided by human. 
+    * Let $x$ and $y$ be two (vectors of) variables. The function $f$ is the relation between $x$ and $y$. But only god knows $f$. 
+    * We construct another function $\hat{f}$ to approximate $f$ such that $\hat{y} = \hat{f}(x) \approx y = f(x)$ for a given $x$. 
+    * **Supervised** because we  provide many pairs of $x$'s and $y$'s for the computer to know the difference between $\hat{y}$ and $y$ on a large pool of samples. 
+    * Examples: Determine whether a picture contains a cat, [Flavia](http://flavia.sourceforge.net/), [determine who have contracted COVID-19 from blood profile](https://arxiv.org/abs/2005.06546), determine the gesture command (e.g., scroll up, zoom in, etc.) from camera data.
+    * More than categorization/classification: [Mflux](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004838), [Review helpfulness prediction](https://www.aclweb.org/anthology/P15-2007.pdf), [Document summarization](https://www.aclweb.org/anthology/E17-2112.pdf), [I/O stream prediction]
 - Unsupervised, finding $\hat{f}(x)$ without ground truth
 - Reinforcement, let the machine find ground truth itself
 
-# Features
+# Representation of $x$ (and $y$)
 
-- 
+- $x$ is usually not a simple (vector of) number(s). How to tell it to a computer? 
+- Feature engineering vs. deep learning
 
-![picture of spaghetti](spaghetti.jpg)
-
-# Going to sleep
-
-- Get in bed
-- Count sheep
