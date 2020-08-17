@@ -39,10 +39,17 @@ date:   \today
 - It is a dream. "Creating an artificial being has been the dream since the beginning of science." -- Movie A.I., Spielberg et al., 2001
 - \$\$\$! 
 
-# Dinner
+# Three types of MLs
 
-- Eat spaghetti
-- Drink wine
+ML is all about finding a function. 
+
+- Supervised, finding $\hat{f}(x) \approx f(x)$ with ground truth provided by human
+- Unsupervised, finding $\hat{f}(x)$ without ground truth
+- Reinforcement, let the machine find ground truth itself
+
+# Features
+
+- 
 
 ![picture of spaghetti](spaghetti.jpg)
 
