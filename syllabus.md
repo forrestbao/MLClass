@@ -17,11 +17,9 @@ OFFICE HOURS: After each meeting of the class, or by appointment.
 
 ## SUGGESTED TEXTBOOKS AND ONLINE RESOURCES
 
-- [Machine Learning – An Algorithmic Perspective, by Stephen Marsland](https:
-//seat.massey.ac.nz/personal/s.r.marsland/MLBook.html) 
+- [Machine Learning – An Algorithmic Perspective, by Stephen Marsland](https://seat.massey.ac.nz/personal/s.r.marsland/MLBook.html) 
 - [Pattern Classification 2nd Edition, by Richard O. Duda, Peter E. Hart and David G. Stork](http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471056693.html)
-- [PRML by Bishop at Microsoft Research UK](http://research.microsoft.com/
-en-us/um/people/cmbishop/PRML/)
+- [PRML by Bishop at Microsoft Research UK](http://research.microsoft.com/en-us/um/people/cmbishop/PRML/)
 - [scikit-learn document](http://scikit-learn.org)
 - [Machine Learning class by Dr. Andrew Ng](https://www.coursera.org/learn/machine-learning)
 
