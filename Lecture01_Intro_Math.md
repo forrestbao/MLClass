@@ -1,20 +1,28 @@
 ---
 header-includes:
-  - \usepackage{algorithm2e}
-  - \usepackage{algorithmic}
+     \usepackage{amssymb}
+     \usefonttheme[onlymath]{serif}
+     \usepackage[vlined,algoruled,titlenotnumbered,linesnumbered]{algorithm2e}
+     \usepackage{algorithmic}
+     \setbeamercolor{math text}{fg=green!50!black}
+     \setbeamercolor{normal text in math text}{parent=math text}
+     \newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+     \newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
 ---
 
-# Math notations
 
-## Math notations
+# Math notations
   ''Computer Science is no more a science about computers than astronomy is about telescopes.'' -- Edsger Dijkstra
 
 
-## Set
+# Set
   - In mathematics, a \emph{set} is a collection of distinct objects, which are called \emph{elements}. An element $A$ belonging to a set $B$ is denoted as $A\in B$, read as ‘’A in B.'' No two elements can be the same in a set. 
   - We use curly brackets to enclose all members of a set, e.g., $\{4, 2, 1, 3\}$. 
   - A set can be finite, infinite or even empty, i.e.,  $\emptyset$\footnote{Outside the US, people use $\varnothing$}. 
-  - Special set notations: \begin{itemize}
+
+
+# Set (cont.)
+ - Special set notations:
     * $\mathbb{Z}$ for all integers, $\mathbb{Z^+}$ for all positive integers. 
     * $\mathbb{R}$ for all real numbers. And $\mathbb{Z^+}$ for? 
     * $[X..Y]$ all integers between $X$ and $Y$.
@@ -24,7 +32,7 @@ header-includes:
   - \emph{Set-builder notation}: e.g., $A=\{2\cdot x | x \in \mathbb{Z}, x^2>7 \} = \{6, 8, 9, \dots \}$
 
 
-## Set (cont.)
+# Set (cont.)
   - Operations on set:
     * Union: $A\cup B = \{x| x \in A\text{~or~}x\in B\}$, e.g., $\{1,2,3\}\cup \{4, 5,6 \} = \{1, 2,3,4,5,6\}$
     * Intersection: $A\cap B = \{x| x \in A\text{~and~}x\in B\}$, e.g., $\{1,2,3\}\cup \{5,6, 3 \} = \{3\}$
@@ -39,7 +47,7 @@ header-includes:
   - Cartesian Product: $A\times B = \{(a,b)| a\in A \text{~and~} b\in B\}$.
 
 
-## Sequence, Tuple and Vector
+# Sequence, Tuple and Vector
   - A \emph{sequence} is an ordered collection of objects in which repetitions are allowed. Note that in set, there is no order nor repetition. A sequence is also called an \emph{ordered list}. 
   - An n-\emph{tuple} is a sequence of $n$ elements, where $n$ is a non-negative integer. In other words, a tuple is a finite sequence. It is also used interchangeably with the term \emph{vector} in the context of this class.
   - We usually use sharp bracket or square bracket. E.g., $< 1,23,3 >$ $[x_i]_{i=N}^M$, or $[x_i]_{i\in [N..M]}$. 
@@ -49,7 +57,7 @@ header-includes:
   - It is also common to use a rightarrow over to denote a vector, e.g., $\overrightarrow X$.
 
 
-## Functions
+# Functions
   - A function is a mapping from a non-empty set (called \emph{domain}, could be a Cartesian product) of numbers to a non-emptyset (called \emph{range}) of numbers. Remember, everything is a number in the computer. 
   - The map is one-to-one or many-to-one. But cannot be one-to-many. 
   - A function is denoted in the following form usually: $f: A\times B \mapsto C$ where $f$ is the function name, $A$ and $B$ are the arguments or parameters, and $C$ the output or return. The symbol $\mapsto$ is read as ''maps to.''
@@ -58,7 +66,7 @@ header-includes:
   - Function composition: $(g\circ f)(x) = g(f(x))$.
 
   
-## Functions (cont.)
+# Functions (cont.)
   - Inverse function: $f^{-1}: Y \mapsto X$ if $f: X\mapsto Y$ and, both $f$ and $f^{-1}$ are one-to-one mappings.
   - The ratio of change rate between the output of a multivariate function $f$ and one input $x$ is called the \emph{derivative}. In discrete domains, it is denoted as 
   $$
@@ -70,7 +78,7 @@ header-includes:
   $f(\mathbf{X}, \mathbf{Y}) = \mathbf{Z}$ where $\mathbf{X} = [x_1, \dots, x_N]$, $\mathbf{Y} = [y_1, \dots, y_N]$, $\mathbf{Z} = [z_1, \dots, z_N]$, and $\forall i\in [1..N]$, we have $f(x_i, y_i) = z_i$.  
 
 
-## Linear Algebra
+# Linear Algebra
   - Dimension: The dimension of a matrix is $N\times M$ if it has $N$ rows (horizontal) and $M$ columns (vertical). 
   - Matrix multiplication (not to be confused with \emph{element-wise multiplication}).  Why is matrix multiplication defined in this way? 
   - Dot product of vectors:  $\sum_{i=1}^N x_i\cdot y_i = \mathbf{X}\cdot \mathbf{Y}$, short as $\mathbf{X} \mathbf{Y}$. 
@@ -79,7 +87,7 @@ header-includes:
   - Trace of a matrix: $\mathbf{Tr}(A) = [a_{1,1}, \dots, a_{N,N}]$ for a square matrix $A$ of dimension $N\times N$. 
 
 
-## Linear Algebra II
+# Linear Algebra II
   - Linear systems as matrixes. For example
     $$
         \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}  = \begin{bmatrix} a_{1,1} & a_{1,2} \\ a_{2,1} & a_{2,2} \end{bmatrix} \times \begin{bmatrix} y_1 \\ y_2 \end{bmatrix}
@@ -105,15 +113,16 @@ header-includes:
     0 & 0 & 0 & \cdots & 1 \end{bmatrix}$
 
 
+<!---
 ## Linear Algebra III
   - Inverse of a matrix: $\mathbf{A} \mathbf{A}^{-1} = \mathbf{A}^{-1} \mathbf{A} = \mathbf{I}_n$. A non-inversible matrix is called a singular matrix. 
   - Determinant of a matrix: A matrix $A$ is inversible iff $\mathbf{det}(A) \not = 0$ (and many other equivalence). 
   - Eigenvalue and Eigenvector: A eigenvalue $\lambda$ for a square matrix $\mathbf{A}$ is a scalar such that $\mathbf{A}\mathbf{v} = \lambda \mathbf{v}$ where $\lambda$ is another vector, called the \emph{eigenvector}. A matrix can have many eigenvalues, each of which is paired with one eigenvector. A inversible matrix has them. 
+--->
 
 
-# Introduction to Machine Learning
 
-
+<!---
 ## Mathematical formulation of machine learning
   - The task of statistical ML is to build a numerical predictive \emph{model/estimator}, which is a function $f:\boldsymbol{X} \mapsto \boldsymbol{y}$ . 
   - Three kinds of machine learning: 
@@ -122,9 +131,10 @@ header-includes:
     2. Reinforcement learning: fit the function $f$ given pairs of $\boldsymbol{X}$, and $\boldsymbol{y}$, which is now called a value/cost function, defined by the interaction between the agent and the environment. 
     3. Unsupervised learning: learn to find the function $f$ given only $\boldsymbol{X}$. No ground truth. Not function fitting. 
   - Deep learning: When the function $f$ is highly complicated, that people usually use a deep neural network to represent. So there can be Deep X learning. 
+--->
 
 
-## Supervised Learning
+# Supervised Learning
   - In \emph{supervised learning}, a pair (2-tuple) of an input/feature vector and a target form a (training) \emph{ sample}. A finite set of samples $\{(\mathbf{X_1}, y_1), \dots, (\mathbf{X_N}, y_N)\}$ form a \emph{training set}, where each $\mathbf{X_i}$ $\in \mathbb{R}^n$ ($i \in [1..N]$) is a feature vector while each $y_i$ is a target. 
   - If the set $\boldsymbol{y}$ is discrete, e.g., $\boldsymbol{y}=\{+1, -1\}$,  we call $f$ a \emph{classifier}. Otherwise, a \emph{regressor}, e.g., $f: \mathbb{R}^n \mapsto \mathbb{R}$.
   - Without losing generality, in this class a target is a real \emph{scalar} while a feature vector is an $n$-dimensional real vector, i.e., $\boldsymbol{X} \subseteq \mathbb{R}^n$ and $\boldsymbol{y}\subseteq \mathbb{R}$. 
@@ -133,7 +143,7 @@ header-includes:
   - The $f$ is also called a \emph{hypothesis}. And we can have many such hypotheses, forming the \emph{hypothesis space}.
 
 
-## Features
+# Features
   ![](figs/p1.pdf){width=60%}
 
   - A sample has a feature vector to numerically represent it. 
@@ -143,10 +153,10 @@ header-includes:
   - Deep learning is an approach to find features, or in the buzz word,  the \emph{abstract} of data. 
 
 
-# Linear Classifiers
 
 
-## The hyperplane
+
+# The hyperplane
   ![](figs/p2.pdf){width=60%}
 
   - Now, let's begin our journey on supervised learning. 
@@ -154,39 +164,26 @@ header-includes:
   - The equation of this line is $x_1 w_1 + x_2 w_2 - w_1 w_2 =0$. 
 
 
-## The hyperplane (cond.)
-  - Let 
-    $$
-      \mathbf{x} = \begin{pmatrix}
+# The hyperplane (cond.)
+  - Let $\mathbf{x} = \begin{pmatrix}
                       x_1 \\ x_2 \\ 1 
-                   \end{pmatrix}
-    $$  
-    and
-    $$
-      \mathbf{w} = \begin{pmatrix}
+                   \end{pmatrix}$ and $\mathbf{w} = \begin{pmatrix}
                       w_1 \\ w_2 \\ -w_1w_2
-                   \end{pmatrix}
-    $$. (By default, all vectors are column vectors.)\\ 
+                   \end{pmatrix}$. (By default, all vectors are column vectors.)\\ 
     Then the equation is rewritten into vector form: $\mathbf{x}^T \cdot \mathbf{w} = 0$.\\ 
     For space sake, $\mathbf{x}^T \mathbf{w} = \mathbf{x}^T \cdot \mathbf{w}$. 
-  - Expand to $n$-dimension. 
-    $$
-      \mathbf{X} = \begin{pmatrix}
+  - Expand to $n$-dimension. $\mathbf{X} = \begin{pmatrix}
                       x_1 \\ x_2 \\ \vdots \\ x_n \\ 1 
-                   \end{pmatrix}
-    $$  
-    and
-    $$\mathbf{W} = \begin{pmatrix}
+                   \end{pmatrix}$ and $\mathbf{W} = \begin{pmatrix}
                       w_1 \\ w_2 \\ \vdots \\w_n \\ -w_1w_2
-                   \end{pmatrix}
-    $$. 
+                   \end{pmatrix}$. 
 
     Then $\mathbf{X}^T \cdot \mathbf{W} = 0$, denoted as the \emph{hyperplane} in $\mathbb{R}^n$.
   - In our class, the $[x_1, x_2, \dots, x_n]$ is a feature vector. 
   - The last term of $\mathbf{W}$ is often called a \emph{bias} or a \emph{threshold}.
 
 
-## Binary Linear Classifier
+# Binary Linear Classifier
   - A binary linear classier is a function $f(X)=\mathbf{W} \mathbf{X}$, such that
   $$
     \begin{cases}
@@ -201,7 +198,7 @@ header-includes:
   - $\mathbf{W}^T\mathbf{X} = -2 <0$. Hence the sample of feature value $(1,1)$ belongs to class $C_1$.
 
 
-## Solving inequalities: the simplest way to find the $\mathbf{W}$
+# Solving inequalities: the simplest way to find the $\mathbf{W}$
   - Let's look at a case where the feature vector is 1-D. 
   - Let the training set be $\{(4, C_1), (5, C_1), (1, C_2), (2, C_2)\}$. Their augmented feature vectors are: $X_1=(4, 1)^T$, $X_2=(5, 1)^T$, $X_3=(1, 1)^T$, $X_4=(2, 1)^T$.
   - Let $\mathbf{W}^T = (w_1, w_2)$. In the training process, we can establish 4 inequalities: 
@@ -217,7 +214,7 @@ header-includes:
   - But let's talk about one more algorithm before defining the cost function.
 
 
-## Normalized feature vector
+# Normalized feature vector
   - I am lazy. I hate to write two cases. 
   - A correctly classified sample $(\mathbf{X_i}, y_i)$ shall satisfy the inequality $\mathbf{W}_i^T\mathbf{X} y_i > 0$.  (The $y_i$ flips the direction of the inequality. )
   - \textit{normalize} the feature vector: $\mathbf{X}_i y_i$ for $y_i\in  \{+1, -1\}$.
@@ -229,14 +226,14 @@ header-includes:
   - Please note that the term ''normalized'' could have different meanings in different context of ML.  
 
 
-# least-squared and Fisher's criteria
 
 
-## Gradient
+
+# Gradient
   - The partial derivative of a multivariate function is a vector called the gradient, representing the derivatives of a function on different directions. 
   - For example, let $f(\mathbf{x}) = x_1^2 + 4x_1 + 2x_1x_2 + 2x_2^2 + 2x_2 + 14$. $f$ maps a vector $\mathbf{x} = (x_1, x_2)^T$ to a scalar. 
   - Then we have 
-    $$\nabla f  = \frac{\partial f}{\partial \mathbf{x}}  = 
+    $\nabla f  = \frac{\partial f}{\partial \mathbf{x}}  = 
       \begin{pmatrix}
         \frac{\partial f}{\partial x_1}\\
         \frac{\partial f}{\partial x_2}
@@ -245,7 +242,7 @@ header-includes:
       \begin{pmatrix}
         2x_1+ 2x_2 -4 \\
         4x_2 + 2x_1 + 2
-      \end{pmatrix}$$
+      \end{pmatrix}$
   - The gradient is a special case of \emph{Jacobian matrix}. (see also: \emph{Hessian matrix} for second-order partial derivatives.)
   - A \emph{critical point} or a \emph{stationary point} is reached where the derivative is zero on any direction.
     * local extremum 
@@ -255,7 +252,7 @@ header-includes:
   - if a function is convex, a local minimum/maxinum is the \emph{global minimum/maximum}. 
 
 
-## Find the linear classifier using an optimization way I
+# Find the linear classifier using an optimization way I
   - Two steps here:
     * Define a cost function to be minimized (The learning is the about minimizing the cost function)
     * Choose an algorithm to minimize (e.g., gradient, least squared error etc. )
@@ -263,7 +260,7 @@ header-includes:
   $$ J(\mathbf{W}) = \sum_{i=1}^N (\mathbf{W}^T\mathbf{x}_i -y_i)^2 = \sum_{i=1}^N (\mathbf{x}_i^T \mathbf{W} -y_i)^2 $$
 
 
-## Find the linear classifier using an optimization way II
+# Find the linear classifier using an optimization way II
   - Minimizing $J(\mathbf{W})$ means (Convexity next time.) $\frac{\partial J(\mathbf{W})}{\partial \mathbf{W}} = 2\sum\limits_{i=1}^N \mathbf{x}_i (\mathbf{x}_i^T \mathbf{W} - y_i) = (0, \dots, 0)^T$ 
   - Hence, 
   $\sum\limits_{i=1}^N \mathbf{x}_i \mathbf{x}_i^T \mathbf{W} = \sum\limits_{i=1}^N \mathbf{x}_i y_i$
@@ -285,7 +282,7 @@ header-includes:
   $$
 
 
-## Find the linear classifier using an optimization way II
+# Find the linear classifier using an optimization way II
   - $$\sum_{i=1}^N \mathbf{x}_i y_i = 
       \begin{pmatrix}
         \rule[-1ex]{0.5pt}{2.5ex}& \rule[-1ex]{0.5pt}{2.5ex}& & \rule[-1ex]{0.5pt}{2.5ex}\\
@@ -306,7 +303,7 @@ $$
  = (\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T \mathbf{y}$
 
 
-## Gradient descent approach
+# Gradient descent approach
   Since we define the target function as $J(\mathbf{W})$, finding $J(\mathbf{W})=0$ or minimizing $J(\mathbf{W})$ is intuitively the same as reducing $J(\mathbf{W})$ along the gradient. The algorithm below is a general approach to minimize any multivariate function: changing the input variable  proportionally to the gradient.
   \begin{columns}
     \begin{column}{.6\textwidth}
@@ -327,11 +324,12 @@ $$
     \end{column}
   \end{columns}
 
-## Gradient descent approach (cond.)
+
+# Gradient descent approach (cond.)
   In many cases, the $\rho(k)$'s amplitude (why amplitude but not the value?)  decreases as $k$ increases, e.g., $\rho(k) = \frac{1}{k}$, in order to shrink the adjustment.Also in some cases, the stop condition is $\rho(k)\nabla J(\mathbf{w}) > \theta$. The limit on $k$ can also be included in stop condition -- do not run forever. 
 
 
-## Fisher's linear discriminant
+# Fisher's linear discriminant
   - What really is $\mathbf{w}^T x$? $\mathbf{w}$ is perpendicular to
     the hyper panel [^3]
   - $\mathbf{w}^T \mathbf{x}$ is the *projection* of the point
@@ -357,7 +355,7 @@ $$
     belonging to Class $i$ on the decision panel, respectively.
 
 
-## Fisher's (cond.)
+# Fisher's (cond.)
   - between-class scatter:
     $(\tilde{m}_1 - \tilde{m}_2)^2 = (\mathbf{w}^T (\mathbf{m_1} - \mathbf{m_2}))^2 = 
       \mathbf{w}^T  (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2}) ^T \mathbf{w}$
