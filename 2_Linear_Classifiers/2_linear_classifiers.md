@@ -28,10 +28,31 @@ header-includes: |
 
 ::: {.column width="60%"}
 - Now, let's begin our journey on supervised learning. 
-- Suppose we have a line going thru points $(0, w_1)$ and $(w_2, 0)$ (which are the \emph{intercepts}) in a 2-D vector space spanned by two orthogonal bases $x_1$ and $x_2$.
+- Suppose we have a line going thru points $(0, w_1)$ and $(w_2, 0)$ (which are the **intercepts**) in a 2-D vector space spanned by two orthogonal bases $x_1$ and $x_2$.
 - The equation of this line is $x_1 w_1 + x_2 w_2 - w_1 w_2 =0$. 
 :::
 ::::::::::::::
+
+-  In matrix form: 
+$$
+\left (  x_1, x_2, 1 \right) 
+\begin{pmatrix}
+  w_1 \\ w_2 \\ -w_1w_2
+\end{pmatrix}
+= 
+\underbrace{
+    \begin{pmatrix}
+      x_1 \\ x_2 \\ 1
+    \end{pmatrix}^T 
+    }_{\mathbf{x}^T}
+\underbrace{
+    \begin{pmatrix}
+      w_1 \\ w_2 \\ -w_1w_2
+    \end{pmatrix}
+    }_{\mathbf{w}}
+= 0 
+$$                   
+
 
 # The hyperplane (cond.)
   - Let 
@@ -47,7 +68,7 @@ header-includes: |
                    \end{pmatrix}
     $$ (By default, all vectors are column vectors.) 
   - $x_1$ and $x_2$ are two **feature values** comprising the feature vector. $1$ is **augmented** for the bias $-w_1w_2$.
-    Then the equation is rewritten into vector form: $\mathbf{x}^T \cdot \mathbf{w} = 0$.
+  - Then the equation is rewritten into matrix form: $\mathbf{x}^T \cdot \mathbf{w} = 0$.
     For space sake, $\mathbf{x}^T \mathbf{w} = \mathbf{x}^T \cdot \mathbf{w}$. 
 
 # The hyperplane (cond.)
@@ -76,6 +97,7 @@ header-includes: |
     \label{eq:binary_classifier}
   \end{equation}
   where $C_1$ and $C_2$ are the two classes. Note that the $\mathbf{X}$ has been augmented with 1 as mentioned before. 
+  - $\mathbf{W}\mathbf{X}$ is the prediction for a sample $\mathbf{x}$
   - Using the function $f$ to make decision is called \emph{test}. Given a new sample whose augmented feature vector is $\mathbf{X}$, if $\mathbf{W}^T\mathbf{X} >0$, then we classify the sample to class $C_1$. Otherwise, class $C_2$. 
   - Example. Let $\mathbf{W}^T = (2, 4, -8)$, what's the class for new sample $\mathbf{X}= (1,1,1)$ ($1$ is augmented)? 
   - $\mathbf{W}^T\mathbf{X} = -2 <0$. Hence the sample of feature value $(1,1)$ belongs to class $C_1$.
@@ -134,10 +156,13 @@ header-includes: |
     * Choose an algorithm to minimize (e.g., gradient, least squared error etc. )
   - One intuitive criterion can be the sum of error square: 
   $$ J(\mathbf{W}) = \sum_{i=1}^N (\mathbf{W}^T\mathbf{x}_i -y_i)^2 = \sum_{i=1}^N (\mathbf{x}_i^T \mathbf{W} -y_i)^2 $$
+  where $\mathbf{x}_i$ is the i-th sample (we have $N$ samples here), $y_i$ the corresponding label, $\mathbf{W}^T\mathbf{X}$ is the prediction. 
+  - For each sample $\mathbf{x}_i$, the error of the classifier is $\mathbf{W}^T\mathbf{x} - y_i$. 
+  The square is to avoid that errors on difference samples cancele out, e.g., $[+1-(-1)] - [-1-(+1)] = 0$. 
 
 
 # Finding the linear classifier via zero-gradient (cond.)
-  - Minimizing $J(\mathbf{W})$ means (Convexity next time.) $\frac{\partial J(\mathbf{W})}{\partial \mathbf{W}} = 2\sum\limits_{i=1}^N \mathbf{x}_i (\mathbf{x}_i^T \mathbf{W} - y_i) = (0, \dots, 0)^T$ 
+  - Minimizing $J(\mathbf{W})$ means: $\frac{\partial J(\mathbf{W})}{\partial \mathbf{W}} = 2\sum\limits_{i=1}^N \mathbf{x}_i (\mathbf{x}_i^T \mathbf{W} - y_i) = (0, \dots, 0)^T$ 
   - Hence, 
   $\sum\limits_{i=1}^N \mathbf{x}_i \mathbf{x}_i^T \mathbf{W} = \sum\limits_{i=1}^N \mathbf{x}_i y_i$
   - The sum of a column vector multiplied with a row vector produces a matrix.
