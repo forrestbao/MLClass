@@ -4,7 +4,7 @@ Problem 1 [5pts]:
 
 Suppose there are 4 independent variables. And 3 operations, i.e., addition, multiplication, and power, are allowed in connecting them into an expression. How many different expression can we have? 
 For example, let the 4 variabels be A, B , C, and D. Then A+B *  C ^D is one expression while A^B * C+D is another. The order of variables matters, e.g., A+B and B+A are two different expressions. 
-Each operator can appear in the expression EAXCTLY ONCE. No parentheses. 
+Each operator or variable appears in the expression EAXCTLY ONCE. No parentheses. 
 
 The purpose of this problem is to understand how many different parametric equations can exist among a set of variables, and thus using traditional scientific discovery way to model the relationship between high-dimensional variables is very challenging.
 
