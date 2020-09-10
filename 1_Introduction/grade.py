@@ -18,6 +18,7 @@ def compare_returns_md5(r1, r2):
     # FIXME: Not sure how deep the comparison goes to 
 
     """
+
     return hashlib.md5(pickle.dumps(r1)).hexdigest()\
         == hashlib.md5(pickle.dumps(r2)).hexdigest()
 
@@ -64,7 +65,7 @@ def compare_cases(f1, f2, problem):
     for i, args in enumerate(cases):
         returns1 = f1(*args)
         try :
-           returns2 = f2(*args)
+            returns2 = f2(*args)
         except : 
             return 0 
 
@@ -92,7 +93,11 @@ def grade_a_student(teacher_module_path, student_module_path, hw):
     for problem in hw: 
         function_name = problem["function_name"]
         teacher_function = getattr(teacher_module, function_name)
-        student_function = getattr(student_module, function_name)
+        try: 
+            student_function = getattr(student_module, function_name)
+        except: # if missing the function def 
+            continue # to next problem
+
         # check all cases
         grade +=  compare_cases (teacher_function, student_function, problem)
     return grade 
@@ -117,6 +122,7 @@ if __name__ == "__main__":
 #            "function_name" : "learning_curve", 
             "function_name" : "f", 
             "test_cases":  # TODO: how to support both positional arguments and keyword arguments? 
+            # TODO: lines to add before student and teacher .py
             [   (numpy.array([1,2]), numpy.array([3,4]), "test.png"), # case 1
                 (numpy.array([3,4]), numpy.array([5,6]), "test.pdf")  # case 2
             ], 
@@ -130,7 +136,7 @@ if __name__ == "__main__":
 #    grade = grade_a_student(teacher_module_name, student_module_name, hw)
 #    print (grade)
 
-    teacher_module_path = 'answer_test_hw1.py'
+    teacher_module_path = 'alan_turing.py'
     # student_module_path = 'hw1.py'
 
     # grade = grade_a_student(teacher_module_path, student_module_path, hw)
