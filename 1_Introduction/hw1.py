@@ -20,8 +20,9 @@ def test_NN(Ts, Hs, max_iter=200):
     return score
 
 def learning_curve(Ts, Hs, filename):
+    max_iters, scores = None, None # place holder 
     # INSERT YOUR CODE HERE 
-
+    
     return max_iters, scores
 
 def self_checker(*args): 
@@ -31,6 +32,12 @@ def self_checker(*args):
     import hashlib
     print (hashlib.md5(open(args[2], "rb").read()).hexdigest())
 
+def f(a, b, c):
+    """
+    a, b: 1-D numpy.ndarray
+    c: str, placeholder
+    """
+    return a+b, a-b, a*b
 
 if __name__ == "__main__":
     import warnings
