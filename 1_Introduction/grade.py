@@ -8,6 +8,7 @@
 
 import glob
 import os, pickle, hashlib
+import importlib.util
 
 def compare_returns_md5(r1, r2):
     """compare the returns from two function calls using MD5sum. 
@@ -74,10 +75,18 @@ def compare_cases(f1, f2, problem):
                 return 0 # one error, return 0 point. 
     return pass_no/len(cases)*points # float            
 
+def load_module_from_path(path):
+    spec = importlib.util.spec_from_file_location("whatever", path)
+    foo = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(foo)
+    return foo
 
-def grade_a_student(teacher_module_name, student_module_name, hw):
-    teacher_module = __import__(teacher_module_name)
-    student_module = __import__(student_module_name)
+def grade_a_student(teacher_module_path, student_module_path, hw):
+    teacher_module = load_module_from_path(teacher_module_path)
+    try: 
+        student_module = load_module_from_path(student_module_path)
+    except : 
+        return 0 # if your submission cannot be imported, 0 for all problems. 
     grade = 0 
 
     for problem in hw: 
@@ -88,13 +97,11 @@ def grade_a_student(teacher_module_name, student_module_name, hw):
         grade +=  compare_cases (teacher_function, student_function, problem)
     return grade 
 
-def grade_all_students(teacher_module_name, student_submission_folder, hw):
-    # TODO Parallelize this. 
-    # TODO test it 
-    for student_py in glob.glob(os.path.join(student_submission_folder, ".py")):
-        student_module_name = student_py[:-3] # drop suffix
-        local_grade = grade_a_student(teacher_module_name, student_module_name, hw)
-        print (student_py, local_grade)
+def grade_all_students(teacher_module_path, student_submission_folder, hw):
+    # TODO 3. Parallelize this. 
+    for student_module_path in glob.glob(os.path.join(student_submission_folder, "*.py")):
+        local_grade = grade_a_student(teacher_module_path, student_module_path, hw)
+        print (student_module_path, local_grade)
         
 if __name__ == "__main__": 
     import numpy
@@ -117,8 +124,19 @@ if __name__ == "__main__":
         }
     ]
 
-    teacher_module_name = 'answer_test_hw1'
-    student_module_name = 'hw1'
+    # teacher_module_name = 'answer_test_hw1'
+    # student_module_name = 'hw1'
 
-    grade = grade_a_student(teacher_module_name, student_module_name, hw)
-    print (grade)
+#    grade = grade_a_student(teacher_module_name, student_module_name, hw)
+#    print (grade)
+
+    teacher_module_path = 'answer_test_hw1.py'
+    # student_module_path = 'hw1.py'
+
+    # grade = grade_a_student(teacher_module_path, student_module_path, hw)
+    # print (grade)
+
+
+    student_submission_folder = "grading_test"
+    grade_all_students(teacher_module_path, student_submission_folder
+    , hw )
