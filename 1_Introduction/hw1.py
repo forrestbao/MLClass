@@ -45,4 +45,4 @@ if __name__ == "__main__":
 
     self_checker(numpy.array([1,2]), numpy.array([3,4]), "test.png")
     print()
-    self_checker(numpy.array([1,2,3,4]), numpy.array([-1,-1,-1,-1]), "test.pdf")
+    self_checker(numpy.array([1,2,3,4]), numpy.array([-1,-1,-1,-1]), "test.png")
