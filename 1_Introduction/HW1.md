@@ -29,7 +29,7 @@ where
 
 Make a line plot between the maximal number of iterations and the score of the NN, and save it as `filename`. Just do basic plot (`matplotlib.pyplot.plt(max_iters, scores)`) with all default settings. No labels nor title needed. Do not adjust figure size, resolution, tick values and locations, etc. 
 
-A file `hw1.py` is provided for you to jumpstart. It also includes to test cases. Just finish the definition of `learning_curve`. Do not change other non-commented lines. Then if you run `hw1.py`, you should expect to see the following output: 
+A file `hw1.py` is provided for you to jumpstart. It also includes to test cases. Just finish the definition of `learning_curve`. Do not change other non-commented lines. Then if you run `hw1.py`, you should expect to see the following output, if on Google CoLab: 
 ```
 <class 'numpy.ndarray'> [  50  100  150  200  250  300  350  400  450  500  550  600  650  700
   750  800  850  900  950 1000 1050 1100 1150 1200 1250 1300 1350 1400
@@ -42,14 +42,37 @@ A file `hw1.py` is provided for you to jumpstart. It also includes to test cases
    0.95801779   0.95801779   0.95801779   0.95801779   0.95801779
    0.95801779   0.95801779   0.95801779   0.95801779   0.95801779
    0.95801779   0.95801779   0.95801779   0.95801779   0.95801779]
-e3421b73191a46d1ea2dee2fe43a4b62
+404eacc77aea113aa8ddad886283ed36
 
 <class 'numpy.ndarray'> [  50  100  150  200  250  300  350  400  450  500  550  600  650  700
   750  800  850  900  950 1000 1050 1100 1150 1200 1250 1300 1350 1400
  1450 1500 1550 1600 1650 1700 1750 1800 1850 1900 1950 2000]
 <class 'numpy.ndarray'> [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
  0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
-2cee616af5ccefba01c8d9dbf729ddd4
+d66d8632c8afb82e0215e1d8d8418388
+```
+
+or this, if on PyRite.cs.iastate.edu:
+```
+<class 'numpy.ndarray'> [  50  100  150  200  250  300  350  400  450  500  550  600  650  700
+  750  800  850  900  950 1000 1050 1100 1150 1200 1250 1300 1350 1400
+ 1450 1500 1550 1600 1650 1700 1750 1800 1850 1900 1950 2000]
+<class 'numpy.ndarray'> [-24.51278849 -14.0049323   -7.28061896  -3.24700787  -1.02356304
+   0.10299754   0.62719032   0.85084125   0.93854938   0.95801779
+   0.95801779   0.95801779   0.95801779   0.95801779   0.95801779
+   0.95801779   0.95801779   0.95801779   0.95801779   0.95801779
+   0.95801779   0.95801779   0.95801779   0.95801779   0.95801779
+   0.95801779   0.95801779   0.95801779   0.95801779   0.95801779
+   0.95801779   0.95801779   0.95801779   0.95801779   0.95801779
+   0.95801779   0.95801779   0.95801779   0.95801779   0.95801779]
+0cc1ca4e5125acf90ec0031f245f7f97
+
+<class 'numpy.ndarray'> [  50  100  150  200  250  300  350  400  450  500  550  600  650  700
+  750  800  850  900  950 1000 1050 1100 1150 1200 1250 1300 1350 1400
+ 1450 1500 1550 1600 1650 1700 1750 1800 1850 1900 1950 2000]
+<class 'numpy.ndarray'> [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+62f9834264b748f4424253b89c45add9
 ```
 
 Note the iteration should go from 50 (including) to 2000 (including). Thus, 50, 100, 150, ..., 1900, 1950, 2000. 
