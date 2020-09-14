@@ -109,9 +109,9 @@ $$
 - Example: 
     * $\mathbf{x}'_1= (0, 0 )^T$, $\mathbf{x}'_2= (0, 1)^T$, $\mathbf{x}'_3= (1, 0)^T$, $\mathbf{x}'_4= (1, 1)^T$, 
     * $y_1=1, y_2= 1, y_3= -1, y_4= -1$
-    * First, augment them: 
+    * First, augment: 
   $\mathbf{x}_1= (0, 0, 1)^T$, $\mathbf{x}_2= (0, 1,1 )^T$, $\mathbf{x}_3= (1, 0, 1)^T$, $\mathbf{x}_4= (1, 1, 1)^T$
-    * Then, normalize them $\mathbf{x}'_1= \mathbf{x}_1$, $\mathbf{x}'_2= \mathbf{x}_2$, $\mathbf{x}'_3 =- \mathbf{x}_3 = (-1, 0, -1)^T$, $\mathbf{x}'_4 = \mathbf{x}_4 = (-1, -1, -1)^T$
+    * Then, normalize $\mathbf{x}''_1= \mathbf{x}_1$, $\mathbf{x}''_2= \mathbf{x}_2$, $\mathbf{x}''_3 =- \mathbf{x}_3 = (-1, 0, -1)^T$, $\mathbf{x}''_4 = \mathbf{x}_4 = (-1, -1, -1)^T$
 - Please note that the term ''normalized'' could have different meanings in different context of ML.  
 
 # Solving inequalities: the simplest way to find the $\mathbf{W}$
@@ -276,4 +276,4 @@ $$
     $\mathbf{S}_B \mathbf{w} = \lambda \mathbf{S}_w \mathbf{w}$.
   - Hence
     $\mathbf{w} = \mathbf{S}_w^{-1} (\mathbf{m}_1 - \mathbf{m}_2)$.
-    (Derivate saved.)
+    (Derivation saved.)
