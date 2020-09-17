@@ -175,7 +175,7 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 :::
 ::::::::::::::
 
-# The distance from any point to the hyperplane
+# Getting ready for SVMs
 
 -   Earlier our discussion used the augmented definition of linear
     binary classifier: the feature vector
@@ -280,13 +280,13 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 
 # Hard margin linear SVM (cond.)
 :::::::::::::: columns
-::: {.column width="40%"}
+::: {.column width="35%"}
 
-![](figs/Svm_max_sep_hyperplane_with_margin.png){width="110%"}
+![](figs/Svm_max_sep_hyperplane_with_margin.png){width="120%"}
 
 ::: 
 
-::: {.column width="60%"}
+::: {.column width="65%"}
 
 -   We prefer $d_1=d_2$: both classes are equal.
 
@@ -301,7 +301,7 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 -   Maximizing $\frac{2}{||\mathbf{w}||}$ is equivalent to minimizing
     $\frac{||\mathbf{w}||}{2}$.
 
--   Finally, we transform it into a quadratic programming problems:
+-   Finally, we transform it into a quadratic programming problem (**the primal form of SVMs**):
     $$\begin{cases}
                \min & \frac{1}{2} ||\mathbf{w}||^2 = \frac{1}{2} \mathbf{w}^T\mathbf{w} \\
                s.t. & y_k(\mathbf{w}^T\mathbf{x}_k + w_b) \ge 1, \forall \mathbf{x}_k.
@@ -313,13 +313,12 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 
 
 
-The Karush-Kuhn-Tucker conditions
-
+# Recap: the Karush-Kuhn-Tucker conditions
 -   Given a nonlinear optimization problem $$\begin{cases}
                \min & f(\mathbf{x}) \\
                s.t. & h_k(\mathbf{x}) \ge 0, \forall k \in [1..K],
-            \end{cases}$$ where $\mathbf{x} = [x_1,\dots, x_n]$, and
-    $h_k(\cdot)$ is linear, it's Lagrange multiplier (or Lagrangian) is:
+            \end{cases}$$ where $\mathbf{x}$ is a vector, and
+    $h_k(\cdot)$ is linear, its Lagrange multiplier (or Lagrangian) is:
     $$L(\mathbf{x}, \mathbf{\lambda}) = f(\mathbf{x}) - \sum_{k=1}^{K} \lambda_k h_k(\mathbf{x})$$
 
 -   The necessary condition that the problem above has a solution is KKT
@@ -329,73 +328,66 @@ The Karush-Kuhn-Tucker conditions
               \lambda_k h_k(\mathbf{x}) = 0, & \forall k\in [1..K]\\
             \end{cases}$$
 
-Properties of hard margin linear SVM
+# Properties of hard margin linear SVM
 
--   The KKT condition of Eq.
-    ([\[eq:svm_problem\]](#eq:svm_problem){reference-type="ref"
-    reference="eq:svm_problem"}) is $$\begin{cases}
-              \frac{\partial L}{\partial w} = \mathbf{0}, & \\
-              \frac{\partial L}{\partial w_b} = 0, & \\
-              \lambda_k \ge 0, & \forall k\in [1..K]\\
-              \lambda_k [y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1] = 0, & \forall k\in [1..K]\\
+-   The KKT condition to the SVM problem is $$\begin{cases}
+              A: \frac{\partial L}{\partial w} = \mathbf{0}, & \\
+              B: \frac{\partial L}{\partial w_b} = 0, & \\
+              C: \lambda_k \ge 0, & \forall k\in [1..K]\\
+              D: \lambda_k [y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1] = 0, & \forall k\in [1..K]\\
             \end{cases}     
             \label{eq:svm_kkt}$$
 
 -   Let's solve it.
-    $$\frac{\partial L}{\partial \mathbf{w}} = \mathbf{w} - \sum_{k=1}^K \lambda_k y_k \mathbf{x_k}   
+    $$A: \frac{\partial L}{\partial \mathbf{w}} = \mathbf{w} - \sum_{k=1}^K \lambda_k y_k \mathbf{x_k}   
        \Rightarrow \mathbf{w} = \sum_{k=1}^K \lambda_k y_k \mathbf{x_k}
-       \label{eq:partial_on_weight_vector}$$
-    $$\frac{\partial L}{\partial w_b} = \sum_{k=1}^K \lambda_k y_k = 0 
-       \label{eq:partial_on_bias}$$
+       $$
+    $$B: \frac{\partial L}{\partial w_b} = \sum_{k=1}^K \lambda_k y_k = 0 
+       $$
 
--   $\lambda_k$ is either positive or 0. Thus the solutions for Eqs.
-    ([\[eq:partial_on_weight_vector\]](#eq:partial_on_weight_vector){reference-type="ref"
-    reference="eq:partial_on_weight_vector"}) and
-    ([\[eq:partial_on_bias\]](#eq:partial_on_bias){reference-type="ref"
-    reference="eq:partial_on_bias"}) is only associated with samples
-    that $\lambda_k \not = 0$. Let
+-   Because  $\lambda_k$ is either positive or 0, the solution of the SVM problem is only associated with samples
+    that $\lambda_k \not = 0$. Denote them as
     $N_s = \{ \mathbf{x}_k | \lambda_k \not = 0, k\in[1..K] \}$.
 
-Properties of hard margin linear SVM (cont.)
+# Properties of hard margin linear SVM (cont.)
+:::::::::::::: columns
+::: {.column width="60%"}
 
--   Therefore, Eq.
-    ([\[eq:partial_on_weight_vector\]](#eq:partial_on_weight_vector){reference-type="ref"
-    reference="eq:partial_on_weight_vector"}) can be rewritten into
+-   Therefore, Eq. A can be rewritten into
     $$\mathbf{w} = \sum_{\mathbf{x}_k\in N_s} \lambda_k y_k \mathbf{x_k}
        \label{eq:partial_on_weight_vector_active}$$ The samples
     $\mathbf{x}_k \in N_s$ collectively determine the $\mathbf{w}$, and
-    thus called *support vectors*, supporting the solution.
+    thus called **support vectors**, supporting the solution.
 
 -   The support vectors also have an interesting "visual" properties.
-    Solving the last two equations in Eq.
-    ([\[eq:svm_kkt\]](#eq:svm_kkt){reference-type="ref"
-    reference="eq:svm_kkt"}) $\forall \mathbf{x}_k \in N_s$:
+    Solving Eqs. C and D for all $\mathbf{x}_k \in N_s$:
     $\lambda_k \not = 0$ and
     $\lambda_k [y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1] = 0$, we have
     $y_k (\mathbf{w}^T \mathbf{x_k} + w_b) = 1$.
 
 -   Given that $y_k\in \{+1, -1\}$, we have
     $\mathbf{w}^T \mathbf{x_k} + w_b = \pm 1$. Bingo!
-    ![image](figures/Svm_max_sep_hyperplane_with_margin.png){width=".35\\linewidth"}
+::: 
 
-Solving hard margin linear SVM
+::: {.column width="40%"}
+
+![](figs/Svm_max_sep_hyperplane_with_margin.png){width="100%"}
+
+:::
+::::::::::::::
+
+# Solving hard margin linear SVM
 
 -   Remember that KKT condition is a necessary condition, not sufficient
     condition.
 
--   Eq. ([\[eq:svm_problem\]](#eq:svm_problem){reference-type="ref"
-    reference="eq:svm_problem"}) is a quadratic programming problem.
+-   The SVM problem is a quadratic programming problem.
     There are many documents on the Internet about solving hard margin
     linear SVM as a quadratic programming problem. Here is one in MATLAB
     <http://www.robots.ox.ac.uk/~az/lectures/ml/matlab2.pdf>. For
-    Python, use the `cvxopt` toolbox. I have some hints at here:
-    <http://forrestbao.blogspot.com/2015/05/guide-to-cvxopts-quadprog-for-row-major.html>
-    If you still cannot figure out, read my recent paper at PLoS
-    Computational Biology
-    (<http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004838>)
-    and its source code (<https://bitbucket.org/forrestbao/mflux>).
+    Python, use the `cvxopt` toolbox. I have some hints [here](http://forrestbao.blogspot.com/2015/05/guide-to-cvxopts-quadprog-for-row-major.html). 
 
-Soft margin linear SVM
+# Soft margin linear SVM
 
 .4 ![image](figures/soft_margin_SVM_idea.pdf){width="\\linewidth"}
 
