@@ -210,23 +210,26 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 ::: 
 
 ::: {.column width="65%"}
--   Let the point on the hyperplane closest to $\mathbf{z}$ be $\mathbf{x}$. Define
+1.   Let the point on the hyperplane closest to $\mathbf{z}$ be $\mathbf{x}$. Define
     $\mathbf{y} = \mathbf{x} - \mathbf{z}$.
 
--   Because both $\mathbf{y}$ and $\mathbf{w}$ are perpendicular to the
+2.   Because both $\mathbf{y}$ and $\mathbf{w}$ are perpendicular to the
     hyperplane, we can rewrite
     $\mathbf{y} = v \frac{\mathbf{w}}{||\mathbf{w}||}$, where $v$ is the
     Euclidean distance from $\mathbf{z}$ to $\mathbf{x}$ (what we are trying to get) and
     $\frac{\mathbf{w}}{||\mathbf{w}||}$ is the unit vector pointing at
     the direction of $\mathbf{w}$.
 
--   Therefore,
+3.   Therefore,
     $\mathbf{z} = \mathbf{x} + v \frac{\mathbf{w}}{||\mathbf{w}||}$.
 
 :::
 ::::::::::::::
 
--   The prediction for $\mathbf{z}$ is then (subsituting into linear classifier equation): $$\begin{array}{rcl} \mathbf{w}^T\mathbf{z} + w_b 
+:::::::::::::: columns
+::: {.column width="60%"}
+
+4.   The prediction for $\mathbf{z}$ is then (subsituting into linear classifier equation): $$\begin{array}{rcl} & & \mathbf{w}^T\mathbf{z} + w_b \\
        & = & \mathbf{w}^T(\mathbf{x} + v\frac{\mathbf{w}}{||\mathbf{w}||}) + w_b \\ 
        & = & \mathbf{w}^T\mathbf{x} + 
               v\frac{\mathbf{w}^T \mathbf{w}} {||\mathbf{w}||}
@@ -236,16 +239,27 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
         \\
        & = & v \frac{\mathbf{w}^T\mathbf{w}}{||\mathbf{w}||} = v \frac{||\mathbf{w}||^2}{||\mathbf{w}||} = v ||\mathbf{w}||. 
        \end{array}$$
--   Finally, $v = \frac{\mathbf{w}^T \mathbf{z} + w_b}{||\mathbf{w}||}$. 
+
+
+::: 
+
+::: {.column width="50%"}
+
+5.   Finally, $v = \overbrace{\mathbf{w}^T \mathbf{z} + w_b}^{prediction} / ||\mathbf{w}||$. 
+
+6. Thus, if a sample $z$'s distance to a hyperplane $\mathbf{w}^T\mathbf{x}+w_b=0$ is $d/||\mathbf{w}||$, then $\mathbf{w}^T \mathbf{z}+w_b = d$. 
 
 -   HW: Prove that the distance from the origin to the hyperlane is
     $\frac{-w_b}{||\mathbf{w}||}$.
+
+:::
+::::::::::::::
 
 
 # Hard margin linear SVM
 
 :::::::::::::: columns
-::: {.column width="40%"}
+::: {.column width="30%"}
 
  ![](figs/SVM_idea.pdf){width="115%"}
 
@@ -330,23 +344,23 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 
 # Properties of hard margin linear SVM
 
--   The KKT condition to the SVM problem is $$\begin{cases}
+The KKT condition to the SVM problem is $$\begin{cases}
               A: \frac{\partial L}{\partial w} = \mathbf{0}, & \\
               B: \frac{\partial L}{\partial w_b} = 0, & \\
               C: \lambda_k \ge 0, & \forall k\in [1..K]\\
               D: \lambda_k [y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1] = 0, & \forall k\in [1..K]\\
-            \end{cases}     
-            \label{eq:svm_kkt}$$
+            \end{cases}     $$
 
--   Let's solve it.
-    $$A: \frac{\partial L}{\partial \mathbf{w}} = \mathbf{w} - \sum_{k=1}^K \lambda_k y_k \mathbf{x_k}   
-       \Rightarrow \mathbf{w} = \sum_{k=1}^K \lambda_k y_k \mathbf{x_k}
-       $$
-    $$B: \frac{\partial L}{\partial w_b} = \sum_{k=1}^K \lambda_k y_k = 0 
-       $$
+. . . 
 
--   Because  $\lambda_k$ is either positive or 0, the solution of the SVM problem is only associated with samples
-    that $\lambda_k \not = 0$. Denote them as
+From Eqs. A and B, 
+$$\frac{\partial L}{\partial \mathbf{w}} = \mathbf{w} - \sum_{k=1}^K \lambda_k y_k \mathbf{x_k} \Rightarrow \mathbf{w} = \sum_{k=1}^K \lambda_k y_k \mathbf{x_k} $$
+$$\frac{\partial L}{\partial w_b} = \sum_{k=1}^K \lambda_k y_k = 0 $$
+
+. . .
+
+Because  $\lambda_k$ is either positive or 0, the solution of the SVM problem is only associated with samples
+    whose $\lambda_k \not = 0$. Denote them as
     $N_s = \{ \mathbf{x}_k | \lambda_k \not = 0, k\in[1..K] \}$.
 
 # Properties of hard margin linear SVM (cont.)
@@ -354,19 +368,17 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 ::: {.column width="60%"}
 
 -   Therefore, Eq. A can be rewritten into
-    $$\mathbf{w} = \sum_{\mathbf{x}_k\in N_s} \lambda_k y_k \mathbf{x_k}
-       \label{eq:partial_on_weight_vector_active}$$ The samples
+    $$\mathbf{w} = \sum_{\mathbf{x}_k\in N_s} \lambda_k y_k \mathbf{x_k}$$ 
+    
+-   The samples
     $\mathbf{x}_k \in N_s$ collectively determine the $\mathbf{w}$, and
     thus called **support vectors**, supporting the solution.
 
--   The support vectors also have an interesting "visual" properties.
-    Solving Eqs. C and D for all $\mathbf{x}_k \in N_s$:
-    $\lambda_k \not = 0$ and
-    $\lambda_k [y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1] = 0$, we have
-    $y_k (\mathbf{w}^T \mathbf{x_k} + w_b) = 1$.
+<!-- -   The support vectors also have an interesting "visual" properties.
+    From Eq. D, we have $\lambda_k [y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1] = 0$. Because for $\mathbf{x}_k \in N_s$, $\lambda_k >0$, then only can y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1 = 0. THus $y_k (\mathbf{w}^T \mathbf{x_k} + w_b) = 1$. 
 
 -   Given that $y_k\in \{+1, -1\}$, we have
-    $\mathbf{w}^T \mathbf{x_k} + w_b = \pm 1$. Bingo!
+    $\mathbf{w}^T \mathbf{x_k} + w_b = \pm 1$. They support the **gutter**.  -->
 ::: 
 
 ::: {.column width="40%"}
@@ -376,71 +388,124 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 :::
 ::::::::::::::
 
-# Solving hard margin linear SVM
+# The dual form of an SVM
+:::::::::::::: columns
+::: {.column width="50%"}
 
--   Remember that KKT condition is a necessary condition, not sufficient
-    condition.
+1. Given a nonlinear optimization problem in the **primal** form 
 
--   The SVM problem is a quadratic programming problem.
-    There are many documents on the Internet about solving hard margin
-    linear SVM as a quadratic programming problem. Here is one in MATLAB
-    <http://www.robots.ox.ac.uk/~az/lectures/ml/matlab2.pdf>. For
-    Python, use the `cvxopt` toolbox. I have some hints [here](http://forrestbao.blogspot.com/2015/05/guide-to-cvxopts-quadprog-for-row-major.html). 
+$$\begin{cases}
+    \min & f(\mathbf{x}) \\
+    s.t. & h_k(\mathbf{x}) \ge 0, \forall k \in [1..K], \\
+\end{cases}$$ 
 
-# Soft margin linear SVM
+. . .
 
-.4 ![image](figures/soft_margin_SVM_idea.pdf){width="\\linewidth"}
+2. its **dual form** is 
 
-.6
+$$\begin{cases} 
+    \max & L(\mathbf{x}, \mathbf{\lambda})  = f(\mathbf{x}) - \sum_{k=1}^{K} \lambda_k h_k(\mathbf{x})\\ 
+    s.t. & \lambda_k \ge 0, \forall k \in [1..K],  \\
+         & \nabla L = \mathbf{0}          
+\end{cases}$$ 
 
--   What if the samples are not linearly separable?
+. . .
 
--   Let $\xi_k=0$ for all samples on or inside the correct margin
-    boundary.
+:::
 
--   Let $\xi_k =  | y_k - (\mathbf{w}^T\mathbf{x}_k + w_b)|$, i.e., the
-    prediction error, for all samples that are misclassified (red in the
-    left figure), where the operator $|\cdot|$ stands for absolute
-    value.
+::: {.column width="60%"}
 
--   In this case, we want to maximize the margin but minimize the number
-    of misclassified samples.
+3. Thus for a **primal** SVM problem 
+ $$\begin{cases}
+               \min & \frac{1}{2} ||\mathbf{w}||^2 = \frac{1}{2} \mathbf{w}^T\mathbf{w} \\
+               s.t. & y_k(\mathbf{w}^T\mathbf{x}_k + w_b) \ge 1, \forall \mathbf{x}_k.
+            \end{cases} $$
 
-```{=html}
-<!-- -->
-```
--   Therefore, we have a new optimization problem: $$\begin{cases}
-               \min & \frac{1}{2} ||\mathbf{w}||^2 + C \sum_{k=1}^K \xi_k \\
-               s.t. & y_k(\mathbf{w}^T\mathbf{x}_k + w_b) \ge 1 - \xi_k, \forall \mathbf{x}_k \\
-               & \xi_k \ge 0 . 
-            \end{cases}     
-                \label{eq:soft_svm_problem}$$ where $C$ is a constant.
+. . .
 
--   Such SVM is called *soft-margin*.
+4. its **dual form** is 
 
-Soft margin linear SVM
+$$\begin{cases}   
+    \max & \frac{1}{2} ||\mathbf{w}||^2  - 
+           \sum\limits_{k=1}^K \lambda_k(y_k(\mathbf{w}^T\mathbf{x_k} + w_b) -1 ) \\
+    s.t. & \lambda_k \ge 0, \forall k \in [1..K],  \\
+         & \mathbf{w} = \sum\limits_{k=1}^K \lambda_ky_kx_k ~~(from~~ \frac{\partial L}{\partial \mathbf{w}}=0), \\
+         & \sum\limits_{k=1}^K \lambda_ky_k=0 ~~(from~~ \frac{\partial L}{\partial w_b}=0)
+\end{cases}$$ 
 
--   The constant $C$ provides a balance between maximizing the margin
-    and minimizing the quality, instead of quantity, of
-    misclassification.
 
--   Given a training set, how to find the optimal $C$? Grid search using
-    cross-validation.
+:::
+::::::::::::::
 
-Generalized Linear Classifier
+# The dual form of an SVM (cond.)
 
--   What if a problem is not linearly separable? One wise solution is to
-    convert it into a linearly separable one.
+:::::::::::::: columns
+::: {.column width="50%"}
+
+$$\begin{cases}   
+    \max & \frac{1}{2} ||\mathbf{w}||^2  - 
+           \sum\limits_{k=1}^K \lambda_k(y_k(\mathbf{w}^T\mathbf{x_k} + w_b) -1 ) \\
+    s.t. & \lambda_k \ge 0, \forall k \in [1..K],  \\
+         & \mathbf{w} = \sum\limits_{k=1}^K \lambda_ky_kx_k ~~(from~~ \frac{\partial L}{\partial \mathbf{w}}=0), \\
+         & \sum\limits_{k=1}^K \lambda_ky_k=0 ~~(from~~ \frac{\partial L}{\partial w_b}=0)
+\end{cases}$$ 
+
+
+Subsituting $\mathbf{w}$ with $\sum\limits_{k=1}^K \lambda_ky_kx_k$,  the objective function becomes: 
+$$L = -\frac{1}{2} \sum\limits_{i=1}^K \sum\limits_{j=1}^K \lambda_i \lambda_j y_i y_j 
+\mathbf{x}_i^T\mathbf{x}_j + \sum\limits_{k=1}^K\lambda_k
+$$
+
+:::
+
+
+::: {.column width="50%"}
+Thus, the new **dual form** is: 
+$$\begin{cases}   
+    \max & -\frac{1}{2} \sum\limits_{i=1}^K \sum\limits_{j=1}^K \lambda_i \lambda_j y_i y_j 
+\mathbf{x}_i^T\mathbf{x}_j + \sum\limits_{k=1}^K\lambda_k \\
+    s.t. & \lambda_k \ge 0, \forall k \in [1..K],  \\
+         & \sum\limits_{k=1}^K \lambda_ky_k=0
+\end{cases}$$ 
+
+- The number of unknowns to solve drops from $n$ features to $K$ samples. 
+
+- Instead of finding $\mathbf{w}$, find $K$ $\lambda_k$'s. (Is an SVM really non-parametric?)
+
+- The new SVM: $g(\mathbf{x}) = \mathbf{w}^T\mathbf{x} = \sum_{k=1}^K \lambda_k y_k (\mathbf{x}^T \mathbf{x_k}) + w_b$. 
+
+- To store an SVM model, just store the support vectors $\mathbf{x}_i$'s, their labels $y_i$'s and weights $\lambda_i$'s, and the bias $w_b$. 
+
+:::
+::::::::::::::
+
+# **Kernel tricks**: achieving non-linearity on SVMs
+- In the previous slides, any two samples "interact" with each other thru dot product, e.g., $\mathbf{x_i}^T\mathbf{x}_j$ (in training, between two samples) or $\mathbf{x}^T \mathbf{x_k}$ (in prediction, between a sample to be predicted and a support vector). 
+
+- It can be expanded to any operation between two vectors, known as the **kernel function** or **kernel tricks**. 
+
+- linear kernel: what we have seen so far in SVMs. 
+
+- Gaussian (radial basis function, RBF) kernel: $$\mathbb{K} (\mathbf{x}, \mathbf{y}) = \exp \left ( - \frac{ ||\mathbf{x} - \mathbf{y}||^2}{\sigma} \right ) $$ 
+
+- There are many kernels other there, but usually linear and Gaussian are good enough. 
+
+# Transforming a nonlinearly separable problem to a linearly separable one
+
+![](figs/kernel_machine.png){width="100%"}
+Source: Wikipedia/SVM. 
+
+# Generalized Linear Classifier
 
 -   Let $f_1(\cdot)$, $f_2(\cdot)$, $\dots$, $f_P(\cdot)$ be $P$
     nonlinear functions where
     $f_p: \mathbb{R}^n \mapsto \mathbb{R}, \forall p\in [1..P]$.
 
 -   Then we can define a mapping from a feature vector
-    $\mathbf{x}\in \mathbb{R}^n$ ($\mathbb{R}^n$ is called the *input
-    space*) to a vector in another space
+    $\mathbf{x}\in \mathbb{R}^n$ (the **input
+    space**) to a vector in another space
     $\mathbf{z} =[f_1(\mathbf{x}), f_2(\mathbf{x}), \dots, f_P(\mathbf{x})]^T \in \mathbb{R}^P$,
-    which is called the *featrue space*.
+    which is called the **feature space**.
 
 -   The problem then becomes finding the value $P$ and the functions
     $f_p(\cdot)$ such that the two classes are linearly separable.
@@ -456,13 +521,77 @@ Generalized Linear Classifier
     Instead of computing the weighted sum of elements of feature vector,
     we compute that of elements of the transformed vector.
 
-Generalized Linear Classifier (cont.)
+# Creating features from input features
 
 -   For example,
     $g(\mathbf{x}) = w_b + w_1 x_1 + w_2 x_2 + w_{12} x_1 x_2 + w_{11} x^2_1 + w_{22} x^2_2$
 
 -   Here is another example,
 
-    ![image](figures/kernel_tricks.png){width=".7\\textwidth"}
+![](figs/kernel_tricks.png){width="50%"}
 
--   This approach is often called *kernel tricks*.
+- A good explanation on StackOverflow: https://stats.stackexchange.com/questions/46425/what-is-feature-space
+
+
+# Soft margin linear SVM
+:::::::::::::: columns
+::: {.column width="40%"}
+
+![](figs/soft_margin_SVM_idea.pdf){width="100%"}
+
+:::
+::: {.column width="60%"}
+
+-   We could allow some samples to fall into the margin in exchange for wider margin on the remaining samples. 
+
+-   Therefore, we have a new optimization problem: $$\begin{cases}
+               \min & \frac{1}{2} ||\mathbf{w}||^2 + C \sum_{k=1}^K \xi_k \\
+               s.t. & y_k(\mathbf{w}^T\mathbf{x}_k + w_b) \ge 1 - \xi_k, \forall \mathbf{x}_k \\
+               & \xi_k \ge 0 . 
+            \end{cases}     $$ where $C$ is a constant, and $\xi_k$ is called a **slack** variable defined as $\max(0, 1-y_i(\mathbf{w}^T\mathbf{x}_k + w_b))$. 
+
+-   Such SVM is called *soft-margin*.
+
+-   The constant $C$ provides a balance between maximizing the margin
+    and minimizing the quality, instead of quantity, of
+    misclassification.
+
+- Next: How to find $C$ and why is slack variable defined so. 
+
+:::
+:::::::::::::: 
+
+# Grid search for hyperparameters
+
+- Hyperparameters: Parameters of a model that is not updated in training but set based on experience or arbitrarily. 
+
+- Grid search: Create a sequence of values for each hyperparameter and form a grid from them using Cartesian product. Then for each point on the grid, evaluate the performance of the model. Finally, use the one that yields the best performance. 
+
+- How to evaluate the performance of a classifer? 
+
+# Test set
+- It would be unfair to evaluate the performance of a classifier using samples seen by the model during training. 
+
+- Samples unseen in training and used to evaluate the performance of a model form the **test set**. 
+
+- So, from all your data, you split them into two groups **training set** and test set. 
+
+- But, is just one test set good? 
+
+# Cross-validation 
+
+- Cross validation (CV): split your data into many pairs of training and test sets. Then evaluate the performance of the classifier on each pair. Usually the test sets do not overlap. And, of course, the training and test sets in each pair do not overlap. 
+
+- k-fold CV: Split all data into $k$ folds, equal-size and **non-overlapping**. In each round the CV, use $k-1$ folds for training and the rest one fold for test. Then rotate on the test set. Stop after every fold has been used as test set exactly $k$ times. 
+
+- leave-N-out CV (LNOCV): A special case of k-fold CV that only N samples are the test set. When $N=1$, it becomes leave-one-out CV (LOOCV). 
+
+# The slack variable and hinge loss
+
+- What is the $\xi = \max(0, 1-y_i(\mathbf{w}^T\mathbf{x} + w_b))$ when a sample $\mathbf{x}$ is correctly classified? 
+
+- It's zero. 
+
+- In that case, the constraint is the same as that for hard margin linear SVMs: $y_k(\mathbf{w}^T\mathbf{x} + w_b) \ge 0$. 
+
+- The expression $\max(0, 1-y\cdot \hat{y})$ where $y\in\{+1, -1\}$ is the ground truth label and $\hat{y}$ is prediction for a classifier, is called a **hinge loss**. It's "hinge" because as long as the classification is correct, the loss/error is (capped at) 0. 
