@@ -26,6 +26,7 @@ classoption:
 
 SVM is a kind of linear classifiers. But a unique type of. 
 
+
 # All samples are equal. But some samplers are equaler. 
 
 - Let's first see a demo of a linear classifier for linearly separable cases. Pay attention to the prediction outcome. 
