@@ -22,10 +22,17 @@ classoption:
 - aspectratio=169
 ---
 
-# 
+# Agenda
 
-SVM is a kind of linear classifiers. But a unique type of. 
+- Perceptron algorithm -- Its model differs from SVMs a lot. But it shows that the weight vector is a linear combination of some samples -- it resembles SVMs in that sense. 
 
+- The intuition of SVMs: separate similar samples of both classes apart as far as possible. 
+
+- Deriving the primal form of SVMs, and solving it in KKT conditions
+
+- Dual forms of SVMs and the kernel tricks
+
+- Soft-margin SVMs
 
 # All samples are equal. But some samplers are equaler. 
 
@@ -75,6 +82,10 @@ SVM is a kind of linear classifiers. But a unique type of.
 
 -   Note that $\mathbf{x}_k$ is not necessarily the $k$-th training
     sample due to the loop.
+
+# 
+
+Now let's begin the SVM journey. 
 
 # An example of single-sample preceptron algorithm
 
@@ -230,7 +241,7 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 :::::::::::::: columns
 ::: {.column width="60%"}
 
-4.   The prediction for $\mathbf{z}$ is then (subsituting into linear classifier equation): $$\begin{array}{rcl} & & \mathbf{w}^T\mathbf{z} + w_b \\
+4.   The prediction for $\mathbf{z}$ is then (subsituting into linear classifier equation): $\begin{array}{rcl} & & \mathbf{w}^T\mathbf{z} + w_b \\
        & = & \mathbf{w}^T(\mathbf{x} + v\frac{\mathbf{w}}{||\mathbf{w}||}) + w_b \\ 
        & = & \mathbf{w}^T\mathbf{x} + 
               v\frac{\mathbf{w}^T \mathbf{w}} {||\mathbf{w}||}
@@ -239,7 +250,7 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
               v\frac{\mathbf{w}^T \mathbf{w}} {||\mathbf{w}||}
         \\
        & = & v \frac{\mathbf{w}^T\mathbf{w}}{||\mathbf{w}||} = v \frac{||\mathbf{w}||^2}{||\mathbf{w}||} = v ||\mathbf{w}||. 
-       \end{array}$$
+       \end{array}$
 
 
 ::: 
@@ -248,16 +259,16 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 
 5.   Finally, $v = \overbrace{\mathbf{w}^T \mathbf{z} + w_b}^{prediction} / ||\mathbf{w}||$. 
 
-6. Thus, if a sample $z$'s distance to a hyperplane $\mathbf{w}^T\mathbf{x}+w_b=0$ is $d/||\mathbf{w}||$, then $\mathbf{w}^T \mathbf{z}+w_b = d$. 
+6. **Conclusion**: a sample $\mathbf{z}$'s distance to a hyperplane $\mathbf{w}^T\mathbf{x}+w_b=0$ is $d/||\mathbf{w}||$ **if and only if** the prediction for it $\mathbf{w}^T\mathbf{z}+w_b$ is $\pm d$. (The sign ahead of $d$ depends on which side the sample is on.)
 
--   HW: Prove that the distance from the origin to the hyperlane is
-    $\frac{-w_b}{||\mathbf{w}||}$.
+<!-- -   HW: Prove that the distance from the origin to the hyperlane is
+    $\frac{-w_b}{||\mathbf{w}||}$. -->
 
 :::
 ::::::::::::::
 
 
-# Hard margin linear SVM
+# Hard margin linear SVM (for two linearly separable classes)
 
 :::::::::::::: columns
 ::: {.column width="30%"}
@@ -268,30 +279,35 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 
 ::: {.column width="70%"}
 
--   Assume that the minimum distance from any point in Class $C_1$ and
-    $C_2$ to the hyperplane are $d_1/||\mathbf{w}||$ and
-    $d_2/||\mathbf{w}||$, respectively, where $d_1, d_2 > 0$.
+- All samples of Classes $+1$ and $-1$ are above and below the hyperplane, respectively. 
 
--   Then we have
-    $\mathbf{w}^T\mathbf{x} + w_b - d_1 \ge 0, \forall x \in C_1$, and
-    $\mathbf{w}^T\mathbf{x} + w_b + d_2 \ge 0, \forall x \in C_2$.
+- For Class $+1$, denote the distance from the sample(s) closest to the hyperplane as $d_1/||\mathbf{w}||$ ($d_1 > 0$). 
 
--   To make the classifier more discriminant, we want to
-    maximize the distance between the two classes,
-    known as the **margin**, i.e.
-    $\max \left (\frac{d_1}{||\mathbf{w}||} + \frac{d_2}{||\mathbf{w}||} \right )$.
+- Using the conclusion from previous slide, the prediction $\mathbf{w}^T\mathbf{x} + w_b$ for any sample $\mathbf{x}$ of Class $+1$ is thus at least $d_1$: $\mathbf{w}^T\mathbf{x} + w_b \ge d_1.$
 
--   An SVM classifier is also called a *Maximum Margin
-    Classifier*.
-
--   Assuming the two classes are linearly separable, our problem becomes: $$\begin{cases}
-               \max & \frac{d_1}{||\mathbf{w}||} + \frac{d_2}{||\mathbf{w}||} \\
-               s.t. & \mathbf{w}^T\mathbf{x} + w_b - d_ 1\ge 0, \forall x \in C_1 \\
-                    & \mathbf{w}^T\mathbf{x} + w_b + d_ 2\ge 0, \forall x \in C_2
-            \end{cases}$$
+- Similary, for Class $-1$, we have $\mathbf{w}^T\mathbf{x} + w_b \le - d_2,$ where $d_2$ is the minimal distance. (Changes: $-$ and $\le$)
 
 :::
 ::::::::::::::
+
+:::::::::::::: columns
+::: {.column width="55%"}
+
+- The idea of an SVM is to find a direction (defined by $\mathbf{w}$) along which cloest samples of both classes are apart the most.
+
+- Hence, we want to maximize $\frac{d_1}{||\mathbf{w}||} + \frac{d_2}{||\mathbf{w}||}$, known as the **margin**.
+
+::: 
+
+::: {.column width="50%"}
+-  Finally: $\begin{cases}
+               \max & \frac{d_1}{||\mathbf{w}||} + \frac{d_2}{||\mathbf{w}||} \\
+               s.t. & \mathbf{w}^T\mathbf{x} + w_b - d_ 1\ge 0, \forall x \in C_{+1} \\
+                    & \mathbf{w}^T\mathbf{x} + w_b + d_ 2\ge 0, \forall x \in C_{-1}
+            \end{cases}$
+:::
+::::::::::::::
+
 
 # Hard margin linear SVM (cond.)
 :::::::::::::: columns
@@ -305,30 +321,31 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 
 -   We prefer $d_1=d_2$: both classes are equal.
 
--   Since $d_1$ and $d_2$ are constants, we can let them be 1. Let the label $y_k\in\{+1, -1\}$ for 
-    sample $\mathbf{x}_k$, we can get a different form:
-    $$\hskip 0em
-            \begin{cases}
+-   Since $d_1$ and $d_2$ are constants, we can let them be 1. 
+
+-   Leveraging the label $y_k\in\{+1, -1\}$, we have a consice form: 
+    $\begin{cases}
                \max & \frac{2}{||\mathbf{w}||}\\
-               s.t. & y_k(\mathbf{w}^T\mathbf{x}_k + w_b) \ge 1, \forall \mathbf{x}_k\in C_1\cup C_2.
-            \end{cases}$$
+               s.t. & y_k(\mathbf{w}^T\mathbf{x}_k + w_b) \ge 1, \forall \mathbf{x}_k\in C_{+1}\cup C_{-1}.
+            \end{cases}$
 
 -   Maximizing $\frac{2}{||\mathbf{w}||}$ is equivalent to minimizing
     $\frac{||\mathbf{w}||}{2}$.
 
 -   Finally, we transform it into a quadratic programming problem (**the primal form of SVMs**):
-    $$\begin{cases}
+    $\begin{cases}
                \min & \frac{1}{2} ||\mathbf{w}||^2 = \frac{1}{2} \mathbf{w}^T\mathbf{w} \\
                s.t. & y_k(\mathbf{w}^T\mathbf{x}_k + w_b) \ge 1, \forall \mathbf{x}_k.
-            \end{cases}     
-                \label{eq:svm_problem}$$
+            \end{cases}$
+
+- Why square $||\mathbf{w}||$?
 
 :::
 ::::::::::::::
 
 
 
-# Recap: the Karush-Kuhn-Tucker conditions
+# Recap: the Karush-Kuhn-Tucker (KKT) conditions
 -   Given a nonlinear optimization problem $$\begin{cases}
                \min & f(\mathbf{x}) \\
                s.t. & h_k(\mathbf{x}) \ge 0, \forall k \in [1..K],
@@ -336,8 +353,8 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
     $h_k(\cdot)$ is linear, its Lagrange multiplier (or Lagrangian) is:
     $$L(\mathbf{x}, \mathbf{\lambda}) = f(\mathbf{x}) - \sum_{k=1}^{K} \lambda_k h_k(\mathbf{x})$$
 
--   The necessary condition that the problem above has a solution is KKT
-    condition: $$\begin{cases}
+-   The necessary conditions that the problem above has a solution are KKT
+    conditions: $$\begin{cases}
               \frac{\partial L}{\partial \mathbf{x}} = \mathbf{0}, & \\
               \lambda_k \ge 0, & \forall k\in [1..K]\\
               \lambda_k h_k(\mathbf{x}) = 0, & \forall k\in [1..K]\\
@@ -345,7 +362,7 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 
 # Properties of hard margin linear SVM
 
-The KKT condition to the SVM problem is $$\begin{cases}
+For an SVM problem, the KKT conditions thus are: $$\begin{cases}
               A: \frac{\partial L}{\partial w} = \mathbf{0}, & \\
               B: \frac{\partial L}{\partial w_b} = 0, & \\
               C: \lambda_k \ge 0, & \forall k\in [1..K]\\
@@ -375,11 +392,13 @@ Because  $\lambda_k$ is either positive or 0, the solution of the SVM problem is
     $\mathbf{x}_k \in N_s$ collectively determine the $\mathbf{w}$, and
     thus called **support vectors**, supporting the solution.
 
-<!-- -   The support vectors also have an interesting "visual" properties.
-    From Eq. D, we have $\lambda_k [y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1] = 0$. Because for $\mathbf{x}_k \in N_s$, $\lambda_k >0$, then only can y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1 = 0. THus $y_k (\mathbf{w}^T \mathbf{x_k} + w_b) = 1$. 
+-   The support vectors also have an interesting "visual" properties.
+    From Eq. D, we have $\lambda_k [y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1] = 0$. Because for $\mathbf{x}_k \in N_s$, $\lambda_k >0$, then 
+    <!-- only can $y_k (\mathbf{w}^T \mathbf{x_k} + w_b) -1 = 0$. Thus -->
+     $y_k (\mathbf{w}^T \mathbf{x_k} + w_b) = 1$. 
 
 -   Given that $y_k\in \{+1, -1\}$, we have
-    $\mathbf{w}^T \mathbf{x_k} + w_b = \pm 1$. They support the **gutter**.  -->
+    $\mathbf{w}^T \mathbf{x_k} + w_b = \pm 1$. They support the **gutters**. 
 ::: 
 
 ::: {.column width="40%"}
@@ -483,13 +502,14 @@ $$\begin{cases}
 # **Kernel tricks**: achieving non-linearity on SVMs
 - In the previous slides, any two samples "interact" with each other thru dot product, e.g., $\mathbf{x_i}^T\mathbf{x}_j$ (in training, between two samples) or $\mathbf{x}^T \mathbf{x_k}$ (in prediction, between a sample to be predicted and a support vector). 
 
-- It can be expanded to any operation between two vectors, known as the **kernel function** or **kernel tricks**. 
+- It can be expanded to any function, denoted as $\mathcal{K}(\mathbf{x}, \mathbf{y})$ ($\mathbf{x}$ and $\mathbf{y}$ are any two vectors of same dimension. Not the input and output of an estimator), between two vectors, known as the **kernel function** or **kernel tricks**. 
 
-- linear kernel: what we have seen so far in SVMs. 
+- Linear kernels: what we have seen so far in SVMs. 
 
-- Gaussian (radial basis function, RBF) kernel: $$\mathbb{K} (\mathbf{x}, \mathbf{y}) = \exp \left ( - \frac{ ||\mathbf{x} - \mathbf{y}||^2}{\sigma} \right ) $$ 
+- Polynomial kernels: $\mathcal{K}(\mathbf{x}, \mathbf{y})= (\mathbf{x}\cdot \mathbf{y} + b)^p$ where $p\in\mathbb{Z^+}$ and $b\in \mathbb{R}$. 
 
-- There are many kernels other there, but usually linear and Gaussian are good enough. 
+- Gaussian (radial basis function, RBF) kernels (that build contours around support vectors when $\mathbf{y}$ is a support vector): $\mathcal{K}(\mathbf{x}, \mathbf{y}) = \exp (-||\mathbf{x}- \mathbf{y}||^2 / \sigma)$
+- Usually linear and Gaussian are good enough. A Gaussian kernel can be decomposed into many polynomial terms. 
 
 # Transforming a nonlinearly separable problem to a linearly separable one
 
