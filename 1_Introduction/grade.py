@@ -9,44 +9,21 @@
 import glob
 import os, pickle, hashlib
 import importlib.util
+import io
+import operator
 
-def compare_returns_md5(r1, r2):
-    """compare the returns from two function calls using MD5sum. 
-
-    r1, and r2 can be of any types, or tuples of any types. 
-
-    # FIXME: Not sure how deep the comparison goes to 
-
+def ndarray_tuple_comparitor(t1, t2):
+    """A comparitor to compare two tuples of numpy arrays
+    t1, t2: tuples of numpy arrays
     """
+    import numpy
+    results = [*map(numpy.array_equal, t1, t2)] # a Boolean list
+    return all(results)
 
-    return hashlib.md5(pickle.dumps(r1)).hexdigest()\
-        == hashlib.md5(pickle.dumps(r2)).hexdigest()
-
-def compare_returns(r1, r2):
-    """compare the returns from two function calls.
-
-    r1, and r2 can be of any types, or tuples of any types. 
+def compare_returns_comparitor(r1, r2, comparitor=operator.eq):
+    """Use a comparitor function to compare the two returns 
     """
-    # KEEP this function until the md5sum approach above is fully verified. 
-    # TODO: the == operator is ambigous for types like numpy.ndarray. 
-    # What are other types like this? 
-    # TODO: This method will fail for highly hierarchical data structures, 
-    # e.g., tuples of lists of dicts of {openCV camera instance:numpy.ndarray}. 
-
-    if type(r1) != type(r2):
-        return False 
-    if isinstance(r1, tuple): # tuple compare 
-        comparison = [compare_returns(r1[i], r2[i]) 
-                     for i in range(len(r1))] 
-        return 1 - comparison.count(False)
-
-    elif isinstance(r1, numpy.ndarray):
-        comparison = r1==r2
-        return comparison.all() 
-
-    else: # simple types 
-        # TODO: it is unclear whether other types will act like numpy arrayes that == operator can be obigious 
-        return r1==r2
+    return comparitor(r1, r2)
 
 def compare_cases(f1, f2, problem):
     """Compare the execution of two functions over cases
@@ -61,6 +38,8 @@ def compare_cases(f1, f2, problem):
     cases = problem["test_cases"]
     points = problem["points"]
 
+    kwargs = {key:problem[key] for key in ['comparitor'] if key in problem}
+
     pass_no = 0 
     for i, args in enumerate(cases):
         returns1 = f1(*args)
@@ -69,7 +48,7 @@ def compare_cases(f1, f2, problem):
         except : 
             return 0 
 
-        if compare_returns_md5(returns1, returns2): 
+        if compare_returns_comparitor(returns1, returns2, **kwargs): 
             pass_no += 1 
         else:
             if grading_policy == "all":
@@ -126,22 +105,17 @@ if __name__ == "__main__":
             [   (numpy.array([1,2]), numpy.array([3,4]), "test.png"), # case 1
                 (numpy.array([3,4]), numpy.array([5,6]), "test.pdf")  # case 2
             ], 
-            "grading_policy": "partial"
+            "grading_policy": "partial",
+            "comparitor":ndarray_tuple_comparitor
+
         }
     ]
-
-    # teacher_module_name = 'answer_test_hw1'
-    # student_module_name = 'hw1'
-
-#    grade = grade_a_student(teacher_module_name, student_module_name, hw)
-#    print (grade)
 
     teacher_module_path = 'alan_turing.py'
     # student_module_path = 'hw1.py'
 
     # grade = grade_a_student(teacher_module_path, student_module_path, hw)
     # print (grade)
-
 
     student_submission_folder = "grading_test"
     grade_all_students(teacher_module_path, student_submission_folder
