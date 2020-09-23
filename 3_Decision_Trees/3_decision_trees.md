@@ -9,19 +9,20 @@ author: |
           Ames, IA, USA \
 date:   \today
 header-includes: |
-     \usepackage{amssymb}
-     \usefonttheme[onlymath]{serif}
-     \usepackage[vlined,algoruled,titlenotnumbered,linesnumbered]{algorithm2e}
-     \usepackage{algorithmic}
-     \setbeamercolor{math text}{fg=green!50!black}
-     \setbeamercolor{normal text in math text}{parent=math text}
-     \newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
-     \newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+    \usepackage{amssymb}
+    \usefonttheme[onlymath]{serif}
+    \usepackage[vlined,algoruled,titlenotnumbered,linesnumbered]{algorithm2e}
+    \usepackage{algorithmic}
+    \setbeamercolor{math text}{fg=green!50!black}
+    \setbeamercolor{normal text in math text}{parent=math text}
+    \newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+    \newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+    \usetheme{Boadilla}
 ---
 
 # Decision Trees (DTs)
 
-![](figs/tree_5.pdf){width=100%}
+![](figs/tree_5.pdf){width=80%}
 
 - A binary tree. Each node is a Boolean comparison on a feature. 
 - Each node **split** into two branches. Continues to one of the two. 
