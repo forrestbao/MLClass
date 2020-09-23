@@ -111,4 +111,5 @@ sum(numpy.array([True, False, True]))
 ```
 shall return `2`. 
 
-
+## How to submit
+For hand computation part, upload one PDF file. For programming part, upload your edited `hw3.py`. 
