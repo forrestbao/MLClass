@@ -17,6 +17,7 @@ header-includes: |
      \setbeamercolor{normal text in math text}{parent=math text}
      \newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
      \newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+     \setlength{\leftmargini}{0pt}
 ---
 
 # The hyperplane
@@ -230,10 +231,10 @@ $$
 
 
 # Fisher's linear discriminant
-  - What really is $\mathbf{w}^T x$? $\mathbf{w}$ is perpendicular to
-    the hyper panel [^3]
+  - What really is $\mathbf{w}^T \mathbf{x}$? $\mathbf{w}$ is perpendicular to
+    the hyper panel 
   - $\mathbf{w}^T \mathbf{x}$ is the *projection* of the point
-    $\mathbf{x}$ on the decision panel.
+    $\mathbf{x}$ (**not augmented**) on the decision panel.
   - Intuition in a simple example: for any two points
     $\mathbf{x}_1 \in C_1$ and $\mathbf{x}_2\in C_2$, we want
     $\mathbf{w}^T \mathbf{x}_1$ to be as different from
@@ -249,32 +250,53 @@ $$
     $\tilde{m}_i = \frac{1}{|C_i|} \sum\limits_{\mathbf{x} \in C_i} \mathbf{w}^T\mathbf{x}$
     and
     $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2$
-    are the mean and the variance of the projection of all samples
+    are the mean and the variance of the projections of all samples
     belonging to Class $i$ on the decision panel, respectively.
 
 
 # Fisher's (cond.)
-  - between-class scatter:
-    
-    $(\tilde{m}_1 - \tilde{m}_2)^2 = (\mathbf{w}^T (\mathbf{m_1} - \mathbf{m_2}))^2 = \mathbf{w}^T  (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2}) ^T \mathbf{w}$
-    
+  - inter-class scatter:
+    $(\tilde{m}_1 - \tilde{m}_2)^2 = (\mathbf{w}^T (\mathbf{m_1} - \mathbf{m_2}))^2 
+    = \mathbf{w}^T  
+    \overbrace{
+    (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2}) ^T
+    }^{\mathbf{S}_B}
+     \mathbf{w}$
     where
     $\mathbf{m}_i = \frac{1}{|C_i|} \sum\limits_{\mathbf{x} \in C_i} \mathbf{x}$
-  - within-class scatter:
-    
-    $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2 =\sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \mathbf{w}^T\mathbf{m}_i)^2 = \mathbf{w}^T [  \sum\limits_{\mathbf{x}\in C_i}(\mathbf{x - m}_i) (\mathbf{x - m}^T_i)] \mathbf{w}$
 
-# Fisher's (cond.)
-  - Denote $\mathbf{S}_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{x - m}_i) (\mathbf{x - m}_i)^T$.
-    We have $\tilde{\mathbf{s}}^2_1 + \tilde{\mathbf{s}}^2_2 = \mathbf{w}^T(\mathbf{S}_1 + \mathbf{S}_2)\mathbf{w}$.
-  - Denote
+  - intra-class scatter:    $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2 =\sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \mathbf{w}^T\mathbf{m}_i)^2 =   
+  \mathbf{w}^T 
+      \overbrace{[  \sum\limits_{\mathbf{x}\in C_i}(\mathbf{x - m}_i) (\mathbf{x - m}^T_i)]}^{\mathbf{S}_i} 
+  \mathbf{w}
+  = \mathbf{w}^T \mathbf{S}_i \mathbf{w}$
+
+
+  - Hence $J(\mathbf{w}) 
+    = \frac{\mathbf{w}^T \mathbf{S}_B \mathbf{w}}{\mathbf{w}^T (\mathbf{S}_1 + \mathbf{S}_2) \mathbf{w}}
+    = \frac{\mathbf{w}^T \mathbf{S}_B \mathbf{w}}{\mathbf{w}^T \mathbf{S}_w \mathbf{w}}$
+    . 
+  This expression is known as *Rayleigh quotient*.
+  To maximize $J(\mathbf{w})$, the $\mathbf{w}$ must satisfy
+    $\mathbf{S}_B \mathbf{w} = \lambda \mathbf{S}_w \mathbf{w}$.
+  - Finally
+    $\mathbf{w} = \mathbf{S}_w^{-1} (\mathbf{m}_1 - \mathbf{m}_2)$.
+    (Derivation saved.)
+  - What about bias? $\mathbf{w}^T \mathbf{m} + w_b = 0$ where $\mathbf{m}=\mathbf{m}_1+\mathbf{m}_2$ is the center of all samples. 
+
+  <!-- - $J(\mathbf{w}) = 
+    {\mathbf{w}^T  
+    \overbrace{(\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2}) ^T}^{\mathbf{S}_B}
+    \mathbf{w} 
+    \over
+    \mathbf{w}^T  
+    \underbrace{(\mathbf{S}_1+\mathbf{S}_2)}_{\mathbf{S}_w}
+    \mathbf{w} 
+    }
+    = \frac{\mathbf{w}^T \mathbf{S}_B \mathbf{w}}{\mathbf{w}^T \mathbf{S}_w \mathbf{w}}$.  -->    
+
+  <!-- - Denote
     $\mathbf{S}_w = \mathbf{S}_1 + \mathbf{S}_2$ and
     $\mathbf{S}_B = (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2}) ^T$.
     We have
-    $$J(\mathbf{w}) = \frac{\mathbf{w}^T \mathbf{S}_B \mathbf{w}}{\mathbf{w}^T \mathbf{S}_w \mathbf{w}}$$.
-    This expression is known as *Rayleigh quotient*.
-  - To maximize $J(\mathbf{w})$, the $\mathbf{w}$ must satisfy
-    $\mathbf{S}_B \mathbf{w} = \lambda \mathbf{S}_w \mathbf{w}$.
-  - Hence
-    $\mathbf{w} = \mathbf{S}_w^{-1} (\mathbf{m}_1 - \mathbf{m}_2)$.
-    (Derivation saved.)
+    $$J(\mathbf{w}) = \frac{\mathbf{w}^T \mathbf{S}_B \mathbf{w}}{\mathbf{w}^T \mathbf{S}_w \mathbf{w}}$$ -->
