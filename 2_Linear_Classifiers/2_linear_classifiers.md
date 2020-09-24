@@ -245,9 +245,7 @@ $$
     $\tilde{s}_1$ and $\tilde{s}_2$ the better) while the projects of
     different classes to be apart from each other (i.e., the larger
     $(\tilde{m}_1 - \tilde{m}_2)^2$ is better).
-  - That means $$\max J(\mathbf{w}) = 
-      \frac{(\tilde{m}_1 - \tilde{m}_2)^2}
-      {\tilde{s}_1^2 + \tilde{s}_2^2}$$ where
+  - That means $$\max J(\mathbf{w}) = \frac{(\tilde{m}_1 - \tilde{m}_2)^2} {\tilde{s}_1^2 + \tilde{s}_2^2}$$ where
     $\tilde{m}_i = \frac{1}{|C_i|} \sum\limits_{\mathbf{x} \in C_i} \mathbf{w}^T\mathbf{x}$
     and
     $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2$
@@ -257,20 +255,23 @@ $$
 
 # Fisher's (cond.)
   - between-class scatter:
-    $(\tilde{m}_1 - \tilde{m}_2)^2 = (\mathbf{w}^T (\mathbf{m_1} - \mathbf{m_2}))^2 = 
-      \mathbf{w}^T  (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2}) ^T \mathbf{w}$
+    
+    $(\tilde{m}_1 - \tilde{m}_2)^2 = (\mathbf{w}^T (\mathbf{m_1} - \mathbf{m_2}))^2 = \mathbf{w}^T  (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2}) ^T \mathbf{w}$
+    
     where
     $\mathbf{m}_i = \frac{1}{|C_i|} \sum\limits_{\mathbf{x} \in C_i} \mathbf{x}$
   - within-class scatter:
-    $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2 
-      =\sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \mathbf{w}^T\mathbf{m}_i)^2 = 
-       \mathbf{w}^T [  \sum\limits_{\mathbf{x}\in C_i}(\mathbf{x - m}_i) (\mathbf{x - m}^T_i)]
-       \mathbf{w}$
+    
+    $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2 =\sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \mathbf{w}^T\mathbf{m}_i)^2 = \mathbf{w}^T [  \sum\limits_{\mathbf{x}\in C_i}(\mathbf{x - m}_i) (\mathbf{x - m}^T_i)] \mathbf{w}$
+
+# Fisher's (cond.)
+  - Denote $\mathbf{S}_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{x - m}_i) (\mathbf{x - m}_i)^T$.
+    We have $\tilde{\mathbf{s}}^2_1 + \tilde{\mathbf{s}}^2_2 = \mathbf{w}^T(\mathbf{S}_1 + \mathbf{S}_2)\mathbf{w}$.
   - Denote
-    $\mathbf{S_w} = \tilde{\mathbf{s}}^2_1 + \tilde{\mathbf{s}}^2_2$ and
+    $\mathbf{S}_w = \mathbf{S}_1 + \mathbf{S}_2$ and
     $\mathbf{S}_B = (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2}) ^T$.
     We have
-    $$J(\mathbf{w}) = \frac{\mathbf{w}^T \mathbf{S}_B \mathbf{w}}{\mathbf{w}^T \mathbf{S}_W \mathbf{w}}$$.
+    $$J(\mathbf{w}) = \frac{\mathbf{w}^T \mathbf{S}_B \mathbf{w}}{\mathbf{w}^T \mathbf{S}_w \mathbf{w}}$$.
     This expression is known as *Rayleigh quotient*.
   - To maximize $J(\mathbf{w})$, the $\mathbf{w}$ must satisfy
     $\mathbf{S}_B \mathbf{w} = \lambda \mathbf{S}_w \mathbf{w}$.
