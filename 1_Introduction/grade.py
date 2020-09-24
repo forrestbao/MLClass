@@ -123,15 +123,17 @@ if __name__ == "__main__":
             "test_cases":  # TODO: how to support both positional arguments and keyword arguments? 
             [
 
+                # random general cases 
                 (numpy.random.randint(1, size=(1, 2)), \
                  numpy.random.randint(1, size=(1, 2)), \
                 "test.png") for _ in range(100) 
-                # generate 100 random cases
-                
-                
-                # (numpy.array([1,2]), numpy.array([3,4]), "test.png"), # case 1
-                # (numpy.array([3,4]), numpy.array([5,6]), "test.pdf")  # case 2
-            ], 
+            ]
+            +
+            [  # corner cases  
+                (numpy.array([1,2]), numpy.array([3,4]), "test.png"), # case 1
+                (numpy.array([3,4]), numpy.array([5,6]), "test.pdf")  # case 2
+            ]
+            , 
             "grading_policy": "partial",
             "comparitor":ndarray_tuple_comparitor
 
