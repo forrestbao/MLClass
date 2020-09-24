@@ -6,9 +6,19 @@
 # Copyright 2020 Forrest Sheng Bao
 # FSB@iastate.edu, forrest.bao@gmail.com
 
+# An autograder than instructors can pick up in 5 minutes. 
+# Just 3 things: 
+# 1. Reference implementation (solution, key, answer), are provided in a file. Here, alan_turing.py
+# 2. Problems are given in a dictionary, or a JSON. You can specify points, grading policies, and generate or manually enter test cases. See  the example at the very end. 
+# 3. Students' submissions are in a folder (here grading_test). Each file should be comparable to the reference file. 
+
+
+
 import glob, os, operator, importlib.util
 import itertools
 import joblib
+import numpy.random
+import numpy
 
 
 def ndarray_tuple_comparitor(t1, t2):
@@ -94,7 +104,6 @@ def grade_all_students(teacher_module_path, student_submission_folder, hw):
     return grades
     
 if __name__ == "__main__": 
-    import numpy
     import warnings
     warnings.filterwarnings("ignore")
 
@@ -107,9 +116,16 @@ if __name__ == "__main__":
 #            "function_name" : "learning_curve", 
             "function_name" : "f", 
             "test_cases":  # TODO: how to support both positional arguments and keyword arguments? 
-            # TODO: lines to add before student and teacher .py
-            [   (numpy.array([1,2]), numpy.array([3,4]), "test.png"), # case 1
-                (numpy.array([3,4]), numpy.array([5,6]), "test.pdf")  # case 2
+            [   
+
+                (numpy.random.randint(1, size=(1, 2)), \
+                 numpy.random.randint(1, size=(1, 2)), \
+                "test.png") for _ in range(100) 
+                # generate 100 random cases
+                
+                
+                # (numpy.array([1,2]), numpy.array([3,4]), "test.png"), # case 1
+                # (numpy.array([3,4]), numpy.array([5,6]), "test.pdf")  # case 2
             ], 
             "grading_policy": "partial",
             "comparitor":ndarray_tuple_comparitor
