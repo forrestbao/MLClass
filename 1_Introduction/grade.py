@@ -6,11 +6,10 @@
 # Copyright 2020 Forrest Sheng Bao
 # FSB@iastate.edu, forrest.bao@gmail.com
 
-import glob
-import os, pickle, hashlib
-import importlib.util
-import io
-import operator
+import glob, os, operator, importlib.util
+import itertools
+import joblib
+
 
 def ndarray_tuple_comparitor(t1, t2):
     """A comparitor to compare two tuples of numpy arrays
@@ -66,7 +65,7 @@ def grade_a_student(teacher_module_path, student_module_path, hw):
     try: 
         student_module = load_module_from_path(student_module_path)
     except : 
-        return 0 # if your submission cannot be imported, 0 for all problems. 
+        return (student_module_path, 0) # if your submission cannot be imported, 0 for all problems. 
     grade = 0 
 
     for problem in hw: 
@@ -79,14 +78,21 @@ def grade_a_student(teacher_module_path, student_module_path, hw):
 
         # check all cases
         grade +=  compare_cases (teacher_function, student_function, problem)
-    return grade 
+    print (student_module_path, grade)
+    return (student_module_path, grade)
 
 def grade_all_students(teacher_module_path, student_submission_folder, hw):
-    # TODO 3. Parallelize this. 
-    for student_module_path in glob.glob(os.path.join(student_submission_folder, "*.py")):
-        local_grade = grade_a_student(teacher_module_path, student_module_path, hw)
-        print (student_module_path, local_grade)
-        
+    n_jobs = 5 
+
+    student_modules = glob.glob(os.path.join(student_submission_folder, "*.py"))
+
+    grades = joblib.Parallel(n_jobs=n_jobs,)(
+        joblib.delayed(grade_a_student)
+        (teacher_module_path, student_module, hw)
+        for student_module in student_modules)
+
+    return grades
+    
 if __name__ == "__main__": 
     import numpy
     import warnings
@@ -118,5 +124,6 @@ if __name__ == "__main__":
     # print (grade)
 
     student_submission_folder = "grading_test"
-    grade_all_students(teacher_module_path, student_submission_folder
-    , hw )
+    grades = grade_all_students(teacher_module_path, student_submission_folder, hw )
+
+    # print (grades)
