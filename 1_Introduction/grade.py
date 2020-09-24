@@ -8,9 +8,13 @@
 
 # An autograder than instructors can pick up in 5 minutes. 
 # Just 3 things: 
-# 1. Reference implementation (solution, key, answer), are provided in a file. Here, alan_turing.py
-# 2. Problems are given in a dictionary, or a JSON. You can specify points, grading policies, and generate or manually enter test cases. See  the example at the very end. 
-# 3. Students' submissions are in a folder (here grading_test). Each file should be comparable to the reference file. 
+# 1. Reference implementation (solution, key, answer), are provided in a file. 
+# Here, alan_turing.py
+# 2. Problems are given in a list of dictionaries, or a JSON. You can specify 
+# points, grading policies, and generate or manually enter test cases. 
+# See the example at the very end. 
+# 3. Students' submissions are in a folder (here grading_test). 
+# Each file should be comparable to the reference file. 
 
 
 
@@ -39,7 +43,8 @@ def compare_cases(f1, f2, problem):
 
     problem: keys: number, points, import_cmd, cases,  grading_policy
     grading_policy: str, "partial" or "all"
-    "partial" if the grade is propotional to the ratio of passed test cases. "all" if the student gets points only when all test cases are passed. 
+        "partial" if the grade is propotional to the ratio of passed test cases. 
+        "all" if the student gets points only when all test cases are passed. 
     """
     for cmd in problem["import_cmd"]:
         exec(cmd)
@@ -107,7 +112,7 @@ if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")
 
-    hw = [
+    hw = [ # a HW is a list of dicts. Each dict is one problem.
         {
             "number": 1, 
             "points": 5, 
@@ -116,7 +121,7 @@ if __name__ == "__main__":
 #            "function_name" : "learning_curve", 
             "function_name" : "f", 
             "test_cases":  # TODO: how to support both positional arguments and keyword arguments? 
-            [   
+            [
 
                 (numpy.random.randint(1, size=(1, 2)), \
                  numpy.random.randint(1, size=(1, 2)), \
