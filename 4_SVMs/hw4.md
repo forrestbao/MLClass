@@ -1,17 +1,23 @@
 # Homework 4: SVMs
 
+## How to view this in nice PDF
+```pandoc -s hw4.md -o hw4.pdf```
+
+
 Unless otherwise stated, 
 1. all SVMs are hard margin SVM using a linear dot-product kernel.
 
 ## Hand Computation (1pt each)
 
 1. An SVM is trained using the follow samples: 
+
 |sample ID|feature a| feature b| feature c| label|
 |--|--|--|--|--|
 |1 | 0.5 | 0.25 | 0.125 | +1 | 
 |2 | 0.4 | 0.15 | 0.225 | +1 | 
 |3 | 0.3 | 0.75 | 0.325 | -1 | 
 |4 | 0.2 | 0.65 | 0.425 | -1 | 
+
 resuling in the $\lambda$'s sequentially as
 $\lambda_1 = 4.5$, $\lambda_2 = 0$, $\lambda_3 = 1.5$, $\lambda_4 = 0$, 
 what is the prediction from the SVM for a new sample $[1,1,0]$? 
@@ -44,11 +50,15 @@ The function `study_C_fix_split` takes an argument `C_range` as the sole input w
 
 The code in `study_C_fix_split` already loads the data and split it into the fixed training and test sets. Train an SVM using `X_train` and `y_train` as input and output, and then use `X_test` and `y_test` to get a performance score. The split is at 80% training and 20% test. The data is pre-scambled with fixed `random_state` at 0. 
 
-Use default settings for all `sklearn.svm.SVC` functions except the `C` which you should scan, and `kernel='linear'`.
+Use default settings for all `sklearn.svm.SVC` functions except the `C` which you should scan, `kernel='linear'`, and `random_state=1` -- **it's important to fix the random state to get consistent results**.
+
+
 
 6. [1.5pt] **Finding the best C for a soft-margin SVM using  cross validation**
 In the problem above, we used a fixed pair of training and test set. To more holistically study, redo it using cross validation here. 
-Finish the function `study_C_cross_validation` using Scikit-learn's [cross validation functions](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.htmlhttps://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html). It has the same input and output as the function `study_C_fixed_split` above. Use default settings for all parameters unspecified here, e.g., for CV, do default 5-fold CV. 
+Finish the function `study_C_cross_validation` using  [`sklearn.model_selection.cross_val_score`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score). Your function should have the same input and output as the function `study_C_fixed_split` above. Use default settings for all parameters unspecified here, e.g., for CV, do default 5-fold CV. 
+
+The first argument of `sklearn.model_selection.cross_val_score` is an estimator. In our case, it should be an SVM created using `sklearn.svm.SVC`. You do NOT need to manually `fit` nor `score` as the function [`sklearn.model_selection.cross_val_score`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score) does them for you. But note that the function [`sklearn.model_selection.cross_val_score`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score) returns a list of floats, which are the scores of all folds. 
 
 7. [1.5pt] **Finding the best `C`  thru automated grid search**
 Finally, let's take advantage of Scikit-learn's [grid search](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) for hyperparameters. Finish the function `study_C_GridCV`. It has the same input and output as the two functions above. Use default settings unless specified here. Note that the input `C` is a list but in `sklearn.model_selection.GridSearchCV` it needs to be converted into a dictionary like `{'C':[1,2,3,4,]}`
