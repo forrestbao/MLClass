@@ -5,6 +5,7 @@ import numpy # import again
 import matplotlib.pyplot # import again 
 
 import numpy.linalg 
+import numpy.random
 
 
 def generate_data(Para1, Para2, seed=0):
