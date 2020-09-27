@@ -267,7 +267,7 @@ $$
 
   - intra-class scatter:    $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2 =\sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \mathbf{w}^T\mathbf{m}_i)^2 =   
   \mathbf{w}^T 
-      \overbrace{[  \sum\limits_{\mathbf{x}\in C_i}(\mathbf{x - m}_i) (\mathbf{x - m}^T_i)]}^{\mathbf{S}_i} 
+      \overbrace{[  \sum\limits_{\mathbf{x}\in C_i}(\mathbf{x - m}_i) (\mathbf{x - m}_i)^T]}^{\mathbf{S}_i} 
   \mathbf{w}
   = \mathbf{w}^T \mathbf{S}_i \mathbf{w}$
 
@@ -282,7 +282,7 @@ $$
   - Finally
     $\mathbf{w} = \mathbf{S}_w^{-1} (\mathbf{m}_1 - \mathbf{m}_2)$.
     (Derivation saved.)
-  - What about bias? $\mathbf{w}^T \mathbf{m} + w_b = 0$ where $\mathbf{m}=\mathbf{m}_1+\mathbf{m}_2$ is the center of all samples. 
+  - $w_b = -\mathbf{w}^T \mathbf{m}$ where $\mathbf{m}=\frac{|C_1|\mathbf{m}_1+|C_2|\mathbf{m}_2}{|C_1|+|C_2|}$ is the center of all samples. 
 
   <!-- - $J(\mathbf{w}) = 
     {\mathbf{w}^T  
