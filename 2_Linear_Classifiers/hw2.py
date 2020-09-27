@@ -48,6 +48,10 @@ def plot_mse(X, y, filename):
 
     # your code here
     
+    # limit the range of plot to the dataset only
+    matplotlib.pyplot.xlim(numpy.min(X[:,0]), numpy.max(X[:,0]))
+    matplotlib.pyplot.ylim(numpy.min(X[:,1]), numpy.max(X[:,1]))
+    matplotlib.pyplot.savefig(filename)
     matplotlib.pyplot.close('all') # it is important to always clear the plot
     return w
 
@@ -73,9 +77,13 @@ def plot_fisher(X, y, filename):
     """
 
     w = np.array([0,0,0]) # just a placeholder
+
     # your code here 
 
-
+    # limit the range of plot to the dataset only
+    matplotlib.pyplot.xlim(numpy.min(X[:,0]), numpy.max(X[:,0]))
+    matplotlib.pyplot.ylim(numpy.min(X[:,1]), numpy.max(X[:,1]))
+    matplotlib.pyplot.savefig(filename)
     matplotlib.pyplot.close('all') # it is important to always clear the plot
     return w
 
