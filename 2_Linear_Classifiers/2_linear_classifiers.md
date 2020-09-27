@@ -231,43 +231,31 @@ $$
 
 
 # Fisher's linear discriminant
-  - What really is $\mathbf{w}^T \mathbf{x}$? $\mathbf{w}$ is perpendicular to
-    the hyper panel 
-  - $\mathbf{w}^T \mathbf{x}$ is the *projection* of the point
-    $\mathbf{x}$ (**not augmented**) on the decision panel.
-  - Intuition in a simple example: for any two points
-    $\mathbf{x}_1 \in C_1$ and $\mathbf{x}_2\in C_2$, we want
-    $\mathbf{w}^T \mathbf{x}_1$ to be as different from
-    $\mathbf{w}^T \mathbf{x}_1$ as possible, i.e.,
-    $\max (\mathbf{w}^T \mathbf{x}_1 - \mathbf{w}^T \mathbf{x}_2)^2$.
-    \[Fig. 4.6, Bishop book\]
-  - For binary classification, intuitively, we want the projections of
-    the same class to be close to each other (i.e., the smaller
-    $\tilde{s}_1$ and $\tilde{s}_2$ the better) while the projects of
-    different classes to be apart from each other (i.e., the larger
-    $(\tilde{m}_1 - \tilde{m}_2)^2$ is better).
-  - That means $$\max J(\mathbf{w}) = \frac{(\tilde{m}_1 - \tilde{m}_2)^2} {\tilde{s}_1^2 + \tilde{s}_2^2}$$ where
-    $\tilde{m}_i = \frac{1}{|C_i|} \sum\limits_{\mathbf{x} \in C_i} \mathbf{w}^T\mathbf{x}$
-    and
-    $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2$
-    are the mean and the variance of the projections of all samples
-    belonging to Class $i$ on the decision panel, respectively.
+- What really is $\mathbf{w}^T \mathbf{x}$? The vector $\mathbf{x}$ is projected to a 1-D space (actually along $\mathbf{w}$) in which the classification decision is done. 
+- This is what we prefer after the projection: 
+    * samples of each class distribute tightly around its center (minimized intra-class difference)
+    * the distribution centers of two classes are very far from each other (maximized inter-class difference)
+- Quantify this goal ($\mathbf{x}$ is **not augmented** because the bias has equal impact on both classes):  $$\max J(\mathbf{w}) = \frac{(\tilde{m}_1 - \tilde{m}_2)^2} {\tilde{s}_1^2 + \tilde{s}_2^2}$$ where 
+   <!-- =   {{\text separation between the center of the two classes} \over{]\text divergence within each class}}$$  -->
+    $\tilde{m}_i = \frac{1}{|C_i|} \sum\limits_{\mathbf{x} \in C_i} \mathbf{w}^T\mathbf{x}$ is the post-projection center of class $i$ and
+    $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2$ is the post-projection, inter-class variance for class $i$. 
+- Tails of the distributions of both classes is less likely to overlap. A new sample projected is clearly proximate to one of the two classes. 
+   
 
 
 # Fisher's (cond.)
-  - inter-class scatter:
-    $(\tilde{m}_1 - \tilde{m}_2)^2 = (\mathbf{w}^T (\mathbf{m_1} - \mathbf{m_2}))^2 
+  - $(\tilde{m}_1 - \tilde{m}_2)^2 = (\mathbf{w}^T (\mathbf{m_1} - \mathbf{m_2}))^2 
     = \mathbf{w}^T  
     \overbrace{
     (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2}) ^T
     }^{\mathbf{S}_B}
      \mathbf{w}$
     where
-    $\mathbf{m}_i = \frac{1}{|C_i|} \sum\limits_{\mathbf{x} \in C_i} \mathbf{x}$
+    $\mathbf{m}_i = \frac{1}{|C_i|} \sum\limits_{\mathbf{x} \in C_i} \mathbf{x}$ is the pre-projection center of each class. 
 
-  - intra-class scatter:    $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2 =\sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \mathbf{w}^T\mathbf{m}_i)^2 =   
+  - $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2 =\sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \mathbf{w}^T\mathbf{m}_i)^2 =   
   \mathbf{w}^T 
-      \overbrace{[  \sum\limits_{\mathbf{x}\in C_i}(\mathbf{x - m}_i) (\mathbf{x - m}^T_i)]}^{\mathbf{S}_i} 
+      \overbrace{[  \sum\limits_{\mathbf{x}\in C_i}(\mathbf{x - m}_i) (\mathbf{x - m}_i)^T]}^{\mathbf{S}_i} 
   \mathbf{w}
   = \mathbf{w}^T \mathbf{S}_i \mathbf{w}$
 
@@ -282,7 +270,12 @@ $$
   - Finally
     $\mathbf{w} = \mathbf{S}_w^{-1} (\mathbf{m}_1 - \mathbf{m}_2)$.
     (Derivation saved.)
-  - What about bias? $\mathbf{w}^T \mathbf{m} + w_b = 0$ where $\mathbf{m}=\mathbf{m}_1+\mathbf{m}_2$ is the center of all samples. 
+  - What about bias? $\mathbf{w}^T \mathbf{m} + w_b = 0$ where $\mathbf{m}=(\mathbf{m}_1+\mathbf{m}_2)/2$ such that the decision hyperplane lies exactly in the middle of the centers of two classes. 
+
+<!-- # Programming hints for Fisher's
+- First, get $\mathbf{m}_i$. In Numpy, for each class, just sum over samples (or along columns because each column in $X$ corresponds to a feature) and divide the number of samples per class. 
+- Then, for each class, for each column of $X$ subtract the  -->
+- 
 
   <!-- - $J(\mathbf{w}) = 
     {\mathbf{w}^T  
