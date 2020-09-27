@@ -36,10 +36,21 @@ Output/return:
 
 For plot, please plot class $+1$ samples in blue dots and class $-1$ samples in red dots. For all other objects and properties (e.g., line width, line color, marker size, marker border color, etc.), use default settings. 
 
+Be sure that the plot range does not go beyond the sample range. To do that, use `xlim` and `ylim` of matplotlib to set: 
+```python3
+matplotlib.pyplot.xlim(numpy.min(X[:,0]), numpy.max(X[:,0]))
+matplotlib.pyplot.ylim(numpy.min(X[:,1]), numpy.max(X[:,1]))
+```
+
 7. [3pts] Redo the function above using Fisher's linear discriminant. Save the function as `plot_fisher`. 
+
+Note that on the slides, when discussion Fisher's, the $\mathbf{w}$ does not contain the bias. But when returning $\mathbf{w}$ here, please add the bias as the last element.
 
 ## How to submit 
 For theory part, submit as a PDF file. For programming part, work on the template `hw2.py` and submit it. 
 
 ## How to view this in nice PDF
 `pandoc -s hw2.md -o hw2.pdf` 
+
+## Programming hints
+1. To do the $\sum (\mathbf{x}-\mathbf{m_i})(\mathbf{x}-\mathbf{m_i})^T$, first subtract the mean on each feature dimention from each column of $X$: 
