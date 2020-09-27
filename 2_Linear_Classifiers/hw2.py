@@ -77,3 +77,8 @@ def plot_fisher(X, y, filename):
 
     matplotlib.pyplot.close('all') # it is important to always clear the plot
     return w
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
