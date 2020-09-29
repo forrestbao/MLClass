@@ -41,19 +41,39 @@ Unless otherwise stated,
 
     * `w`: the weight vector of the classifier, where the 1st element corresponds to the 1st dimension of a feature vector, the 2nd element corresponds to the 2nd dimension of a feature vector, and the last term is the bias. 
 
-    In your 2-D plots, let the horizontal axis correspond to the first/leftmost feature column in `X`, and the vertical axis correspond to the 2nd feature column in `X`. To ensure that the decision hyperplan/line "covers" the range of the samples, just compute two points and drop a line connecting them. Let the horizontal coordinates of the two points be `x_ticks = numpy.array([numpy.min(X[:,0]), numpy.max(X[:,0])])`, then their vertical coordinates are `y_ticks = (x_ticks * w[0] +x[2])/w[1]`.
-
-    For plot, please plot class $+1$ samples in blue dots and class $-1$ samples in red dots. For all other objects and properties (e.g., line width, line color, marker size, marker border color, etc.), use default settings. 
-
-    Be sure that the plot range does not go beyond the sample range. To do that, use `xlim` and `ylim` of matplotlib to set: 
-    ```python3
-    matplotlib.pyplot.xlim(numpy.min(X[:,0]), numpy.max(X[:,0]))
-    matplotlib.pyplot.ylim(numpy.min(X[:,1]), numpy.max(X[:,1]))
-    ```
-
 7. [3pts] Redo the function above using Fisher's linear discriminant. Save the function as `plot_fisher`. 
 
-   Note that on the slides, when discussion Fisher's, the $\mathbf{w}$ does not contain the bias. But when returning $\mathbf{w}$ here, please add the bias as the last element.
+   Note that on the slides, when discussing Fisher's, the $\mathbf{w}$ does not contain the bias. But when returning $\mathbf{w}$ here, please add the bias as the last element.
+
+### Specifications regarding the plots
+
+In your 2-D plots, let the horizontal axis correspond to the first/leftmost feature column in `X`, and the vertical axis correspond to the 2nd feature column in `X`. 
+
+**For plot styles and properties**, please plot class $+1$ samples in blue dots and class $-1$ samples in red dots. For all other objects and properties (e.g., line width, line color, marker size, marker border color, etc.), use default settings.
+
+**To compute and plot the decision hyperplane**, compute two points and draw a line connecting them. Let the horizontal coordinates of the two points be 
+```
+x_ticks = numpy.array([numpy.min(X[:,0]), numpy.max(X[:,0])])
+```
+then their vertical coordinates are 
+```
+y_ticks = (x_ticks * w[0] +x[2])/w[1]
+```
+Finally, just plot
+```
+matplotlib.pyplot.plot(x_ticks, y_ticks)
+```
+
+**Be sure that the plot range does not go beyond the sample range**. To do that, use `xlim` and `ylim` of matplotlib to set: 
+
+```
+matplotlib.pyplot.xlim(numpy.min(X[:,0]), numpy.max(X[:,0]))
+matplotlib.pyplot.ylim(numpy.min(X[:,1]), numpy.max(X[:,1]))
+```
+
+An example plot is given below (may float to next page in pdf): 
+
+![example plot](test3.png){ width=500px }
 
 ## How to submit 
 For theory part, submit as a PDF file. For programming part, work on the template `hw2.py` and submit it. 
@@ -88,6 +108,10 @@ For theory part, submit as a PDF file. For programming part, work on the templat
   There are many ways, you could measure the number of rows for samples in the 
   class like `X1.shape[0]`, or you could measure the number of elements in `y` 
   equal to $i$ like `numpy.sum(y==1)`.
+- How to plot with proper range? 
+  Search `x_lim` in this doc to see the code. Just use that code. 
+- How to visualize the hyperplane from $\mathbf{w}$? 
+  Search `x_ticks` in this doc to see the code. Just use that code. 
 
 ## Additional programming hints for Fisher's
 - How to compute $\mathbf{S}_i$? 
