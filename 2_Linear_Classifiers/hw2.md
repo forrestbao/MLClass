@@ -57,7 +57,7 @@ x_ticks = numpy.array([numpy.min(X[:,0]), numpy.max(X[:,0])])
 ```
 then their vertical coordinates are 
 ```
-y_ticks = (x_ticks * w[0] +x[2])/w[1]
+y_ticks = (x_ticks * w[0] +w[2])/w[1]
 ```
 Finally, just plot
 ```
