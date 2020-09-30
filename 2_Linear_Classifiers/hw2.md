@@ -57,7 +57,7 @@ x_ticks = numpy.array([numpy.min(X[:,0]), numpy.max(X[:,0])])
 ```
 then their vertical coordinates are 
 ```
-y_ticks = (x_ticks * w[0] +w[2])/w[1]
+y_ticks = -1*(x_ticks * w[0] +w[2])/w[1]
 ```
 Finally, just plot
 ```
@@ -256,16 +256,31 @@ For theory part, submit as a PDF file. For programming part, work on the templat
   }_{|C_i| \text{ columns}}$
   duplicates the mean vector $\mathbf{m}_i$ by $|C_i|$ times vertically, and $d$ is the number of features. 
   
- - How to programmingly construct the "duplication" matrix $\mathbf{M_i}$? 
- 
-   The example below duplicates a 1-D vector row-wisely. 
-   It's not the exact solution but shall give you the idea.
+- How to programmingly construct the "duplication" matrix $\mathbf{M_i}$? 
 
-    ```python3
-    >>> m1=numpy.array([4,5,6])
-    >>> numpy.array([m1]*2)
-    array([[4, 5, 6],
-          [4, 5, 6]])
-    ```
+  The example below duplicates a 1-D vector row-wisely. 
+  It's not the exact solution but shall give you the idea.
 
+  ```python3
+  >>> m1=numpy.array([4,5,6])
+  >>> numpy.array([m1]*2)
+  array([[4, 5, 6],
+        [4, 5, 6]])
+  ```
 
+  Alternatively, Numpy allows subtracting a vector from a 2D array **in the direction of the vector**. 
+  So you won't need to duplicate $\mathbf{m}_i$ into $\mathbf{M}_i$. 
+  ```python3
+  >>> X=numpy.array([[1,2,3],\
+  ...                [4,5,6]])
+  >>> m1=numpy.array([4,5,6])
+  >>> X-m1   # subtracting [1,2,3] from each subarray of X, element to element
+  array([[-3, -3, -3],
+        [ 0,  0,  0]])
+  >>> m2=numpy.array([[4],\
+  ...                 [5]])
+  >>> X-m2   # subtracting 4 from each element in the first subarray of X, and 
+  >>>        # then 5 in the second subarray
+  array([[-3, -2, -1],
+        [-1,  0,  1]])
+  ```
