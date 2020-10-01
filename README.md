@@ -1,7 +1,19 @@
 # MLClass
 Machine Learning class taught at ISU, Fall 2020
 
-The slides and handouts are made in Markdown and converted into PDF via LaTeX in [Pandoc](https://pandoc.org/MANUAL.html). A script to convert from Markdown to PDF is [make.sh](make.sh). 
+
+
+## Slides 
+
+The source files in Markdown are always the latest. There is a delay in the PDF files.
+To get the most up-to-date slides, compile the Markdown from PDF using [Pandoc](https://pandoc.org/MANUAL.html). 
+An example script to convert from Markdown to PDF is [make.sh](make.sh). 
+
+1. Introduction
+2. [Linear classifiers](https://www.dropbox.com/s/b27oqkc3b1su6p2/2_linear_classifiers.pdf?dl=0)
+3. [Decision trees](https://www.dropbox.com/s/3ajxaa1v5rykcjl/3_decision_trees.pdf?dl=0)
+4. SVMs
+5. Regression
 
 ## Setups hint for TAs
 ### JupyterHub/TLJH
