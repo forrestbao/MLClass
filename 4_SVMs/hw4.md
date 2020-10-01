@@ -18,7 +18,7 @@ Unless otherwise stated,
 |3 | 0.3 | 0.75 | 0.325 | -1 | 
 |4 | 0.2 | 0.65 | 0.425 | -1 | 
 
-resuling in the $\lambda$'s sequentially as
+Suppose (they may not satisfy KKT conditions) the $\lambda$'s are sequentially: 
 $\lambda_1 = 4.5$, $\lambda_2 = 0$, $\lambda_3 = 1.5$, $\lambda_4 = 0$, 
 what is the prediction from the SVM for a new sample $[1,1,0]$? 
 Let $w_b$ be 1. 
