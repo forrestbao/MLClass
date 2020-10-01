@@ -5,7 +5,8 @@ Machine Learning class taught at ISU, Fall 2020
 
 ## Slides 
 
-The source files in Markdown are always the latest. There is a delay in the PDF files.
+The source files in Markdown are always the latest. 
+There maybe delays in PDF syncing. 
 To get the most up-to-date slides, compile the Markdown from PDF using [Pandoc](https://pandoc.org/MANUAL.html). 
 An example script to convert from Markdown to PDF is [make.sh](make.sh). 
 

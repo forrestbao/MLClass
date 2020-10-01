@@ -8,6 +8,11 @@ header-includes: |
 
 # Homework 2
 
+## How to view this in nice PDF
+`pandoc -s hw2.md -o hw2.pdf` 
+
+A precompiled PDF is [here](https://www.dropbox.com/s/bo4r8c94run4jyn/hw2.pdf?dl=0). 
+
 ## Theory [0.8 pt each]
 
 Unless otherwise stated, 
@@ -77,9 +82,6 @@ An example plot is given below (may float to next page in pdf):
 
 ## How to submit 
 For theory part, submit as a PDF file. For programming part, work on the template `hw2.py` and submit it. 
-
-## How to view this in nice PDF
-`pandoc -s hw2.md -o hw2.pdf` 
 
 ## Programming hints
 - Note in programming assignment, each sample is a row in `X` instead of a column vector as in the math in slides. 
