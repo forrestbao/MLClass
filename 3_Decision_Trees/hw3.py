@@ -97,14 +97,15 @@ def grid_search_split_midpoint(X, y):
     >>> X = numpy.random.randint(1, 10, (8,3)) # generate training samples
     >>> y = numpy.array([+1,+1,+1,+1, -1,-1,-1,-1])
     >>> grid, feature_id, bts = grid_search_split_midpoint(X, y)
+    >>> numpy.set_printoptions(precision=5)
     >>> print (grid)
-    [[0.42857143 0.5        0.46666667]
-     [0.46666667 0.5        0.46666667]
-     [0.46666667 0.46666667 0.46666667]
-     [0.375      0.5        0.46666667]
-     [0.5        0.5        0.46666667]
-     [0.5        0.5        0.5       ]
-     [0.5        0.42857143 0.42857143]]
+    [[0.42857 0.5     0.46667]
+     [0.46667 0.5     0.46667]
+     [0.46667 0.46667 0.46667]
+     [0.375   0.5     0.46667]
+     [0.5     0.5     0.46667]
+     [0.5     0.5     0.5    ]
+     [0.5     0.42857 0.42857]]
     >>> clf = sklearn.tree.DecisionTreeClassifier(max_depth=1)
     >>> clf = clf.fit(X,y)
     >>> print (clf.tree_.feature[0], clf.tree_.threshold[0], feature_id, bts)
@@ -119,13 +120,13 @@ def grid_search_split_midpoint(X, y):
     >>> X = numpy.random.randint(1, 30, (8,3)) # generate training samples
     >>> grid, feature_id, bts = grid_search_split_midpoint(X, y)
     >>> print (grid)
-    [[0.42857143 0.42857143 0.42857143]
-     [0.5        0.5        0.33333333]
-     [0.375      0.46666667 0.46666667]
-     [0.375      0.5        0.5       ]
-     [0.46666667 0.46666667 0.46666667]
-     [0.33333333 0.5        0.5       ]
-     [0.42857143 0.42857143 0.42857143]]
+    [[0.42857 0.42857 0.42857]
+     [0.5     0.5     0.33333]
+     [0.375   0.46667 0.46667]
+     [0.375   0.5     0.5    ]
+     [0.46667 0.46667 0.46667]
+     [0.33333 0.5     0.5    ]
+     [0.42857 0.42857 0.42857]]
     >>> clf = clf.fit(X,y) # return the sklearn DT
     >>> print (clf.tree_.feature[0], clf.tree_.threshold[0], feature_id, bts)
     2 8.5 2 8.5
@@ -140,13 +141,13 @@ def grid_search_split_midpoint(X, y):
     >>> X = numpy.random.randint(1, 100, (8,3)) # generate training samples
     >>> grid, feature_id, bts = grid_search_split_midpoint(X, y)
     >>> print (grid)
-    [[0.42857143 0.42857143 0.42857143]
-     [0.5        0.5        0.33333333]
-     [0.46666667 0.46666667 0.375     ]
-     [0.375      0.375      0.375     ]
-     [0.46666667 0.2        0.46666667]
-     [0.5        0.42857143 0.5       ]
-     [0.42857143 0.42857143 0.42857143]]
+    [[0.42857 0.42857 0.42857]
+     [0.5     0.5     0.33333]
+     [0.46667 0.46667 0.375  ]
+     [0.375   0.375   0.375  ]
+     [0.46667 0.2     0.46667]
+     [0.5     0.42857 0.5    ]
+     [0.42857 0.42857 0.42857]]
     >>> clf = clf.fit(X,y) # return the sklearn DT
     >>> print (clf.tree_.feature[0], clf.tree_.threshold[0], feature_id, bts)
     1 47.5 1 47.5
