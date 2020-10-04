@@ -17,25 +17,25 @@ def estimate_gini_impurity(feature_values, threshold, labels, polarity):
     >>> feature_values = numpy.array([1,2,3,4,5,6,7,8])
     >>> labels = numpy.array([+1,+1,+1,+1, -1,-1,-1,-1])
     >>> for threshold in range(0,8): 
-    ...     estimate_gini_impurity(feature_values, threshold, labels, operator.gt)
-    0.5
-    0.489795918367347
-    0.4444444444444444
-    0.31999999999999984
-    0.0
-    0.0
-    0.0
-    0.0
+    ...     print("%.5f" % estimate_gini_impurity(feature_values, threshold, labels, operator.gt))
+    0.50000
+    0.48980
+    0.44444
+    0.32000
+    0.00000
+    0.00000
+    0.00000
+    0.00000
     >>> for threshold in range(0,8): 
-    ...     estimate_gini_impurity(feature_values, threshold, labels, operator.le)
-    1.0
-    0.0
-    0.0
-    0.0
-    0.0
-    0.31999999999999984
-    0.4444444444444445
-    0.48979591836734704
+    ...     print("%.5f" % estimate_gini_impurity(feature_values, threshold, labels, operator.le))
+    1.00000
+    0.00000
+    0.00000
+    0.00000
+    0.00000
+    0.32000
+    0.44444
+    0.48980
     """
 
     # YOUR CODE HERE
@@ -54,16 +54,16 @@ def estimate_gini_impurity_expectation(feature_values, threshold, labels):
     >>> feature_values = numpy.array([1,2,3,4,5,6,7,8])
     >>> labels = numpy.array([+1,+1,+1,+1, -1,-1,-1,-1])
     >>> for threshold in range(0,9): 
-    ...     estimate_gini_impurity_expectation(feature_values, threshold, labels)
-    0.5
-    0.4285714285714286
-    0.3333333333333333
-    0.1999999999999999
-    0.0
-    0.1999999999999999
-    0.33333333333333337
-    0.42857142857142866
-    0.5
+    ...     print("%.5f" % estimate_gini_impurity_expectation(feature_values, threshold, labels))
+    0.50000
+    0.42857
+    0.33333
+    0.20000
+    0.00000
+    0.20000
+    0.33333
+    0.42857
+    0.50000
 
     """
 
