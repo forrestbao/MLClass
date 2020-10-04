@@ -30,7 +30,8 @@ def ndarray_tuple_comparitor(t1, t2):
     t1, t2: tuples of numpy arrays
     """
     import numpy
-    results = [*map(numpy.array_equal, t1, t2)] # a Boolean list
+    # results = [*map(numpy.array_equal, t1, t2)] # a Boolean list
+    results = [*map(numpy.allclose, t1, t2)] # a Boolean list
     return all(results)
 
 def compare_returns_comparitor(r1, r2, comparitor=operator.eq):
@@ -124,8 +125,8 @@ if __name__ == "__main__":
             [
 
                 # random general cases 
-                (numpy.random.randint(1, size=(1, 2)), \
-                 numpy.random.randint(1, size=(1, 2)), \
+                (numpy.random.randint(100, size=(1, 2)), \
+                 numpy.random.randint(100, size=(1, 2)), \
                 "test.png") for _ in range(100) 
             ]
             +
