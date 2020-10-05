@@ -43,6 +43,13 @@ A precompiled PDF is [here](https://www.dropbox.com/s/zrrxxmc4m4v2oho/hw3.pdf?dl
     /   \    /   \
     +1   -1  -1   +1
     ```
+    
+    By two-column, this is it: 
+
+    | sample  | prediction | 
+    | -- | -- | 
+    | 1       |  ? |  
+    | 2       |  ? |  
 
 ## Programming [6pts]
 
