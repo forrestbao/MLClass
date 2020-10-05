@@ -10,7 +10,7 @@ Then open http://atan-bao.cs.iastate.edu:8080 in your web browser.
 
 ## 1. Usernames and passwords
 Upon open the link above, you will see a login page.
-Your username is your lastname.lastname (**both lowercase**) as they appear on Canvas. If you have trouble, please email the TA Roger Ge Luo. 
+Your username is your lastname.firstname (**both lowercase**) as they appear on Canvas. If you have trouble, please email the TA Roger Ge Luo. 
 Create a password for yourself. Since you only enter it once, and keystrokes are replaced with asterisks immediately, enter carefully and remember it. 
 
 If you see a Launch Server page like below, just click `Launch Server`. 
