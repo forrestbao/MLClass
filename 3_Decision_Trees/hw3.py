@@ -119,6 +119,7 @@ def grid_search_split_midpoint(X, y):
     >>> numpy.random.seed(2) # fix random number generation starting point
     >>> X = numpy.random.randint(1, 30, (8,3)) # generate training samples
     >>> grid, feature_id, bts = grid_search_split_midpoint(X, y)
+    >>> numpy.set_printoptions(precision=5)
     >>> print (grid)
     [[0.42857 0.42857 0.42857]
      [0.5     0.5     0.33333]
@@ -140,6 +141,7 @@ def grid_search_split_midpoint(X, y):
     >>> numpy.random.seed(4) # fix random number generation starting point
     >>> X = numpy.random.randint(1, 100, (8,3)) # generate training samples
     >>> grid, feature_id, bts = grid_search_split_midpoint(X, y)
+    >>> numpy.set_printoptions(precision=5)
     >>> print (grid)
     [[0.42857 0.42857 0.42857]
      [0.5     0.5     0.33333]
