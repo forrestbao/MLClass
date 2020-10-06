@@ -7,16 +7,17 @@ header-includes:
 
 # Homework 4: SVMs
 
-Unless otherwise stated, 
+## Important issues
 
-1. all SVMs are hard margin SVM using a linear dot-product kernel.
+1. all SVMs are hard-margin using a linear dot-product kernel.
+2. do NOT truncate a number on your own. 
+
 
 ## How to view this in nice PDF
 `pandoc -s hw4.md -o hw4.pdf`
 
 A precompiled PDF is [here](https://www.dropbox.com/s/fnl8bi849ix64cf/hw4.pdf?dl=0)
 Weblinks are in pink. 
-
 
 ## Hand Computation (1pt each)
 
@@ -59,15 +60,24 @@ For all functions below, every argument is a 1-D list of floats or integers whil
 
 5. [1pt] **Finding the best C for a soft-margin SVM on fixed a pair of training and test sets**
 
-    Now we want to study the relationship between $C$ and the performance of an SVM on a real dataset, the Wisconsin Breast Cancer dataset. The data are features manually extracted (e.g., thru rating) by pathologists from biopsy images under a microscope. There are two classes/targets/labels: malignant and benign. The features are quantified descriptions of the images. 
+    Now we want to study the relationship between $C$ and the performance of an SVM on a real dataset, the Wisconsin Breast Cancer dataset. The data are features manually extracted (e.g., thru rating) by pathologists from biopsy images under a microscope. There are two classes/targets/labels: malignant and benign. The features are quantified descriptions of the images. More information about this dataset can be found in [Section 7.2.7 of this Scikit-learn document](https://scikit-learn.org/stable/datasets/index.html#breast-cancer-wisconsin-diagnostic-dataset). 
 
-    The function `study_C_fix_split` takes an argument `C_range` as the sole input which is a list `C` values. For each value in `C_range`, train an SVM and evaluate it using Scikit-learn's SVM classifier functions (functions [`fit`](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC.fit) and [`score`](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC.score) for `sklearn.svm.SVC` class). Finally, return the `C` that yields the highest score.  
+    **The anatomy of the function**
 
-    The code in `study_C_fix_split` already loads the data and split it into the fixed training and test sets. Train an SVM using `X_train` and `y_train` as input and output, and then use `X_test` and `y_test` to get a performance score. The split is at 80% training and 20% test. The data is pre-scambled with fixed `random_state` at 0. 
+    Finish the function `study_C_fix_split` which scans `C` over a range provided as the input `C_range`, tracks the best performance score of the SVM so far, and finally returns the `C` that yields the highest performance score. Use Scikit-learn's SVM functions (See below).
 
-    Use default settings for all `sklearn.svm.SVC` functions except the `C` which you should scan, `kernel='linear'`, and `random_state=1` -- **it's important to fix the random state to get consistent results**.
+    **Training and test sets**
+    The code template in `study_C_fix_split` already loads the data and split it into the fixed training and test sets. Train an SVM using `X_train` and `y_train` as inputs/feature vectors and labels/targets, and then use `X_test` and `y_test` to get a performance score. The split is at 80% training and 20% test. The data is pre-scambled with fixed `random_state` at 1. 
 
-6. [1.5pt] **Finding the best C for a soft-margin SVM using cross validation**
+    **How to train and test an SVM in Scikit-learn?**
+    To train an SVM, use the function [`sklearn.svm.SVC.fit`](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC.fit). To get the performance score of a trained SVM on a test set, use the function [`sklearn.svm.SVC.score`](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC.score).
+
+    **Configurations**
+    Use default settings for all `sklearn.svm.SVC` functions except the `C` which you should scan, `kernel='linear'`, and `random_state=1` -- **it's important to fix the random state to get consistent results**. By default, Sklearn will use non-weighted accuracy as the score. 
+
+6. [1.5pt] **This problem is now a free problem. Everyone gets points for free** 
+
+   **Finding the best C for a soft-margin SVM using cross validation**
 
     In the problem above, we used a fixed pair of training and test set. To more holistically study, redo it using cross validation here. 
     Finish the function `study_C_cross_validation` using  [`sklearn.model_selection.cross_val_score`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score). Your function should have the same input and output as the function `study_C_fixed_split` above. Use default settings for all parameters unspecified here, e.g., for CV, do default 5-fold CV. 
@@ -76,15 +86,29 @@ For all functions below, every argument is a 1-D list of floats or integers whil
 
 7. [1.5pt] **Finding the best `C`  thru automated grid search**
 
-    Finally, let's take advantage of Scikit-learn's [grid search CV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) for hyperparameters. Finish the function `study_C_GridCV`. It has the same input and output as the two functions above. Use default settings unless specified here. Note that the input `C` is a list but in `sklearn.model_selection.GridSearchCV` it needs to be converted into a dictionary like `{'C':[1,2,3,4,]}` whose values must be a 1-D list instead of 1-D numpy array. 
+    Redo Problem 5 in Scikit-learn's [grid search CV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) . An example is provided on the linked webpage. Finish the function `study_C_GridCV`. It has the same input and output as the function in Problem 5. 
+    
+    **How to provide `C_range` to `sklearn.model_selection.GridSearchCV`?**
+    The input `C` is a list or Numpy array, but in `sklearn.model_selection.GridSearchCV` it needs to be converted into a dictionary that maps a hyperparameter name to a sequence of values `{'C':[1,2,3,4,]}`. 
+
+    **How to make use of the function `sklearn.model_selection.GridSearchCV`?**
+    In our case, the function `GridSearchCV` needs two arguments. The first is an instance of `sklearn.svm.SVC` with proper configurations (see below). The second the parameter dictionary mentioned above. 
+    
+    **How to fetch the result from `sklearn.model_selection.GridSearchCV`?**
+    Its return has a member called `best_params_` which is a dictionary. `best_params_['C']` is what you need in the end. 
+    
+    **Configureations** For your SVM instances, be sure that `C` is NOT set, `kernel` is set to `\'linear\'`, and `random_state` is set to `1`. Use default values for all other settings and parameters. 
 
 8. [2pt] **Finding the best hypermaters for Gaussian kernels thru automated grid search**
 
-    Expand what you just did above for problem 7 for SVMs with Gaussian kernels. 
-    Instead of searching over `C`, you will search over every combination of `C` and $\sigma$. The function `study_C_and_sigma_gridCV` takes two inputs, one is a range for `C` and the other is a range for $\sigma$. Like in Problem 7, make use of Scikit-learn's grid search CV, [grid search CV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html). This time, your hyperparamter dictionary needs to have two entries, like `{'C':[1,2,3,4,], 'gamma':[5,6,7,8]}` where `gamma` is how $\sigma$ is called in Scikit-learn's SVM function. 
+    Expand what you just did above for Problem 7 for SVMs with Gaussian kernels. Instead of searching over `C`, you will search over every combination of `C` and $\sigma$. 
+    
+    Finish the function `study_C_and_sigma_gridCV` that takes two inputs, one is a range for `C` and the other is a range for $\sigma$. Like in Problem 7, make use of Scikit-learn's grid search CV, [grid search CV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html). This time, your hyperparamter dictionary needs to have two entries, like `{'C':[1,2,3,4,], 'gamma':[5,6,7,8]}` where `gamma` is how $\sigma$ is called in [Scikit-learn's SVM classifier](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html). 
+    
+    For your SVM instances, be sure that the `kernel` is set to `rbf` and  `random_state` is set to `1`. Do NOT set `C` nor `gamma` when initializing the SVC instance. Use default values for all other settings and parameters. 
 
 ## Bonus
-9. [2pt] In the mathematica demo, each SVM is solved into multiple solutions. But many of the solutions are invalidate for their $\lambda$'s are all zeros. Please modify the code to add some constraints to eliminate invalidate solutions. [Hint]: One class of equations and inequalities are neglected when discussing KKT conditions on our slides. But your can find them under "Necessary Conditions" of the [KKT conditions Wikipedia page](https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions). 
+9. [2pt] In the Mathematica demo, each SVM is solved into multiple solutions. But many of the solutions are invalidate for their $\lambda$'s are all zeros. Please modify the code to add some constraints to eliminate invalidate solutions. [Hint]: One class of equations and inequalities are neglected when discussing KKT conditions on our slides. But your can find them under "Necessary Conditions" of the [KKT conditions Wikipedia page](https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions). 
 
     Mathematica can be download from [this link](https://iastate.service-now.com/it?id=kb_article&sys_id=ffdadc71db161c5009dd123039961977).
 
