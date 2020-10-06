@@ -43,7 +43,7 @@ A precompiled PDF is [here](https://www.dropbox.com/s/zrrxxmc4m4v2oho/hw3.pdf?dl
     /   \    /   \
     +1   -1  -1   +1
     ```
-    
+
     By two-column, this is it: 
 
     | sample  | prediction | 
@@ -79,8 +79,9 @@ Now, let's try to implement node split using grid search and compare the result 
     True
     ```
 
-    Note that there may be no sample satisfying a comparison expression at all. In such cases, when computing $Pr(class=s|S)$, it will result devision by zero. To avoid that, please set $Pr(class=s|S)$ to a very small number `numpy.finfo(float).eps` when it is zero. AND, in such a case, the gini impurity should be 1 because $Pr(class=c|S)$ is zero for either class. 
+    Note that there may be no sample satisfying a comparison expression at all. In such cases, when computing $Pr(class=s|S)$, it will result in division by zero. To avoid that, please set $Pr(class=s|S)$ to a very small number `numpy.finfo(float).eps` when it is zero. AND, in such a case, the gini impurity should be 1 because $Pr(class=c|S)$ is zero for either class. 
 
+    
 6. [2pt] **The expectation of Gini impurity.** 
     Turn the computational steps you did in Problem 3 into the function `estimate_gini_impurity_expectation` that computes the expectation of Gini impurity given 
     * values of a feature on a set of samples,
@@ -94,9 +95,19 @@ Now, let's try to implement node split using grid search and compare the result 
 
     The function shall return 3 variables:
 
-      a. `grid`: 2D numpy array, the expectations of Gini impurity. Each column corresponds to one feature and each row orresponds to a threshold. 
+      a. `grid`: 2D numpy array, the expectations of Gini impurity. Each column corresponds to one feature and each row orresponds to a threshold. Note that each feature has its own thresholds. 
       b. `best_feature`: int, the index of the column containing the minimal value in `grid`. 
       c. `best_threshold`: float, the threshold of the `best_feature` that minimizes the value in `grid`. 
+ 
+    Given the grid, to find the corresponding threshold index and feature index, 
+    use Numpy's `argmin` and `unravel_index`. Something like this:
+
+    ```python3
+    (best_threshold_index, best_feature_index) = \
+        numpy.unravel_index(numpy.argmin(grid, axis=None), grid.shape)
+    ```
+
+    Then convert the threshold index into actual threshold value. 
 
 ### How to test your submission
 
