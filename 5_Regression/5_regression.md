@@ -20,9 +20,18 @@ header-includes: |
     \setlength\labelsep   {.5pt}  
     \setbeamersize{text margin left=3mm,text margin right=4mm} 
     \setlength{\leftmargini}{15pt}
+    \usepackage{hyperref}
+    \hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    }
 classoption:
 - aspectratio=169
 ---
+
+
 
 # Agenda
 
@@ -57,11 +66,11 @@ classoption:
 - Thus, the prediction is the same as in classification $\hat{y} = \mathbf{w}^T\mathbf{x}$. 
 
 - How do we count the loss? We could use mean squared error (MSE) again: 
-$$\sum_{i} \mathbf{w}^T\mathbf{x}_i - y $$
+$$\sum_{i} (\mathbf{w}^T\mathbf{x}_i - y)^2$$
 
 - A criterion often used to judge a regression model is **correlation coefficient**.
 
-# Logistic Regression {.allowframebreaks}
+# Logistic Regression I
 
 - Logistic regression is nonlinear. It was not originally proposed for ML, but as a way to model the probability of a random events. 
 - It is frequently used for classification but its nature is regression. 
@@ -75,7 +84,10 @@ $$\sum_{i} \mathbf{w}^T\mathbf{x}_i - y $$
   \right )$
 - If we set a threshold on $P(A)$, e.g., $P(\text{the fruit is a banana})>0$, then we can use this function as a classifier. 
 - The fraction part is often called the **sigmoid** or **logistic** function $$\sigma(z) = {1 \over 1+e^{-z}} = {e^z\over 1+e^z},$$ where the $z$ can be a result of a linear transform $\mathbf{w}^T\mathbf{x}$ ($\mathbf{x}$ is augmented to include the bias). 
-- Properties of the sigmoid function: Range is $(0,1)$. 
+- Properties of the sigmoid function: Range is $(0,1)$.
+
+# Logistic Regression II
+
 - Note that in some context, the word "sigmoid" is used to describe any S-shape functions. And the funtion symbol $\sigma()$ could be used for other functions. ..And, the logarithm can be of any base. 
 - To use logistic regression for classification, the class labels should be 0 and 1 instead of any arbitrary number, such as $+1$ and $-1$ we have been doing in class. In cross-entropy loss, only one term will be activated depending on the label.
 - The loss function used for using logistic regression for classification is usually **cross-entropy**, also called **log loss**: 
@@ -84,20 +96,22 @@ $$J = \sum_i\left [
      \right ], $$
 where $\hat{y_i} = \sigma(\mathbf{w}^T\mathbf{x_i})$ is the prediction and $y_i$ is the target for the $i$-th sample. 
 - That is 
-  $$ \begin{cases}
-   -\log(\sigma(\mathbf{w}^T\mathbf{x_i})) & if y=1,\\
-   -\log(1- \sigma(\mathbf{w}^T\mathbf{x_i})) & if y=0,
-   \end{cases}  $$
+  $$\begin{cases}
+   -\log(\sigma(\mathbf{w}^T\mathbf{x_i})) & \text{ if } y=1,\\
+   -\log(1- \sigma(\mathbf{w}^T\mathbf{x_i})) & \text{ if } y=0,
+   \end{cases}$$
+
+# Logistic Regression III
+
 - $${\partial J \over \partial \mathbf{w}}=
   {1\over m}
-  \sum_i ( \sigma(\mathbf{w}^T \mathbf{x}_i) - y ) \mathbf{x}_i
-  $$
+  \sum_i ( \sigma(\mathbf{w}^T \mathbf{x}_i) - y ) \mathbf{x}_i$$
  
-# SVM-based regression {.allowframebreaks}
+# SVM-based regression 
 :::::::::::::: columns
-::: {.column width="65%"}
+::: {.column width="67%"}
  - In (hard-margin) SVMs, samples need to be out of the margin. 
- - A new problem: Find a strip zone along the hyperplane, such that all samples are in the zone. 
+ - A inverse problem: Find a strip zone along the hyperplane, such that all samples are in the zone. 
  - Hence we can use SVM for regression but samples must be inside the "margin".
  $\begin{cases}
     \min & \frac{1}{2} ||\mathbf{w}||^2 \\
@@ -131,3 +145,24 @@ where $\hat{y_i} = \sigma(\mathbf{w}^T\mathbf{x_i})$ is the prediction and $y_i$
 - Good visuals: 
    * http://kernelsvm.tripod.com/
    * https://www.saedsayad.com/support_vector_machine_reg.htm 
+
+# Overfitting vs. Regularization
+- **Overfitting**: A common problem in ML is that the model is very accurate on training data but not on test data
+- [A good example online](https://scikit-learn.org/stable/modules/neural_networks_supervised.html)
+- In regression, this can be visualized as that the fitted curve matches training points very well, but misses test points. 
+- The cause is, for linear models, the magitudes of elements in $\mathbf{w}$ are too big. 
+- Dr. Chung's slides. 
+- A further extreme case is when the magnitudes of certain elements are substiantially bigger than others. The model relys on certain features or certain components of the data too much. 
+- How to avoid overfitting? **regularization**. 
+
+# L1 and L2 regularization (for linear models)
+- L1 regularization (Lasso regularization): $J = \text{Error}(\hat{y}, y) + \alpha ||\mathbf{w}||$
+- L2 (ridge): $J = \text{Error}(\hat{y}, y) + \alpha ||\mathbf{w}||^2$
+- $\alpha$ is a constant weighing the regularization term. It's also a hyperparameter. 
+- Why they work? 
+- The new gradients: 
+$${\partial J_{L1} \over \partial \mathbf{w}} = {\partial \text{Error} \over \mathbf{w}} \pm \alpha$$
+or 
+$${\partial J_{{L2}} \over \partial \mathbf{w}} = {\partial \text{Error} \over \mathbf{w}} + 2\alpha\mathbf{w}$$
+- When using the new gradients to update $\mathbf{w}$, $\mathbf{w}$ is not updated to what would be ideal. 
+- A good explanation [online](https://towardsdatascience.com/intuitions-on-l1-and-l2-regularisation-235f2db4c261)
