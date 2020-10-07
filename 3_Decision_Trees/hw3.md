@@ -35,12 +35,12 @@ A precompiled PDF is [here](https://www.dropbox.com/s/zrrxxmc4m4v2oho/hw3.pdf?dl
 4. [1pt] Using the decision tree below, decide the classification outcomes for all samples in Problem 1. Left branch is True and right branch is False. Present your result as a two-column table. 
 
     ```
-            a>5
-        /      \
+             a>5
+          /      \
         b>4      c>3
-        /   \    /   \
-    b>8  -1  c>8   +1
-    /   \    /   \
+       /   \    /   \
+      b>8  -1  c>8   +1
+     /   \    /   \
     +1   -1  -1   +1
     ```
 
