@@ -273,7 +273,7 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 :::::::::::::: columns
 ::: {.column width="30%"}
 
- ![](figs/SVM_idea.pdf){width="115%"}
+ ![](figs/SVM_idea_d1_d2_gutter.pdf){width="115%"}
 
 ::: 
 
@@ -293,7 +293,7 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 :::::::::::::: columns
 ::: {.column width="55%"}
 
-- The idea of an SVM is to find a direction (defined by $\mathbf{w}$) along which cloest samples of both classes are apart the most.
+- The idea of an SVM is to find a direction (defined by $\mathbf{w}$) along which closest samples of both classes are apart the most.
 
 - Hence, we want to maximize $\frac{d_1}{||\mathbf{w}||} + \frac{d_2}{||\mathbf{w}||}$, known as the **margin**.
 
@@ -302,8 +302,8 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 ::: {.column width="50%"}
 -  Finally: $\begin{cases}
                \max & \frac{d_1}{||\mathbf{w}||} + \frac{d_2}{||\mathbf{w}||} \\
-               s.t. & \mathbf{w}^T\mathbf{x} + w_b - d_ 1\ge 0, \forall x \in C_{+1} \\
-                    & \mathbf{w}^T\mathbf{x} + w_b + d_ 2\ge 0, \forall x \in C_{-1}
+               s.t. & \mathbf{w}^T\mathbf{x} + w_b - d_ 1\ge 0, \forall \mathbf{x} \in C_{+1} \\
+                    & \mathbf{w}^T\mathbf{x} + w_b + d_ 2\le 0, \forall \mathbf{x} \in C_{-1}
             \end{cases}$
 :::
 ::::::::::::::
@@ -313,7 +313,7 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 :::::::::::::: columns
 ::: {.column width="35%"}
 
-![](figs/Svm_max_sep_hyperplane_with_margin.png){width="120%"}
+![](figs/SVM_idea_width_2_gutters.pdf){width="120%"}
 
 ::: 
 
@@ -403,7 +403,7 @@ Because  $\lambda_k$ is either positive or 0, the solution of the SVM problem is
 
 ::: {.column width="40%"}
 
-![](figs/Svm_max_sep_hyperplane_with_margin.png){width="100%"}
+![](figs/SVM_idea_width_2_gutters.pdf){width="100%"}
 
 :::
 ::::::::::::::
