@@ -38,11 +38,15 @@ Weblinks are in pink.
 
 2. What are the equations of the two gutters per the $\mathbf{w}$ obtained above and $w_b=1$? 
 
-3. With the $\mathbf{w}$ obtained above, and the assumption that $w_b$ is 1, identify samples that fall into the margin and those do not. A sample falls into the margin if it is between the two gutters. Thus, turn the two equations of the gutters into two inequalities and check them against every sample. Show your steps.  If you have only the final answer, you won't get any point. 
+3. With the $\mathbf{w}$ obtained above, and the assumption that $w_b$ is 1, identify samples that fall into the margin and those do not. A sample falls into the margin if it is between the two gutters, i.e., $$-1 < \mathbf{w}^T\mathbf{x} + w_b < 1$$ where $\mathbf{x}$ is the (unaugmented) feature vector of the sample. 
+
+  Show your steps, especially the value of the prediction $\mathbf{w}^T\mathbf{x} + w_b$.  If you have only the final answer, you won't get any point. 
+
+  Please check over all four samples, as the $\lambda$'s above are toy examples and do not satify KKT conditions. 
 
 <!-- 4. Write the KKT conditions for training an SVM using the four samples above. Follow the order given in the examples in `solve_svm.nb` (or its PDF export `solve_svm.pdf`): first the gradient on $\mathbf{w}$, then the equations about constraints, and lastly the partial derivative on the bias $w_b$.  -->
 
-4. For an SVM, if a (misclassified) sample $\mathbf{x}_i$ is on the outter side (not the margin side) of the gutter for the opposing class, which one of the following conditions holds? And why? You could use proof-by-contradition to eliminate false choices. (If you do not answer the why part, you get no point.)
+4. For an SVM, if a (misclassified) sample $\mathbf{x}_i$ is on the outter side (not the margin side) of the gutter for the opposing class, what three conditions below hold? And why? You could use proof-by-contradition to eliminate false choices. (If you do not answer the why part, you get no point.)
 
     1. $y_i (\overbrace{\mathbf{w}^T\mathbf{x}+w_b)}^{\text{prediction per SVM}} \ge -1$
     2. $y_i (\mathbf{w}^T\mathbf{x}+w_b) \le -1$
