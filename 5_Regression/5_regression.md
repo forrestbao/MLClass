@@ -161,8 +161,8 @@ where $\hat{y_i} = \sigma(\mathbf{w}^T\mathbf{x_i})$ is the prediction and $y_i$
 - $\alpha$ is a constant weighing the regularization term. It's also a hyperparameter. 
 - Why they work? 
 - The new gradients: 
-$${\partial J_{L1} \over \partial \mathbf{w}} = {\partial \text{Error} \over \mathbf{w}} \pm \alpha$$
+$${\partial J_{L1} \over \partial \mathbf{w}} = {\partial \text{Error} \over \partial \mathbf{w}} \pm \alpha$$
 or 
-$${\partial J_{{L2}} \over \partial \mathbf{w}} = {\partial \text{Error} \over \mathbf{w}} + 2\alpha\mathbf{w}$$
+$${\partial J_{{L2}} \over \partial \mathbf{w}} = {\partial \text{Error} \over \partial \mathbf{w}} + 2\alpha\mathbf{w}$$
 - When using the new gradients to update $\mathbf{w}$, $\mathbf{w}$ is not updated to what would be ideal. 
 - A good explanation [online](https://towardsdatascience.com/intuitions-on-l1-and-l2-regularisation-235f2db4c261)
