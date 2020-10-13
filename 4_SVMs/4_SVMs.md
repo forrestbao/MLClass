@@ -350,7 +350,7 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
                \min & f(\mathbf{x}) \\
                s.t. & h_k(\mathbf{x}) \ge 0, \forall k \in [1..K],
             \end{cases}$$ where $\mathbf{x}$ is a vector, and
-    $h_k(\cdot)$ is linear, its Lagrange multiplier (or Lagrangian) is:
+    $h_k(\cdot)$ is linear, its Lagrangian function is:
     $$L(\mathbf{x}, \mathbf{\lambda}) = f(\mathbf{x}) - \sum_{k=1}^{K} \lambda_k h_k(\mathbf{x})$$
 
 -   The necessary conditions that the problem above has a solution are KKT
@@ -359,6 +359,7 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
               \lambda_k \ge 0, & \forall k\in [1..K]\\
               \lambda_k h_k(\mathbf{x}) = 0, & \forall k\in [1..K]\\
             \end{cases}$$
+    The last condition is sometimes written in the equivalent form $\sum_k \lambda_k h_k(\mathbf{x}) = 0$. 
 
 # Properties of hard margin linear SVM
 
