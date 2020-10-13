@@ -16,25 +16,26 @@
 # 3. Students' submissions are in a folder (here grading_test). 
 # Each file should be comparable to the reference file. 
 
-
-
 import glob, os, operator, importlib.util
-import itertools
+import itertools, re
 import joblib
 import numpy.random
 import numpy
+import functools, math
 
+close_comparitor = functools.partial(math.isclose, rel_tol=0.01)
 
 def ndarray_tuple_comparitor(t1, t2):
     """A comparitor to compare two tuples of numpy arrays
     t1, t2: tuples of numpy arrays
     """
-    import numpy
     # results = [*map(numpy.array_equal, t1, t2)] # a Boolean list
-    results = [*map(numpy.allclose, t1, t2)] # a Boolean list
+    # results = [*map(numpy.allclose, t1, t2)] # a Boolean list
+    results = [*map(functools.partial(numpy.allclose, rtol=0.01),\
+               t1, t2)] # a Boolean list
     return all(results)
 
-def compare_returns_comparitor(r1, r2, comparitor=operator.eq):
+def compare_returns_comparitor(r1, r2, comparitor=close_comparitor):
     """Use a comparitor function to compare the two returns 
     """
     return comparitor(r1, r2)
@@ -60,11 +61,21 @@ def compare_cases(f1, f2, problem):
         returns1 = f1(*args)
         try :
             returns2 = f2(*args)
-        except : 
+        except Exception as e: 
+            print (e)
             return 0 
 
-        if compare_returns_comparitor(returns1, returns2, **kwargs): 
-            pass_no += 1 
+        try:
+            case_result = compare_returns_comparitor(returns1, returns2, **kwargs)
+
+            # if not case_result:
+            #     print ("r1\n", returns1, "r2\n", returns2)
+
+        except: # any error
+            case_result = False
+
+        if grading_policy == "partial":
+            pass_no += case_result
         else:
             if grading_policy == "all":
                 return 0 # one error, return 0 point. 
@@ -76,13 +87,23 @@ def load_module_from_path(path):
     spec.loader.exec_module(foo)
     return foo
 
+def polish_student_name(s):
+    m = re.match(r'submissions\/(\w+)\_\d+\_\d+_[\w\d\-\s\.\(\)]+.py', s)
+    if m!= None: 
+        return m.group(1)
+    else:
+        return s
+
 def grade_a_student(teacher_module_path, student_module_path, hw):
     teacher_module = load_module_from_path(teacher_module_path)
+
     try: 
         student_module = load_module_from_path(student_module_path)
     except : 
+        print ("Importing error for ", student_module_path)
         return (student_module_path, 0) # if your submission cannot be imported, 0 for all problems. 
     grade = 0 
+    problem_scores = []
 
     for problem in hw: 
         function_name = problem["function_name"]
@@ -93,12 +114,18 @@ def grade_a_student(teacher_module_path, student_module_path, hw):
             continue # to next problem
 
         # check all cases
-        grade +=  compare_cases (teacher_function, student_function, problem)
-    print (student_module_path, grade)
+        problem_score = compare_cases (teacher_function, student_function, problem)
+        grade += problem_score
+        problem_scores.append(problem_score)
+    print ( polish_student_name(student_module_path), \
+            grade, problem_scores)
+    # print ( polish_student_name(student_module_path), \
+    #         grade)
+    # TODO: write results to a file as well to avoid student printouts
     return (student_module_path, grade)
 
 def grade_all_students(teacher_module_path, student_submission_folder, hw):
-    n_jobs = 5 
+    n_jobs = 1 
 
     student_modules = glob.glob(os.path.join(student_submission_folder, "*.py"))
 
