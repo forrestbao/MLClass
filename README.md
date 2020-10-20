@@ -15,7 +15,7 @@ An example script to convert from Markdown to PDF is [make.sh](make.sh).
 3. [Decision trees](https://www.dropbox.com/s/3ajxaa1v5rykcjl/3_decision_trees.pdf?dl=0)
 4. [SVMs](https://www.dropbox.com/s/3u4of1nju1x908g/4_SVMs.pdf?dl=0)
 5. [Regression](https://www.dropbox.com/s/m2ilyiyqhuclrov/5_regression.pdf?dl=0)
-6. Neural networks
+6. [Neural networks](https://www.dropbox.com/s/kd7dkvlp427keld/6_NNs.pdf?dl=0)
 7. Deep Learning
 
 ## Setups hint for TAs
