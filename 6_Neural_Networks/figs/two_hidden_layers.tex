@@ -1,0 +1,16 @@
+\documentclass{standalone}
+
+\usepackage{neuralnetwork}
+
+\begin{document}
+    \begin{neuralnetwork}[height=4]
+        \newcommand{\x}[2]{$x_#2$}
+        \newcommand{\y}[2]{$\hat{y}_#2$}
+        \newcommand{\hfirst}[2]{\small $h^{(1)}_#2$}
+        \newcommand{\hsecond}[2]{\small $h^{(2)}_#2$}
+        \inputlayer[count=3, bias=true, title=Input\\layer, text=\x]
+        \hiddenlayer[count=4, bias=false, title=Hidden\\layer 1, text=\hfirst] \linklayers
+        \hiddenlayer[count=3, bias=false, title=Hidden\\layer 2, text=\hsecond] \linklayers
+        \outputlayer[count=2, title=Output\\layer, text=\y] \linklayers
+    \end{neuralnetwork}
+\end{document}
