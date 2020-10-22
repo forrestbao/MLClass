@@ -9,8 +9,13 @@ author: |
           Ames, IA, USA \
 date:   \today
 header-includes: |
+<<<<<<< HEAD
     \usepackage{amssymb,mathtools,blkarray}
         \usefonttheme[onlymath]{serif}
+=======
+    \usepackage{amssymb}
+    \usefonttheme[onlymath]{serif}
+>>>>>>> e51295a375ed09018c4a7e81fccb0ac0cc7bbbaf
     \usepackage[vlined,algoruled,titlenotnumbered,linesnumbered]{algorithm2e}
     \usepackage{algorithmic}
     \setbeamercolor{math text}{fg=green!50!black}
