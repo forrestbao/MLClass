@@ -16,7 +16,7 @@
 # Licensed under BSD 3-clause 
 # Copyright 2020 Forrest Sheng Bao
 # Contact him for any suggestions or questions: forrest dot bao aT Gmail 
-# Opinions expressed here does not reflect those of Iowa State University
+# Opinions expressed here do not reflect those of Iowa State University
 
 import numpy 
 import numpy.random
@@ -122,14 +122,16 @@ class MiniNN:
   def print_progress(self):
     """print Xs, Deltas, and gradients after a sample is feedforwarded and backpropagated 
     """
-    # print ("prediction: ", self.oracle)
+    print ("\n prediction: ", self.oracle)
     for l in range(len(self.Ws)+1): 
       print ("layer", l)
-      print ("        X:   ", self.Xs[l], "^T")
-      print ("    delta:   ", self.Deltas[l], "^T")
+      print ("        X:", self.Xs[l], "^T")
+      print ("    delta:", self.Deltas[l], "^T")
+      if l < len(self.Ws): # last layer has not transfer matrix
+        print ('        W:', numpy.array2string(self.Ws[l], prefix='        W: '))
       try: # because in first feedforward round, no gradient computed yet
-           # also, last layer has not delta 
-        print('  gradient: ', numpy.array2string(self.Grads[l], prefix='  gradient:  '))
+           # also, last layer has no gradient
+        print(' gradient:', numpy.array2string(self.Grads[l], prefix=' gradient: '))
       except: 
         pass
       
@@ -148,9 +150,9 @@ class MiniNN:
 
       self.Grads.append(gradient)
     
-    # show that the new prediction will be better 
-    self.predict(self.Xs[0])
-    print ("new prediction:", self.oracle)
+    # show that the new prediction will be better to help debug
+    # self.predict(self.Xs[0])
+    # print ("new prediction:", self.oracle)
 
   def train(self, x, y, max_iter=100, verbose=False):
     """feedforward, backpropagation, and update weights
@@ -163,15 +165,15 @@ class MiniNN:
     y: 1-D numpy array, the target
 
     """
-    for epoch in range(max_iter):
+    for epoch in range(max_iter):   
       print ("epoch", epoch, end=":")
       self.predict(x) # forward 
+      print (self.oracle)
       self.get_deltas(y) # backpropagate
-      self.update_weights() # update weights, and new prediction will be printed each epoch
       if verbose:
-        self.print_progress()
+        self.print_progress()   
+      self.update_weights() # update weights, and new prediction will be printed each epoch
 
-##  
 
 # Transfer matrix from input layer to hidden layer 1
 W_0 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
@@ -188,22 +190,24 @@ W_2 = numpy.array(([[-.3], # the first row maps the bias term to the two neurons
                     [.5],
                     [.1]] ))
 
-Ws = [W_0, W_1, W_2]
+Ws = [W_0, W_2]
 MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
 
 # The training sample
 x_0 = numpy.array(([1., 0, 1])) # just one sample, augmented 
-y_0 = numpy.array(([0])) # We support only one dimension in the output
+y_0 = numpy.array(([1])) # We support only one dimension in the output
                          # this number must be either 0 or 1 because we used logistic activation and cross entropy loss. 
 
 # To use functions individually 
 MNN.predict(x_0)
 MNN.get_deltas(y_0)
+MNN.print_progress()
 MNN.update_weights()
 MNN.print_progress()
 
 # Or a recursive training process 
-MNN.train(x_0, y_0, max_iter=200, verbose=False)
+MNN = MiniNN(Ws=Ws) # re-init
+MNN.train(x_0, y_0, max_iter=2, verbose=True)
 
 
 
