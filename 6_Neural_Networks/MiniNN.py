@@ -1,9 +1,11 @@
 #< ---- 20 char ---->< ---- 20 char --->< ---- 20 char --->< ---- 20 char --->
+# 
 #    MiniNN is a simple neural network library crafted by Forrest Sheng Bao 
 # at Iowa State University for students to hack to understand NNs. 
-#    He developed this because the source code of scikit-learn.neural_network 
-# or Flux was too long to study and not easy to hack. 
-#    With MiniNN, his students can easily see gradients on all weights between 
+#    MiniNN is deveoped because the source code of scikit-learn.neural_network 
+# or Flux was too long to study and not easy to hack. Not to mention the
+# complexity of source code of Tensorflow or PyTorch for teaching intro to ML.
+#    With MiniNN, students can easily see gradients on all weights between 
 #  layers during training and visualize every layer, and tweak around.
 
 #    Under 200 lines, it covers all core operations of NNs: 
@@ -29,7 +31,7 @@ class MiniNN:
 
   self.Ws: list of 2-D numpy arrays, tranfer matrixes of all layers, ordered in feedforward sequence 
   self.phi: activation function 
-  self.phi_deriv: derivative of activation function, ONLY when phi is logistic 
+  self.psi: derivative of activation function, in terms of its OUTPUT, ONLY when phi is logistic 
   self.Xs: list of 2-D numpy arrays, output from each layer
   self.Deltas: list of 2-D numpy arrays, delta from each layer
 
@@ -37,7 +39,10 @@ class MiniNN:
   def logistic(self, x):
     return 1/(1 + numpy.exp(-x)) 
 
-  def logistic_deriv(self, x):
+  def logistic_psi(self, x):
+    """If the output of a logistic function is x, then the derivative of x over 
+    the input is x * (1-x)
+    """
     return x * (1-x)
 
   def __init__(self, Ws=None):
@@ -48,7 +53,7 @@ class MiniNN:
     self.Ws = Ws
     self.L = len(Ws) # number of layers 
     self.phi = self.logistic # same activation function for all neurons
-    self.phi_deriv = self.logistic_deriv 
+    self.psi = self.logistic_psi
 
   def feedforward(self, x, W, phi):
       """feedforward from previou layer output x to next layer via W and Phi
@@ -60,7 +65,7 @@ class MiniNN:
       W: 2-D numpy array, transfer matrix
       phi: a function name, activation function
       """
-              
+
       return  numpy.concatenate(([1], # augment the bias 1
               phi(
                     numpy.matmul( W.transpose(), x )  
@@ -81,23 +86,22 @@ class MiniNN:
     self.Xs = Xs
     self.oracle = X[1:] # it is safe because Python preserves variables used in for-loops
 
-  def backpropagate(self, delta_next, W_now, phi_deri, x_now):
+  def backpropagate(self, delta_next, W_now, psi, x_now):
     """make on step of backpropagation 
 
     delta_next: delta at the next layer, INCLUDING that on bias term  
                 (next means layer index increase by 1; 
                  backpropagation is from next layer to current/now layer)
     W_now: transfer matrix from current layer to next layer (e.g., from layer l to layer l+1)
+    psi: derivative of activation function in terms of the activation, not the input of activation function
     x_now: output of current layer 
-    phi_deri: the derivative of function phi 
-    next_is_output: Boolean 
     """
     delta_next = delta_next[1:] # drop the derivative of error on bias term 
 
     # first propagate error to the output of previou layer
     delta_now = numpy.matmul(W_now, delta_next) # transfer backward
     # then propagate thru the activation function at previous layer 
-    delta_now *= phi_deri(x_now) 
+    delta_now *= self.psi(x_now) 
     # hadamard product This ONLY works when activation function is logistic
     return delta_now
 
@@ -116,7 +120,7 @@ class MiniNN:
       # technically, no need to loop to l=0 the input layer. But we do it anyway
       # l is the layer index 
       W, X = self.Ws[l], self.Xs[l]
-      delta = self.backpropagate(delta, W, self.phi_deriv, X)
+      delta = self.backpropagate(delta, W, self.psi, X)
       self.Deltas.insert(0, delta) # prepend, because BACK-propagate
 
   def print_progress(self):
@@ -174,40 +178,41 @@ class MiniNN:
         self.print_progress()   
       self.update_weights() # update weights, and new prediction will be printed each epoch
 
+if __name__ == "__main__": 
 
-# Transfer matrix from input layer to hidden layer 1
-W_0 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
-                    [.7, -.4],
-                    [-.2, .3]]))
+  # Transfer matrix from input layer to hidden layer 1
+  W_0 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
+                      [.7, -.4],
+                      [-.2, .3]]))
 
-# Transfer matrix from hidden layer 1 to hidden layer 2
-W_1 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
-                    [.7, -.4],
-                    [-.2, .3]]))
+  # Transfer matrix from hidden layer 1 to hidden layer 2
+  W_1 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
+                      [.7, -.4],
+                      [-.2, .3]]))
 
-# Transfer matrix from hidden layer 2 to input layer
-W_2 = numpy.array(([[-.3], # the first row maps the bias term to the two neurons of the next layer
-                    [.5],
-                    [.1]] ))
+  # Transfer matrix from hidden layer 2 to input layer
+  W_2 = numpy.array(([[-.3], # the first row maps the bias term to the two neurons of the next layer
+                      [.5],
+                      [.1]] ))
 
-Ws = [W_0, W_2]
-MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
+  Ws = [W_0, W_1, W_2]
+  MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
 
-# The training sample
-x_0 = numpy.array(([1., 0, 1])) # just one sample, augmented 
-y_0 = numpy.array(([1])) # We support only one dimension in the output
-                         # this number must be either 0 or 1 because we used logistic activation and cross entropy loss. 
+  # The training sample
+  x_0 = numpy.array(([1., 1, 0])) # just one sample, augmented 
+  y_0 = numpy.array(([1])) # We support only one dimension in the output
+                          # this number must be between 0 and 1 because we used logistic activation and cross entropy loss. 
 
-# To use functions individually 
-MNN.predict(x_0)
-MNN.get_deltas(y_0)
-MNN.print_progress()
-MNN.update_weights()
-MNN.print_progress()
+  # To use functions individually 
+  MNN.predict(x_0)
+  MNN.get_deltas(y_0)
+  MNN.print_progress()
+  MNN.update_weights()
+  MNN.print_progress()
 
-# Or a recursive training process 
-MNN = MiniNN(Ws=Ws) # re-init
-MNN.train(x_0, y_0, max_iter=2, verbose=True)
+  # Or a recursive training process 
+  MNN = MiniNN(Ws=Ws) # re-init
+  MNN.train(x_0, y_0, max_iter=20, verbose=True)
 
 
 
