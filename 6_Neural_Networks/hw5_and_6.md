@@ -13,15 +13,16 @@ HW5 due Nov. 12 and HW6 due Nov. 19. Both are Thursdays and both at 11:59PM cent
 
 Help sessions for answering HW-related questions:
 
-* HW5: Sunday, Nov. 7, 8-9PM, Wednesday, Nov. 7, 8-9PM, and office hours
-* HW6: Sunday, Nov. 14, 8-9PM, Wednesday, Nov. 18, 8-9PM, and office hours
+* HW5: Sunday, Nov. 8, 8-9PM, Wednesday, Nov. 11, 8-9PM, and office hours
+* HW6: Sunday, Nov. 15, 8-9PM, Wednesday, Nov. 18, 8-9PM, and office hours
 
 Pre-compiled PDF is [here](https://www.dropbox.com/s/ziub9g1d5sjws4l/hw6.pdf). Command to compile on your own: `pandoc hw5_and_6.md -o hw5_and_6.pdf`
 
 Please show intermediate steps for all computational problems below. Giving only the final result will result in zero point. 
 
-**For Problems 7 and above**, write steps in matrix form as long as you can to save your time. Do NOT detail sub-matrix steps -- that's a waste of time. You are encouraged to use computers to evaluate matrix operations rather than punching keys on a calculator. You are also encouraged to take advantage of the [MiniNN](../MiniNN.py) library to do the computations for you. 
+**For Problems 7 and above**, write steps in matrix form as long as you can to save your time. Do NOT detail sub-matrix steps -- that's a waste of time. You are encouraged to use computers to evaluate matrix operations rather than punching keys on a calculator. You are also encouraged to take advantage of the [MiniNN](https://github.com/forrestbao/MLClass/blob/master/6_Neural_Networks/MiniNN.py) library to do the computations for you. 
 
+**How to submit**: Just upload as PDF files to Canvas. 
 
 # HW 5: basic and single-neuron operations [10pts plus 4 bonus pts]
 
@@ -97,4 +98,4 @@ Hint: The slides "Recap:..." and "A grounded example....".
 
 13. [1.5pts] Finally, how should $\mathbb{W}^{(l)}$ given in Problem 9 be updated to based on $\nabla^{(l)}$ obtained in Problem 12, for all $l\in[0..2]$ ?
 
-14. [Bonus, 5pts] In [the demo for Unit 5 Regression](../5_Repgression/5_repgression.ipynb), we used a neural network with $\tanh$ as the activation function for all neurons. The range of $\tanh$ is from -1 to 1, which means that the output from that neural network is limited between -1 and 1.  But in that problem, the target or the prediction ranges from 0 to 4. How do you explain? Look into the source code of scikit-learn to find out. 
+14. [Bonus, 5pts] In [the demo for Unit 5 Regression](https://github.com/forrestbao/MLClass/blob/master/5_Repgression/5_repgression.ipynb), we used a neural network with $\tanh$ as the activation function for all neurons. The range of $\tanh$ is from -1 to 1, which means that the output from that neural network is limited between -1 and 1.  But in that problem, the target or the prediction ranges from 0 to 4. How do you explain? Look into the source code of scikit-learn to find out. 
