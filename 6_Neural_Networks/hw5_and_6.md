@@ -16,9 +16,9 @@ Help sessions for answering HW-related questions:
 * HW5: Sunday, Nov. 8, 8-9PM, Wednesday, Nov. 11, 8-9PM, and office hours
 * HW6: Sunday, Nov. 15, 8-9PM, Wednesday, Nov. 18, 8-9PM, and office hours
 
-Pre-compiled PDF is [here](https://www.dropbox.com/s/ziub9g1d5sjws4l/hw6.pdf). Command to compile on your own: `pandoc hw5_and_6.md -o hw5_and_6.pdf`
+**Pre-compiled PDF** is [here](https://www.dropbox.com/s/ziub9g1d5sjws4l/hw6.pdf). Command to compile on your own: `pandoc hw5_and_6.md -o hw5_and_6.pdf`
 
-Please show intermediate steps for all computational problems below. Giving only the final result will result in zero point. 
+Please show intermediate steps for all computational problems below. Giving only the final result will result in zero point. For numerical answers, **keep 3 digits after the decimal point**. 
 
 **For Problems 7 and above**, write steps in matrix form as long as you can to save your time. Do NOT detail sub-matrix steps -- that's a waste of time. You are encouraged to use computers to evaluate matrix operations rather than punching keys on a calculator. You are also encouraged to take advantage of the [MiniNN](https://github.com/forrestbao/MLClass/blob/master/6_Neural_Networks/MiniNN.py) library to do the computations for you. 
 
@@ -45,7 +45,7 @@ Please show intermediate steps for all computational problems below. Giving only
 
 4. [1pt] Continuing from Problems 1, 2, and 3, above, given $f(x)=x+1$, what is the value of $f(AB^T)$? 
 
-5. [Bonus, 2pt] In slides, to expand Eq. (2), we used negative logistic loss (also called cross entropy loss) as $E$ and logistic activation function as $\phi$. What will be the result if we use squared error loss and linear activation function? Specifically, what if $E=(\hat{y}-y)^2$ (assume just one sample) and $\phi(\mathbf{w}^T\mathbf{x})=\mathbf{w}^T\mathbf{x}$? 
+5. [Bonus, 2pt] In slides, to expand Eq. (2), we used negative logistic loss (also called cross entropy loss) as $E$ and logistic activation function as $\phi$. What will be the new $\partial E \over \partial w_i$ if we use squared error loss and linear activation function? Specifically, what if $E=(\hat{y}-y)^2$ (assume just one sample) and $\phi(\mathbf{w}^T\mathbf{x})=\mathbf{w}^T\mathbf{x}$? 
 
 6. [2pt] Here is a diagram of a neuron. 
 
@@ -57,7 +57,7 @@ Please show intermediate steps for all computational problems below. Giving only
 
 7. [3pt] Continuing from problem 6 above, if the loss is defined  as $E=\hat{y}-y$, what is the value of $\partial E / \partial x_1$? And what is the value of $\partial E / \partial w_1$?
 
-    Hint for second question: Eq. (2)
+    Hint for second question: Eq. (2). And think what is the new ${\partial E \over \partial \hat{y}} = {\partial \hat{y}-y \over \partial \hat{y}}$?
 
 8. [Bonus, 2pt] What is the value of 
    ${\partial E \over \partial \mathbf{x}} = 
@@ -75,11 +75,13 @@ Please show intermediate steps for all computational problems below. Giving only
    \vdots \\
    \end{pmatrix}$? 
 
-   Hint for second question: See the last equation on the same page with Eq. (2). But note that that $E$ for that equation is neg log loss. Not the loss definition here. 
+   Your answers should be two column real-valued vectors.
+
+   Hint for second question: See the last equation on the same page with Eq. (2). But note that that $E$ for that equation is neg log loss, not the assumed loss for Problem 7. 
 
 # HW6: Operations on a neural network [10pts plus 5 bonus pts]
 
-Hint: The slides "Recap:..." and "A grounded example....". 
+Hint: The slides "Recap:..." and "A grounded example..." 
 
 9. [1pt] Here is a neural network. 
 
