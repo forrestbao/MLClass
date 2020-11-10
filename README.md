@@ -16,7 +16,11 @@ An example script to convert from Markdown to PDF is [make.sh](make.sh).
 4. [SVMs](https://www.dropbox.com/s/3u4of1nju1x908g/4_SVMs.pdf?dl=0)
 5. [Regression](https://www.dropbox.com/s/m2ilyiyqhuclrov/5_regression.pdf?dl=0)
 6. [Neural networks](https://www.dropbox.com/s/kd7dkvlp427keld/6_NNs.pdf?dl=0)
-7. Deep Learning
+7. [Clustering](https://www.dropbox.com/s/y4vkegjawisu8b8/7_Clustering.pdf?dl=0)
+8. Deep Learning
+9. Reinforcement Learning
+10. Ensemble Learning
+11. CV, NLP, tiny ML
 
 ## Setups hint for TAs
 ### JupyterHub/TLJH
