@@ -1,5 +1,7 @@
 # Project Idea 2: MiniNN 
 
+For **due date**, see [the readme file](./). 
+
 [MiniNN](../6_Neural_Networks/MiniNN.py) is a simple NN implementation. There are various tasks you could do around it. 
 
 The tasks below are independent. You can do any one, or any combination of them. Some tasks are small and some tasks are big. Finishing a small task will give a small bonus. For example, if a project's point is 50% of project part, you will get 10 points (50% times 20 out of 100) in final grade that can bump your letter grade one level up. Some tasks are so big, so project point can be more than 100%. There is no cap on the project points that you can earn. You can even do multiple projects and have points add up. 

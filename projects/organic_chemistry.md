@@ -2,7 +2,7 @@
 
 Organic chemistry is hard. So let's ML tackle it. 
 
-Project report due: As late as Dec 7. Early turn-in before Thanksgiving, Nov. 26 will give you 10% bonus. 
+For **due date**, see the [readme file](./readme.md). 
 
 # Synopsis 
 

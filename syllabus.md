@@ -49,6 +49,13 @@ OFFICE HOURS: After each meeting of the class, or by appointment.
 |13| Project demonstration and Q&A
 |finals week| **final exam** |
 
+# On free expression
+Iowa State University supports and upholds the First Amendment protection of freedom of speech and
+the principle of academic freedom in order to foster a learning environment where open inquiry and
+the vigorous debate of a diversity of ideas are encouraged. Students will not be penalized for the
+content or viewpoints of their speech as long as student expression in a class context is germane to
+the subject matter of the class and conveyed in an appropriate manner.
+
 # COVID-19 health and safety requirements
 Students are responsible for abiding by the university’s COVID-19 health and safety expectations. All students attending this class in-person are required to follow university policy regarding health, safety, and face coverings:
 - wear a cloth face covering in all university classrooms, laboratories, studios, and other in-person instructional settings and learning spaces. Cloth face coverings are additionally required to be worn indoors in all university buildings, and outdoors when other people are or may be present where physical distancing of at least 6 feet from others is not possible. Students with a documented health or medical condition that prevents them from wearing a cloth face covering should consult with Student Accessibility Services in the Dean of Students Office.
