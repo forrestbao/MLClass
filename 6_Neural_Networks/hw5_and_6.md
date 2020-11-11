@@ -11,6 +11,8 @@ header-includes:
 
 HW5 due Nov. 12 and HW6 due Nov. 19. Both are Thursdays and both at 11:59PM central time. 
 
+**Update Nov. 11: HW6 is all bonus problems.**
+
 Help sessions for answering HW-related questions:
 
 * HW5: Sunday, Nov. 8, 8-9PM, Wednesday, Nov. 11, 8-9PM, and office hours
@@ -59,7 +61,7 @@ Please show intermediate steps for all computational problems below. Giving only
 
     Hint for second question: Eq. (2). And think what is the new ${\partial E \over \partial \hat{y}} = {\partial \hat{y}-y \over \partial \hat{y}}$?
 
-8. [Bonus, 2pt] What is the value of 
+8. [2pt] What is the value of 
    ${\partial E \over \partial \mathbf{x}} = 
    \begin{pmatrix}
    \partial E \over \partial  x_0 \\
@@ -100,4 +102,4 @@ Hint: The slides "Recap:..." and "A grounded example..."
 
 13. [1.5pts] Finally, how should $\mathbb{W}^{(l)}$ given in Problem 9 be updated to based on $\nabla^{(l)}$ obtained in Problem 12, for all $l\in[0..2]$ ?
 
-14. [Bonus, 5pts] In [the demo for Unit 5 Regression](https://github.com/forrestbao/MLClass/blob/master/5_Repgression/5_repgression.ipynb), we used a neural network with $\tanh$ as the activation function for all neurons. The range of $\tanh$ is from -1 to 1, which means that the output from that neural network is limited between -1 and 1.  But in that problem, the target or the prediction ranges from 0 to 4. How do you explain? Look into the source code of scikit-learn to find out. 
+14. [5pts] In [the demo for Unit 5 Regression](https://github.com/forrestbao/MLClass/blob/master/5_Repgression/5_repgression.ipynb), we used a neural network with $\tanh$ as the activation function for all neurons. The range of $\tanh$ is from -1 to 1, which means that the output from that neural network is limited between -1 and 1.  But in that problem, the target or the prediction ranges from 0 to 4. How do you explain? Look into the source code of scikit-learn to find out. 

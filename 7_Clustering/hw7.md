@@ -7,12 +7,11 @@ header-includes:
   \usepackage[vmargin={.5in,.5in},hmargin={1in,1in}]{geometry}
 ---
 
-# HW7: Clustering (Last HW)
+# HW7: Clustering (All bonus problems)
 
-Total 12 points plus 6 bonus points. 
+**Update Nov. 11: HW 7 is all bonus problems.** 
 
 **Due Friday Nov. 20 2:15PM.**
-
 Upload your answers as a PDF file to Canvas. 
 
 **Help sessions**: Thursday Nov. 19, 3-4pm, and 8-9pm. Use class Zoom meeting link. 
@@ -85,7 +84,7 @@ To compile, `pandoc hw7.md -o hw7.pdf`
 
 5. [1pt] Based on the distance matrix obtained in Problem 4, what two clusters should be merged? 
 
-6. [Bonus, 4pts] If we want 3 clusters, what are they per single-linkage clustering? You must show distance matrix $D$ obtained in each iteration, and the dendrogram with proper node values ($\delta$'s, divided by 2 or not). 
+6. [4pts] If we want 3 clusters, what are they per single-linkage clustering? You must show distance matrix $D$ obtained in each iteration, and the dendrogram with proper node values ($\delta$'s, divided by 2 or not). 
 
 # Part III: DBSCAN
 
@@ -95,6 +94,6 @@ To compile, `pandoc hw7.md -o hw7.pdf`
 
 8. [2pts] Continuing from Problem 7 above, which neighbors of sample $A$ are core points? Show your steps. 
 
-9. [Bonus, 2pts] Show all members of the cluster starting from node $A$. The order to visit samples is alphabetical. 
+9. [2pts] Show all members of the cluster starting from node $A$. The order to visit samples is alphabetical. 
 
-10. [Bonus, 2pts] The pseudocode for DBSCAN in slides is very long. However, lines 5--7 do something very similar to what lines 10, 12, 13 do. Can you somehow merge them so the pseudocode can be shorter? 
+10. [2pts] The pseudocode for DBSCAN in slides is very long. However, lines 5--7 do something very similar to what lines 10, 12, 13 do. Can you somehow merge them so the pseudocode can be shorter? 
