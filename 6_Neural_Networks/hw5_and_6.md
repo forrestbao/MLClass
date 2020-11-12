@@ -11,7 +11,11 @@ header-includes:
 
 HW5 due Nov. 12 and HW6 due Nov. 19. Both are Thursdays and both at 11:59PM central time. 
 
-**Update Nov. 11: HW6 is all bonus problems.**
+**Update Nov. 11**:
+
+1. HW6 is all bonus problems.
+2. HW5 deadline extended to: Saturday Nov. 14, 11:59PM 
+3. A make-up help session for HW5 to be held Thursday, Nov. 12, 8-9PM. 
 
 Help sessions for answering HW-related questions:
 
