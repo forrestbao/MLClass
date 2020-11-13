@@ -1,5 +1,5 @@
 # MLClass
-Machine Learning class taught at ISU, Fall 2020
+Machine Learning class taught at ISU, Fall 2020 [Syllabus](syllabus.md)
 
 All materials, except recorded videos uploaded to Canvas due to privacy concerns, are posted in this repository. 
 
