@@ -1,7 +1,7 @@
 ---
 title: | 
          CS 474/574 Machine Learning \
-         6. Neural Networks
+         8. Deep Learning
 author: |
           Prof. Dr. Forrest Sheng Bao \
           Dept. of Computer Science \
@@ -127,6 +127,24 @@ are cited in the Markdown source code in the syntax:
 ::::
 :::
 
+# Hyperparameters of convolutional layers
+
+See Tensorflow [Conv1D](https://www.tensorflow.org/api_docs/python/tf/keras/layers/Conv1D), [Conv2D](https://www.tensorflow.org/api_docs/python/tf/keras/layers/Conv2D), [Conv3D](https://www.tensorflow.org/api_docs/python/tf/keras/layers/Conv3D)
+
+- How many filters, e.g., 32
+- Dimensions of filters, e.g., 3x3
+- strides: how many pixels to shift after one convolution. 1D if 1D conv, 2D if 2D conv.
+- padding: to make use of samples around the edges [Ref](https://deepai.org/machine-learning-glossary-and-terms/padding)
+
+# Additional resources about CNNs
+- [A very informative presentation by Yann Le Cun at CERN in 2016](https://indico.cern.ch/event/510372/)
+
+- [DeepVis, a CNN visualization tool by Jason Yosinski at ICML DL 2015](https://github.com/yosinski/deep-visualization-toolbox)
+
+- [TF_CNNVis, a similar CNN visualization tool based on TF ](https://github.com/InFoCusp/tf_cnnvis)
+
+- https://towardsdatascience.com/how-to-visualize-convolutional-features-in-40-lines-of-code-70b7d87b0030
+
 # Recurrent Neural Networks (RNNs)
 ::: {.columns}
 :::: {.column width=0.6}
@@ -135,7 +153,9 @@ are cited in the Markdown source code in the syntax:
 
 - RNNs is the kind of networks. "recurrent" means using the same information again. 
 
-- An RNN's input concatenated from two parts: $\mathbf{x}_t$, the "fresh" input at step $t$, and $\mathbf{o}_{t-1}$ the output at previous step $t-1$. They are transformed to the output $\mathbf{o}_t$ via two respective transfer matrixes: $\mathbf{o}_t=\mathbb{U}\mathbf{x}_t + \mathbf{W}\mathbf{o}_{t-1}$ 
+- An RNN's input has two parts: $\mathbf{x}_t$, the "fresh" input at step $t$, and $\mathbf{o}_{t-1}$ the output at previous step $t-1$. 
+
+<!-- They are transformed into a hidden representation $\mathbf{h}_t$ via two respective transfer matrixes: $\mathbf{h}_t=\mathbb{U}\mathbf{x}_t + \mathbf{W}\mathbf{o}_{t-1}$  -->
 
 - Unrolling/unfolding an RNN unit:
   ![a web image](http://www.wildml.com/wp-content/uploads/2015/09/rnn.jpg)
@@ -143,7 +163,7 @@ are cited in the Markdown source code in the syntax:
 ::::
 :::: {.column width=0.4}
  
-- (Many papers use $\mathbf{h}$ for $\mathbf{o}$ in the equation/figure left).
+<!-- - (Many papers use $\mathbf{h}$ (short for "hidden") for $\mathbf{o}$ in the equation/figure left). -->
 
 - Examples: Elman network [1](https://web.stanford.edu/group/pdplab/pdphandbook/handbookch8.html) [2](http://mnemstudio.org/neural-networks-elman.htm), [Hopfiled Network](https://en.wikipedia.org/wiki/Hopfield_network)
 
@@ -154,32 +174,61 @@ are cited in the Markdown source code in the syntax:
 ::::
 :::
 
-# LTSM and GRU
+# LTSM and GRU networks: two special kind of RNNs
 <!-- ::: {.columns}
 :::: {.column width=0.6} -->
-- RNNs are not good at modeling long-term dependencies which is especially common in text. E.g., in the sentence, "Unlike what he said, I did NOT eat the pizza", "Unlike" and "not", two words separated far, need to be jointly considered to infer whether the subject ate the pizza. 
+- Vanilla (basic, plain) RNNs are not good at modeling long-term dependencies which is especially common in text. E.g., in the sentence, "Unlike what he said, I did NOT eat the pizza", "Unlike" and "not", two words separated far, need to be jointly considered to infer whether the subject ate the pizza. 
 
 - A solution is to maintain a state. E.g., when "unlike" is scanned, set a state, later use that state to double-negate "eat" with "not". Reset the state after "not" is scanned.
 
 - Hence LSTM (an architecture) was invented. Another motiviation is that gradient vanishing is significant for a deep RNN. 
 
-- Instead of layers, LSTM has **cells** or **units**. Each LSTM cell has 3 **gates**: forget gate, input gate, and output gate. The 3 gates are
-        computed from current input $\mathbf{x}(t)$ and output from
-        previous cell $\mathbf{s}(t-1)$. Then "make a choice" between
-        using previous state $\mathbf{c}(t-1)$ and current input and use
-        the choice and output gate to make the final output.
+- [Gated Recurrent Unit (GRU)](https://en.wikipedia.org/wiki/Gated_recurrent_unit): simpler, just reset gate and update gate.
 
-- GRU: simpler, just reset gate and update gate.
+# LSTM gates 
+An LSTM neuron is a **cell** or **unit**. Each LSTM cell has 3 **gates**: forget gate, input gate, and output gate. The 3 gates are all
+        computed from current input $\mathbf{x}(t)$ and hidden state vector (NOT output) from
+        previous time-step $\mathbf{h}(t-1)$, but with different transfer matrixes/weights. 
 
-- <http://www.wildml.com/2015/10/recurrent-neural-network-tutorial-part-4-implementing-a-grulstm-rnn-with-python-and-theano/>
 
-- <http://colah.github.io/posts/2015-08-Understanding-LSTMs/>
+::: {.columns}
+:::: {.column width=0.7}
+![](LSTM_unrolled.png){width=100%}
+::::
 
-LSTM ![image](figures/LSTM_unrolled.png){width="\\textwidth"} Source:
-Listen, Attend, and Walk: Neural Mapping of Navigational Instructions to
-Action Sequences, Mei et al., AAAI-16
+:::: {.column width=0.3}
+\begin{align*}
+f_t &= \sigma_g(W_{f} x_t + U_{f} h_{t-1} + b_f) \\
+i_t &= \sigma_g(W_{i} x_t + U_{i} h_{t-1} + b_i) \\
+o_t &= \sigma_g(W_{o} x_t + U_{o} h_{t-1} + b_o) \\
+\tilde{c}_t &= \sigma_c(W_{c} x_t + U_{c} h_{t-1} + b_c) \\
+c_t &= f_t \circ c_{t-1} + i_t \circ \tilde{c}_t \\
+h_t &= o_t \circ \sigma_h(c_t)
+\end{align*}
+::::
+:::
 
-# Neural language model in Elman network
+Note that the activation functions $\sigma_g, \sigma_c, \sigma_h$ may not all be the same. Usually $\sigma_c$ and $\sigma_h$ are $\tanh$ and gate activations are logistic. 
+
+# Units vs. Layers
+
+- Each LSTM unit at a time-step produces one scalar output ($o_t$). Some ML frameworks allow returning the outputs (e.g., `return_sequences` in `tf.keras.layers.LSTM`) at all time-steps, hence a sequence. 
+
+- To train an LSTM unit, a sample is usually a sequence of inputs, each of them matches one time-step $t$. 
+
+- Depending your application, you may parallelize several units together. They run independently and "remember" different things. E.g., to predict the stock price of more than two companies. [See demo](https://colab.research.google.com/drive/1wl-5uofsShYJic0KQ5zapku_l8dHeJR2#scrollTo=QLnZp5Ia5ooR)
+
+- You could also stack LSTM layer along time-steps so your network can PROBABLY "remember" more complex things, e.g., [Lattic GRU](https://arxiv.org/pdf/1710.02254.pdf). It differs from giving longer input sequences.  
+
+- The term "cell" in literature is a unit. But in many ML frameworks, including [Tensorflow](https://www.tensorflow.org/api_docs/python/tf/compat/v1/nn/rnn_cell/RNNCell?hl=id), it could mean a layer of units. 
+
+# Additional information about LSTM 
+  * [Time series prediction from Tensorflow tutorial](https://www.tensorflow.org/tutorials/structured_data/time_series)
+  * http://www.wildml.com/2015/10/recurrent-neural-network-tutorial-part-4-implementing-a-grulstm-rnn-with-python-and-theano/
+  * http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+
+
+<!-- # Neural language model in Elman network
 
 -   Recall that a language model predicts the Probability of a sequence
     of (words, characters, etc. )
@@ -208,9 +257,11 @@ Action Sequences, Mei et al., AAAI-16
 -   The new language model:
     $P(w_{t+1} | \mathbf{w}(t), \mathbf{s}(t-1)),$ predicting the next
     output word given a short history $\mathbf{w}(t)$ up to current step
-    $t$ and the hidden layer up to previous step $t-1$.
+    $t$ and the hidden layer up to previous step $t-1$. -->
 
 # Neural language models
+
+-   A language model: $P(w_{t+1} | w_{i}, i\in [t-k..t])$
 
 -   Feedforward: "A neural Probabilistic Language Model", Beigio et al.,
     JMLR, 3:1137--1155, 2003
@@ -221,30 +272,52 @@ Action Sequences, Mei et al., AAAI-16
 -   Multiplicative RNN: "Generating Text with Recurrent Neural
     Networks", Sutskever, ICML 2011
 
-# Word2Vec
-
-
-
 # Seq-to-seq learning
 
--   Let's go one more level up.
+- Can RNNs be used to predict the future? 
 
--   Instead of predicting the next element in an input sequence, can we
-    produce the entire output sequence from the input sequence?
+- DL can be used to generate data, e.g., machine translation. 
 
--   There could be no overlap between the two sequences, e.g., from a
-    Chinese sentence to a German sentence.
+- A set of approaches belong to sequence-to-sequence (seq-to-seq) learning. 
 
--   Two RNNs: encoder and decoder
+- Two RNNs: encoder and decoder, the former encodes sequantial inputs into information hidden in weights of an NN while the latter generates outputs, usually one each timestep, based on the hidden information. [See "I am a student" figure in Tensorflow NMT tutorial](https://www.tensorflow.org/tutorials/text/nmt_with_attention)
 
--   "Learning Phrase Representations using RNN Encoder--Decoder for
+- "Learning Phrase Representations using RNN Encoder--Decoder for
     Statistical Machine Translation", Cho et al., EMNLP 2014
 
-# Transformer
+- Other applications: seizure prediction, speech recognition or synthesis, e.g., [Boss Wang et al., 2017, Tacotron: Towards End-to-end Speech Synthesis](https://arxiv.org/pdf/1703.10135.pdf)
 
-# Autoencoder 
+# Autoencoders: representation learning
 
-# GAN 
+- Let's bring DL-based generation to another level: can we re-produce the input data from the output layer? 
 
-# Transfer learning
+![Object Contour Detection with a Fully Convolutional Encoder-Decoder Network, Yang et al., CVPR 2016](https://nsarafianos.github.io/assets/ConvDeconv.png)
 
+- Applications: data compression. More applications: image deblurring. Lots of illegal things: courterfeit signatures/voices (don't worry, we will talk about how to catch them in GANs)
+
+# Generative adversarial networks (GANs)
+
+- A GAN has two NNs: generator and discriminator/classifier. They push the limit of each other to find the essence of data. 
+
+[See Google's tutorial](https://developers.google.com/machine-learning/gan/gan_structure)
+
+
+# Embedding
+
+- Many objects (e.g., words, categories) are discrete. Not suitable for NNs. [See Block2Vec](https://webpages.uncc.edu/ddai/papers/dong-icppw-16.pdf)
+- Embedding uses a vector of floats to represent a discrete object. Ideally, similar objects, e.g., "cat" and "tiger" have similar vectors, whereas irrelavant objects, e.g., "cat" and "hat" have orthorgonal vectors. 
+- An embedding layer is a look-up table, initially random. [See demo](https://colab.research.google.com/drive/15repLULKxghG5FYIeBbxoL-47JyGoRXI#scrollTo=Bu8IhewrNwcr)
+- Embeddings are obtained by backpropagation from downstream tasks. 
+- Word embedding: Word2vec, [GloVe](https://nlp.stanford.edu/projects/glove/)
+
+- How to create a downstream task for word embedding? Negative sampling in CBOW and skip-gram. 
+
+- Sentences can also be embedded: [Transformer](https://en.wikipedia.org/wiki/Transformer_(machine_learning_model)), [Universal Sentence Encoder](https://tfhub.dev/google/universal-sentence-encoder/4), [BERT](https://en.wikipedia.org/wiki/BERT_(language_model)),   [Elmo](https://allennlp.org/elmo), [GPT](https://openai.com/blog/better-language-models/)
+
+- See also: 
+  https://www.tensorflow.org/api_docs/python/tf/keras/layers/Embedding
+
+# Transfer learning 
+
+- Multitask learning
+- [Long et al., Conditional Adversarial Domain Adaptation,  NIPS 2018](https://arxiv.org/pdf/1705.10667.pdf)
