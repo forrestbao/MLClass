@@ -447,7 +447,7 @@ ${\partial \hat{y} \over \partial \mathbf{w}^T\mathbf{x}}
 
 - Use the steps we did in previous slide: $${ \partial E \over \partial w_{1,1}} 
         ={ \partial E \over \partial o_1}
-        {\partial \mathbf{o} \over \partial w_{1,1}}$$
+        {\partial o_1 \over \partial w_{1,1}}$$
     where ${\partial E \over \partial o_1}$ traces error to the neuron destinated by $w_{1,1}$. 
 
 - What is the error over $o_1$? 
@@ -704,7 +704,7 @@ ${\partial E / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
 With $\underbrace{\partial E / \partial \mathbf{x}}_{(d+1)\times1}$ in hand, we can compute 
 $\underbrace{\partial E  / \partial \mathbb{U}}_{c\times d}
 =
-{\partial E / \partial \mathbf{x}} {\partial \mathbf{x} \over \partial {\mathbb{U}}}$, where $\mathbf{a}=[a_0, a_1, \dots, a_c]$. Again, error does not propagate from $x_0$ to previous layer -- because no connection. 
+{\partial E \over \partial \mathbf{x}} {\partial \mathbf{x} \over \partial {\mathbb{U}}}$, where $\mathbf{x} = \mathbb{U}\mathbf{a}$ and $\mathbf{a}=[a_0, a_1, \dots, a_c]$. Again, error does not propagate from $x_0$ to previous layer ($\mathbf{a}$ layer) -- because no connection. 
 \begin{align} 
    \left ( {\partial E \over \partial \mathbb{U}}  \right )^T
    = &
@@ -734,7 +734,7 @@ $\underbrace{\partial E  / \partial \mathbb{U}}_{c\times d}
   \label{eq:delta_3_from_2}
   \end{align}
 
-- Thus, ${\partial E \over \partial \mathbb{U}} =
+- Transpose both sides of Eq. (\ref{eq:delta_3_from_2}), we get ${\partial E \over \partial \mathbb{U}} =
    \begin{pmatrix}
   \vertbar & \vertbar &  \\
   {\partial E \over \partial \mathbf{u}_1} & {\partial E \over \partial \mathbf{u}_2} & \cdots  \\
@@ -860,16 +860,24 @@ $\bm{\delta}^{(2)}
 
 - Vectorized version of the weight gradient above (using results in Eq. \ref{eq:delta_3_from_2}): 
 
-$${\partial E \over \partial \mathbb{W}^{(l-2)}} 
+$$
+\nabla^{(l-2)} = 
+{\partial E \over \partial \mathbb{W}^{(l-2)}} 
   = \underbrace{
        {\partial E \over \partial \mathbb{W}^{(l-2)T} \mathbf{x}^{(l-2)}}
-    }_{\text{vector, pre-activation error to all neurons at layer $l-1$}}
+    }_{\substack{\text{pre-activation error to}\\ \text{all neurons at layer $l-1$}}}
        {\partial \mathbb{W}^{(l-2)T} \mathbf{x}^{(l-2)} \over \partial \mathbb{W}^{(l-2)}} 
-  =  \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)}_{[1..]} \right )^T$$
+  =  
+  \begin{cases}
+  \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)}_{[1..]} \right )^T & \text{if $l-1$  is output layer} \\
+  \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)} \right )^T & \text{otherwise} \\
+  \end{cases}
+  $$
 
 - Vectorized weight update (subtract a matrix from a matrix): 
   $$
-  \mathbb{W}^{(l-2)} \leftarrow \mathbb{W}^{(l-2)}  - \rho {\partial E \over \partial \mathbb{W}^{(l-2)}} 
+  \mathbb{W}^{(l-2)} \leftarrow \mathbb{W}^{(l-2)}  - \rho 
+  \nabla^{(l-2)}
   $$
   where $\rho$, the learning rate, is a hyperparameter set by the user.
 
@@ -881,16 +889,22 @@ $${\partial E \over \partial \mathbb{W}^{(l-2)}}
 
 - Two basic algorithms in ANNs.
 
-- Feedforward: $$\mathbf{x}^{(l+1)} = \phi(\mathbb{W}^{(l)T} \mathbf{x}^{(l)} )$$
+- Feedforward: $\mathbf{x}^{(l+1)} = \phi(\mathbb{W}^{(l)T} \mathbf{x}^{(l)} )$
 
 - Backpropagation (if layer $l$ is non-output): 
-    $$\bm{\delta}^{(l-1)} 
+    $\bm{\delta}^{(l-1)} 
    = 
    \begin{cases}
    \psi(\mathbf{x}^{(l-1)}) \circ \left ( \mathbb{W}^{(l-1)} \bm{\delta}^{(l)}_{[1..]} \right ) &  \text{if $l$ is not output layer}\\
    \psi(\mathbf{x}^{(l-1)}) \circ \left ( \mathbb{W}^{(l-1)} \bm{\delta}^{(l)} \right ) & \text{otherwise}
-   \end{cases}   
-   $$
+   \end{cases}$
+
+- Compute gradient: 
+$\nabla^{(l-2)}= 
+  \begin{cases}
+  \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)}_{[1..]} \right )^T & \text{if $l-1$  is output layer} \\
+  \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)} \right )^T & \text{otherwise} \\
+  \end{cases}$
 
 - To transfer forward (feedforward), use the tranpose of the transfer matrix: $\mathbb{W}^{(l)T}$ 
 
@@ -965,7 +979,7 @@ $\mathbb{W}^{(1)} =
   = \mathbf{x}^{(1)} \circ (1-\mathbf{x}^{(1)}) \circ \left ( \mathbb{W}^{(1)} \bm{\delta}^{(2)} \right )
   =
   \begin{pmatrix}
-  0(1-0) \\
+  1(1-1) \\
   0.550(1-0.550)\\
   0.711(1-0.711)
   \end{pmatrix}
@@ -974,7 +988,7 @@ $\mathbb{W}^{(1)} =
   \begin{pmatrix}
   -0.3,\\ 0.5, \\ 0.1
   \end{pmatrix}  
-  [0.512]
+  [-0.488]
   \right )
   = 
   \begin{pmatrix}
@@ -1118,10 +1132,10 @@ See the MiniNN demo.
 
 - Saturation is bad: e.g., changes to weights or inputs bring little change on the output. The network looks like outputing the same regardless of the inputs or weight changes. 
 
-- Reason of saturation: $\mathbb{W}{(l)}\mathbf{x}^{(l)}$, the input of the activation function, is too big. 
+- Reason of saturation: $\mathbb{W}^{(l)}\mathbf{x}^{(l)}$, the input of the activation function, is too big. 
 
 - How to avoid: 
-  *  Initialize $\mathbb{W}{(l)}$ with random numbers in a small range, e.g., $[0,1]$. 
+  *  Initialize $\mathbb{W}^{(l)}$ with random numbers in a small range, e.g., $[0,1]$. 
   *  Scale your input data, or even scale after each layer (e.g., adding softmax layers), into a small range, e.g., $[0,1]$. 
 
 - If your NN doesn't update fast enough (e.g., loss function doesn't drop much), monitor whether your run into saturation (e.g., how many neurons are close to limits of its range).
@@ -1137,7 +1151,7 @@ See the MiniNN demo.
   * Check loss on test set. 
   * Repeat
   
-- If the loss on test set drops significantly below that on training set, 
+- If the loss on test set increases significantly above that on training set, 
   overfitting might have happened. You need to do something. 
 
 - Traditionally, for shallow ANNs (a handleful of layers), L2-regularization is the common practice. 
