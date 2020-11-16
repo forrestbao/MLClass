@@ -57,7 +57,7 @@ Please show intermediate steps for all computational problems below. Giving only
 
     ![](figs/one_neuron_2.pdf)
 
-    Suppose $d=3$. If the augmented input vector $\mathbf{x}=[x_0, x_1, x_2, x_3]=[1, 0, 1, 0]^T$, and the weight vector $\mathbf{w}=[w_0, w_1, w_2, w_3]=[5, 4, 6, 1]^T$, and the activation function $\phi(x)=x^2$ (note that in function notation, the $x$ in $\phi(x)$ here can be any number or vector. not to be confused with the input vector $\mathbf{x}$), what is the value of the prediction $\hat{y}$? 
+    Suppose $d=3$. If the augmented input vector $\mathbf{x}=[x_0, x_1, x_2, x_3]^T=[1, 0, 1, 0]^T$, and the weight vector $\mathbf{w}=[w_0, w_1, w_2, w_3]^T=[5, 4, 6, 1]^T$, and the activation function $\phi(x)=x^2$ (note that in function notation, the $x$ in $\phi(x)$ here can be any number or vector. not to be confused with the input vector $\mathbf{x}$), what is the value of the prediction $\hat{y}$? 
 
     Hint: Eq. (1)
 
@@ -104,6 +104,6 @@ Hint: The slides "Recap:..." and "A grounded example..."
    
 12. [3pts] Continuing from Problems 9, 10, and 11 above, what are the values of $\nabla^{(l)}={\partial E \over \partial \mathbb{W}^{(l)}}$ for all $l\in[0..2]$?
 
-13. [1.5pts] Finally, how should $\mathbb{W}^{(l)}$ given in Problem 9 be updated to based on $\nabla^{(l)}$ obtained in Problem 12, for all $l\in[0..2]$ ?
+13. [1.5pts] Finally, how should $\mathbb{W}^{(l)}$ given in Problem 9 be updated to based on $\nabla^{(l)}$ obtained in Problem 12, for all $l\in[0..2]$? Assume the learning rate $\rho=1$. 
 
 14. [5pts] In [the demo for Unit 5 Regression](https://github.com/forrestbao/MLClass/blob/master/5_Regression/5_regression.ipynb), we used a neural network with $\tanh$ as the activation function for all neurons. The range of $\tanh$ is from -1 to 1, which means that the output from that neural network is limited between -1 and 1.  But in that problem, the target or the prediction ranges from 0 to 4. How do you explain? Look into the source code of scikit-learn to find out. 
