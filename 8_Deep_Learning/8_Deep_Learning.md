@@ -218,7 +218,7 @@ Note that the activation functions $\sigma_g, \sigma_c, \sigma_h$ may not all be
 
 - Depending your application, you may parallelize several units together. They run independently and "remember" different things. E.g., to predict the stock price of more than two companies. [See demo](https://colab.research.google.com/drive/1wl-5uofsShYJic0KQ5zapku_l8dHeJR2#scrollTo=QLnZp5Ia5ooR)
 
-- You could also stack LSTM layer along time-steps so your network can PROBABLY "remember" more complex things, e.g., [Lattic GRU](https://arxiv.org/pdf/1710.02254.pdf). It differs from giving longer input sequences.  
+- You could also stack LSTM layer along time-steps so your network can PROBABLY "remember" more complex things, e.g., [Lattic GRU](https://arxiv.org/pdf/1710.02254.pdf) or context-dependent language models in NLP. It differs from giving longer input sequences.  
 
 - The term "cell" in literature is a unit. But in many ML frameworks, including [Tensorflow](https://www.tensorflow.org/api_docs/python/tf/compat/v1/nn/rnn_cell/RNNCell?hl=id), it could mean a layer of units. 
 
@@ -308,16 +308,48 @@ Note that the activation functions $\sigma_g, \sigma_c, \sigma_h$ may not all be
 - Embedding uses a vector of floats to represent a discrete object. Ideally, similar objects, e.g., "cat" and "tiger" have similar vectors, whereas irrelavant objects, e.g., "cat" and "hat" have orthorgonal vectors. 
 - An embedding layer is a look-up table, initially random. [See demo](https://colab.research.google.com/drive/15repLULKxghG5FYIeBbxoL-47JyGoRXI#scrollTo=Bu8IhewrNwcr)
 - Embeddings are obtained by backpropagation from downstream tasks. 
-- Word embedding: Word2vec, [GloVe](https://nlp.stanford.edu/projects/glove/)
+- Word embedding (static): [Word2vec](https://github.com/tensorflow/docs/blob/master/site/en/r1/tutorials/representation/word2vec.md), [GloVe](https://nlp.stanford.edu/projects/glove/)
 
 - How to create a downstream task for word embedding? Negative sampling in CBOW and skip-gram. 
 
-- Sentences can also be embedded: [Transformer](https://en.wikipedia.org/wiki/Transformer_(machine_learning_model)), [Universal Sentence Encoder](https://tfhub.dev/google/universal-sentence-encoder/4), [BERT](https://en.wikipedia.org/wiki/BERT_(language_model)),   [Elmo](https://allennlp.org/elmo), [GPT](https://openai.com/blog/better-language-models/)
+- Dynamic/contextual word embedding: [AI$^2$ Elmo, biLSTM](https://allennlp.org/elmo), [Transformer, encoder-decoder](https://www.tensorflow.org/tutorials/text/transformer), [OpenAI GPT](https://openai.com/blog/better-language-models/). 
+
+- Sentence embedding: [Google Universal Sentence Encoder](https://tfhub.dev/google/universal-sentence-encoder/4), [Google BERT](https://en.wikipedia.org/wiki/BERT_(language_model)), [Facebook InferSent]
 
 - See also: 
   https://www.tensorflow.org/api_docs/python/tf/keras/layers/Embedding
+
+
+# Further readind on word and sentence embedding
+- [Generalized Language Models by Lilian Weng](https://lilianweng.github.io/lil-log/2019/01/31/generalized-language-models.html)
+- https://stats.stackexchange.com/questions/421935/what-exactly-are-keys-queries-and-values-in-attention-mechanisms
+- [Deconstructing BERT, Part 2: Visualizing the Inner Workings of Attention, by Jesse Vig](https://towardsdatascience.com/deconstructing-bert-part-2-visualizing-the-inner-workings-of-attention-60a16d86b5c1)
+- [Implementing Transformer in Tensorflow, by Tensorflow team](https://www.tensorflow.org/tutorials/text/transformer)
+- [Implementing Transformer in PyTorch, by Harvard NLP](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
 
 # Transfer learning 
 
 - Multitask learning
 - [Long et al., Conditional Adversarial Domain Adaptation,  NIPS 2018](https://arxiv.org/pdf/1705.10667.pdf)
+
+
+# Frameworks
+
+There are [several DL frameworks](https://en.wikipedia.org/wiki/Comparison_of_deep-learning_software):
+
+- Tensorflow (Keras), PyTorch, Flux, MXnet
+- No longer active dev: Torch, Theano
+- They share similar UI, e.g., Torch's [layer stacking](https://en.wikipedia.org/wiki/Torch_(machine_learning)#nn) is very similar to that of Keras. 
+- ONNX 
+
+# DL on small devices
+- DL is cool. But a DNN easily involve hundreds of thousands of parameters. How to pack them into a device of only a few MB of memory and powered by a battery?
+- Solution 1, specific hardware/co-processor, mostly are for vision tasks: [Google Coral Edge TPU](https://coral.ai/docs/edgetpu/faq/), Intel Movidius, [ARM Ethos (UK)](https://developer.arm.com/ip-products/processors/machine-learning/arm-ethos-n), [Ambarella CVFLow](https://www.ambarella.com/technology/), [nVidia Tegra with CUDA (see also Jetson)](https://en.wikipedia.org/wiki/Tegra#Xavier), [QualComm Zeroth](https://www.qualcomm.com/news/onq/2013/10/10/introducing-qualcomm-zeroth-processors-brain-inspired-computing), [Cambricon (China)](http://www.cambricon.com/), [Huawei NPU in Kirin (China)](https://consumer.huawei.com/en/campaign/kirin980/)
+- Using special hardware for operations like convolution is not new. [DSPs](https://en.wikipedia.org/wiki/Digital_signal_processor) have been there for decades, e.g.,  [TI TMS320](https://www.ti.com/processors/digital-signal-processors/overview.html). 
+- Solution 2, tailored libraries: 
+  * [Google Tensorflow Lite](https://www.tensorflow.org/lite), [its supported microcontrollers](https://www.tensorflow.org/lite/microcontrollers), and [an example on Arduino Nano 33 Sense](https://blog.arduino.cc/2019/10/15/get-started-with-machine-learning-on-arduino/)
+  * [Google MobileNet](https://arxiv.org/pdf/1704.04861.pdf)
+- Solution 3, a new math:
+  * quantization/integer neural networks [1 by Mathworks](https://www.mathworks.com/company/newsletters/articles/what-is-int8-quantization-and-why-is-it-popular-for-deep-neural-networks.html) [2 by QualComm](https://www.qualcomm.com/news/onq/2019/03/12/heres-why-quantization-matters-ai)
+  * analog neural networks: [Hopfield 1990](https://www.tandfonline.com/doi/abs/10.1088/0954-898X_1_1_003?journalCode=inet20), [IBM Analog AI using phase-change memory](https://analog-ai-demo.mybluemix.net/hardware)
+- "Cross training" (compared to cross-compilation): train on the cloud/workstation and predict on the edge, e.g., [Amazon DeepLens](https://aws.amazon.com/deeplens/)
