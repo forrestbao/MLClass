@@ -182,29 +182,18 @@ if __name__ == "__main__":
 
   #Like the example, let user select this
   nonBiasTerms = [2,2,2,1]
+  # Counter to keep track of current element within the nonBiasTerms list
   count = 0
+  # Initialize the array of Ws
   Ws = []
   for x in nonBiasTerms[:-1]:
-  	print(x)
+  	#Append a W for each layer in the list except the last layer, assume one bias term
   	Ws.append(numpy.random.rand(x + 1, nonBiasTerms[count + 1]))
+  	# Increse counter to properly index into the next term in the list
   	count += 1
 
-  # # Transfer matrix from input layer to hidden layer 1
-  # W_0 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
-  #                     [.7, -.4],
-  #                     [-.2, .3]]))
 
-  # # Transfer matrix from hidden layer 1 to hidden layer 2
-  # W_1 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
-  #                     [.7, -.4],
-  #                     [-.2, .3]]))
 
-  # # Transfer matrix from hidden layer 2 to input layer
-  # W_2 = numpy.array(([[-.3], # the first row maps the bias term to the two neurons of the next layer
-  #                     [.5],
-  #                     [.1]] ))
-
-  # Ws = [W_0, W_1, W_2]
   MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
 
   # The training sample
