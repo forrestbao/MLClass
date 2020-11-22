@@ -180,8 +180,14 @@ class MiniNN:
 
 if __name__ == "__main__": 
 
+
+  # The training sample
+  x_0 = numpy.array(([1., 1, 0])) # just one sample, augmented 
+  y_0 = numpy.array(([1])) # We support only one dimension in the output
+                          # this number must be between 0 and 1 because we used logistic activation and cross entropy loss. 
+
   #Like the example, let user select this
-  nonBiasTerms = [2,2,2,1]
+  nonBiasTerms = [len(x_0) - 1,2,2,len(y_0)]
   # Counter to keep track of current element within the nonBiasTerms list
   count = 0
   # Initialize the array of Ws
@@ -193,13 +199,7 @@ if __name__ == "__main__":
   	count += 1
 
 
-
   MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
-
-  # The training sample
-  x_0 = numpy.array(([1., 1, 0])) # just one sample, augmented 
-  y_0 = numpy.array(([1])) # We support only one dimension in the output
-                          # this number must be between 0 and 1 because we used logistic activation and cross entropy loss. 
 
   # To use functions individually 
   MNN.predict(x_0)
