@@ -186,7 +186,7 @@ if __name__ == "__main__":
   y_0 = numpy.array(([1])) # We support only one dimension in the output
                           # this number must be between 0 and 1 because we used logistic activation and cross entropy loss. 
 
-  #Like the example, let user select this
+  #Like the example, let user select this, set first and last values to be length of x - 1 and length of y.
   nonBiasTerms = [len(x_0) - 1,2,2,len(y_0)]
   # Counter to keep track of current element within the nonBiasTerms list
   count = 0
