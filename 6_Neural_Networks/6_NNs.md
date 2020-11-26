@@ -869,7 +869,7 @@ $$
        {\partial \mathbb{W}^{(l-2)T} \mathbf{x}^{(l-2)} \over \partial \mathbb{W}^{(l-2)}} 
   =  
   \begin{cases}
-  \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)}_{[1..]} \right )^T & \text{if $l-1$  is output layer} \\
+  \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)}_{[1..]} \right )^T & \text{if $l-1$  isn't output layer} \\
   \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)} \right )^T & \text{otherwise} \\
   \end{cases}
   $$
@@ -902,7 +902,7 @@ $$
 - Compute gradient: 
 $\nabla^{(l-2)}= 
   \begin{cases}
-  \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)}_{[1..]} \right )^T & \text{if $l-1$  is output layer} \\
+  \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)}_{[1..]} \right )^T & \text{if $l-1$  is not output layer} \\
   \mathbf{x}^{(l-2)}_i  \left ( \bm{\delta}^{(l-1)} \right )^T & \text{otherwise} \\
   \end{cases}$
 
