@@ -261,7 +261,8 @@ Yellow nodes are bias nodes. Layer index starts from 0.
 - The transform $\mathbf{o} = \phi(\mathbb{W}^T\mathbf{x})$ or $\hat{y} = \phi(\mathbb{V}^T\mathbf{o})$ is called **feedforward** where the outputs from a **layer** (to be defined later) of neurons are **fed** into another layer.
 - To generalize, we use the notation $\mathbf{x}^{(l)}=[x^{(l)}_0, x^{(l)}_1, x^{(l)}_2, \dots]$ to represent neurons at layer $l$ ($x^{(l)}_i$ is the $i$-th neuron in layer $l$), and $\mathbb{W}^{(l)}$ to denote the transfer matrix from layer $l$ to layer $l+1$. We call $l$ the **layer index** and $i$ in this context the **node index**. 
 - Generalized feedforward between any two layers:
-  $$\mathbf{x}^{(l+1)} = \phi(\mathbb{W}^{(l)} \mathbf{x}^{(l)})$$
+  $$\mathbf{x}^{(l+1)}_{[1..]} = \phi(\mathbb{W}^{(l)} \mathbf{x}^{(l)})$$
+  The subscript $_{[1..]}$ because bias terms are not produced by feedforward. 
 - The bias neuron $x^{(l)}_0=1$ always except for the last/output layer which has no bias neuron (why?) 
 - Hence for the last/output layer, $\mathbf{x}^{(-1)} = [x^{(-1)}_1, x^{(-1)}_2, \dots]$. 
 
@@ -889,7 +890,8 @@ $$
 
 - Two basic algorithms in ANNs.
 
-- Feedforward: $\mathbf{x}^{(l+1)} = \phi(\mathbb{W}^{(l)T} \mathbf{x}^{(l)} )$
+- Feedforward: $\mathbf{x}^{(l+1)}_{[1..]} = \phi(\mathbb{W}^{(l)T} \mathbf{x}^{(l)} )$ 
+  . The subscript ${[1..]}$ because feedforward does not produce bias terms. 
 
 - Backpropagation (if layer $l$ is non-output): 
     $\bm{\delta}^{(l-1)} 
