@@ -188,17 +188,19 @@ class Sample:
 if __name__ == "__main__": 
 
 
-  file = open("train.csv", "r")
-  line1 = file.readline()
+  
+  print("Reading in data....")
+  # Read in all data from the file
+  inArray = numpy.genfromtxt('train.csv',delimiter=',')
+  # Get rid of first row, this row is not needed
+  inArray = numpy.delete(inArray, obj = 0, axis = 0)
+  print(inArray.shape)
 
   #Like the example, let user select this, set first and last values to be length of x - 1 and length of y.
-  nonBiasTerms = [len(line1) - 1,15,15,10]
+  #nonBiasTerms = [len(line1) - 1,15,15,10]
 
-  for line in file:
-  	inputLine = line.split(',')
-  	y = numpy.array([0,0,0,0,0,0,0,0,0,0])
-  	y[int(line[0])] = 1
-  	x = 
+  
+
 
 
 
