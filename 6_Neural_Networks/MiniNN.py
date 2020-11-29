@@ -53,6 +53,7 @@ class MiniNN:
     self.samples = SampleList
     self.Ws = Ws
     self.AverageGradients = []
+    self.averageGradients(self.Ws)
     self.L = len(Ws) # number of layers 
     self.phi = self.logistic # same activation function for all neurons
     self.psi = self.logistic_psi
@@ -177,8 +178,12 @@ class MiniNN:
     """
     for epoch in range(max_iter):   
       print ("epoch", epoch, end=":")
-      self.predict(x) # forward 
-      print (self.oracle)
+
+      for s in self.samples:
+      	self.predict(s.getX) # forward 
+
+      
+      
       self.get_deltas(y) # backpropagate
       if verbose:
         self.print_progress()   
@@ -189,6 +194,12 @@ class Sample:
 	def __init__(self, x, y):
 		self.x = x
 		self.y = y
+
+	def getX(self):
+		return self.x
+
+	def getY(self):
+		return self.y
 
 
 if __name__ == "__main__": 
@@ -214,7 +225,7 @@ if __name__ == "__main__":
   	# The x values are located from the first index in the row to the end, length of x right now is 784
   	xInputs = row[1:len(row)]
   	# Add the bias term to the end of the sample
-  	xInputs = numpy.append(xInputs, values=1)
+  	xInputs = numpy.insert(xInputs, 0,1.)
 
   	samps.append(Sample(xInputs, y))
 
@@ -231,7 +242,6 @@ if __name__ == "__main__":
 
 
   MNN = MiniNN(Ws=Ws, SampleList = samps) # initialize an NN with the transfer matrixes given, as well as the samples to train the NN
-  MNN.averageGradients(Ws)
 
 
 
