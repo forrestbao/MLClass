@@ -45,11 +45,12 @@ class MiniNN:
     """
     return x * (1-x)
 
-  def __init__(self, Ws=None):
+  def __init__(self, Ws=None, SampleList):
     """Initialize an NN
 
     hidden_layer: does not include bias 
     """
+    self.samples = SampleList
     self.Ws = Ws
     self.L = len(Ws) # number of layers 
     self.phi = self.logistic # same activation function for all neurons
@@ -224,18 +225,9 @@ if __name__ == "__main__":
   	count += 1
 
 
-  MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
+  MNN = MiniNN(Ws=Ws, SampleList = samps) # initialize an NN with the transfer matrixes given, as well as the samples to train the NN
 
-  # To use functions individually 
-  MNN.predict(x_0)
-  MNN.get_deltas(y_0)
-  MNN.print_progress()
-  MNN.update_weights()
-  MNN.print_progress()
 
-  # Or a recursive training process 
-  MNN = MiniNN(Ws=Ws) # re-init
-  MNN.train(x_0, y_0, max_iter=20, verbose=True)
 
 
 
