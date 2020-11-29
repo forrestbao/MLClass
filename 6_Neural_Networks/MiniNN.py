@@ -189,15 +189,25 @@ if __name__ == "__main__":
 
 
   file = open("train.csv", "r")
-  file.readline()
+  line1 = file.readline()
+
+  #Like the example, let user select this, set first and last values to be length of x - 1 and length of y.
+  nonBiasTerms = [len(line1) - 1,15,15,10]
+
+  for line in file:
+  	inputLine = line.split(',')
+  	y = numpy.array([0,0,0,0,0,0,0,0,0,0])
+  	y[int(line[0])] = 1
+  	x = 
+
+
 
   # The training sample
   x_0 = numpy.array(([1., 1, 0])) # just one sample, augmented 
   y_0 = numpy.array(([1])) # We support only one dimension in the output
                           # this number must be between 0 and 1 because we used logistic activation and cross entropy loss. 
 
-  #Like the example, let user select this, set first and last values to be length of x - 1 and length of y.
-  nonBiasTerms = [len(x_0) - 1,2,2,len(y_0)]
+  
   # Counter to keep track of current element within the nonBiasTerms list
   count = 0
   # Initialize the array of Ws
