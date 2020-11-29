@@ -188,26 +188,21 @@ class Sample:
 if __name__ == "__main__": 
 
 
-  
-  print("Reading in data....")
+  print("Reading in data...")
   # Read in all data from the file
   inArray = numpy.genfromtxt('train.csv',delimiter=',')
   # Get rid of first row, this row is not needed
   inArray = numpy.delete(inArray, obj = 0, axis = 0)
-  print(inArray.shape)
+  print("Done reading data...")
 
   #Like the example, let user select this, set first and last values to be length of x - 1 and length of y.
-  #nonBiasTerms = [len(line1) - 1,15,15,10]
+  nonBiasTerms = [inArray.shape[1] - 1,15,15,10]
 
-  
-
-
-
-
-  # The training sample
-  x_0 = numpy.array(([1., 1, 0])) # just one sample, augmented 
-  y_0 = numpy.array(([1])) # We support only one dimension in the output
-                          # this number must be between 0 and 1 because we used logistic activation and cross entropy loss. 
+  for row in inArray:
+  	y = numpy.array([0,0,0,0,0,0,0,0,0,0])
+  	y[int(row[0])] = 1
+  	xInputs = row[1:len(row)]
+  	xInputs.append(1)
 
   
   # Counter to keep track of current element within the nonBiasTerms list
