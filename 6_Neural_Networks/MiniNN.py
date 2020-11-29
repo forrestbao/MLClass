@@ -45,16 +45,21 @@ class MiniNN:
     """
     return x * (1-x)
 
-  def __init__(self, Ws=None, SampleList):
+  def __init__(self, Ws=None, SampleList=None):
     """Initialize an NN
 
     hidden_layer: does not include bias 
     """
     self.samples = SampleList
     self.Ws = Ws
+    self.AverageGradients = []
     self.L = len(Ws) # number of layers 
     self.phi = self.logistic # same activation function for all neurons
     self.psi = self.logistic_psi
+
+  def averageGradients(self, Ws):
+  	for W in Ws:
+  		self.AverageGradients.append(numpy.zeros(W.shape))
 
   def feedforward(self, x, W, phi):
       """feedforward from previou layer output x to next layer via W and Phi
@@ -159,7 +164,7 @@ class MiniNN:
     # self.predict(self.Xs[0])
     # print ("new prediction:", self.oracle)
 
-  def train(self, x, y, max_iter=100, verbose=False):
+  def train(self,max_iter=100, verbose=False):
     """feedforward, backpropagation, and update weights
     The train function updates an NN using one sample. 
     Unlike scikit-learn or Tensorflow's fit(), x and y here are not a bunch of samples. 
@@ -209,7 +214,7 @@ if __name__ == "__main__":
   	# The x values are located from the first index in the row to the end, length of x right now is 784
   	xInputs = row[1:len(row)]
   	# Add the bias term to the end of the sample
-  	xInputs.append(1)
+  	xInputs = numpy.append(xInputs, values=1)
 
   	samps.append(Sample(xInputs, y))
 
@@ -226,7 +231,7 @@ if __name__ == "__main__":
 
 
   MNN = MiniNN(Ws=Ws, SampleList = samps) # initialize an NN with the transfer matrixes given, as well as the samples to train the NN
-
+  MNN.averageGradients(Ws)
 
 
 
