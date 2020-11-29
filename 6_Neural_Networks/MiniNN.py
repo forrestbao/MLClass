@@ -79,19 +79,18 @@ class MiniNN:
                 ) # end of phi
               )) # end of concatenate
 
-  def predict(self, X_0):
+  def predict(self, sample):
     """make prediction, and log the output of all neurons for backpropagation later 
 
     X_0: 1-D numpy array, the input vector, AUGMENTED
     """
-    Xs = [X_0]; X=X_0
+    X = sample.getX()
+    sample.addValueLayer(X)
     # print (self.Ws)
     for W in self.Ws:
       # print (W,X, self.phi)
       X = self.feedforward(X, W, self.phi)
-      Xs.append(X)
-    self.Xs = Xs
-    self.oracle = X[1:] # it is safe because Python preserves variables used in for-loops
+      sample.addValueLayer(X)
 
   def backpropagate(self, delta_next, W_now, psi, x_now):
     """make on step of backpropagation 
@@ -165,7 +164,7 @@ class MiniNN:
     # self.predict(self.Xs[0])
     # print ("new prediction:", self.oracle)
 
-  def train(self,max_iter=100, verbose=False):
+  def train(self,max_iter=100):
     """feedforward, backpropagation, and update weights
     The train function updates an NN using one sample. 
     Unlike scikit-learn or Tensorflow's fit(), x and y here are not a bunch of samples. 
@@ -180,13 +179,10 @@ class MiniNN:
       print ("epoch", epoch, end=":")
 
       for s in self.samples:
-      	self.predict(s.getX) # forward 
+      	self.predict(s) # forward 
 
       
-      
       self.get_deltas(y) # backpropagate
-      if verbose:
-        self.print_progress()   
       self.update_weights() # update weights, and new prediction will be printed each epoch
 
 
@@ -194,12 +190,20 @@ class Sample:
 	def __init__(self, x, y):
 		self.x = x
 		self.y = y
+		self.currentValues = []
+		self.currentValues.append(x)
 
 	def getX(self):
 		return self.x
 
 	def getY(self):
 		return self.y
+
+	def addValueLayer(self, x):
+		self.currentValues.append(x)
+
+	def clearLayers(self):
+		self.currentValues = []
 
 
 if __name__ == "__main__": 
