@@ -195,14 +195,22 @@ if __name__ == "__main__":
   inArray = numpy.delete(inArray, obj = 0, axis = 0)
   print("Done reading data...")
 
+  samps = []
+
   #Like the example, let user select this, set first and last values to be length of x - 1 and length of y.
   nonBiasTerms = [inArray.shape[1] - 1,15,15,10]
 
+  # Go through each row in the input array and split each row into its label and x values
   for row in inArray:
   	y = numpy.array([0,0,0,0,0,0,0,0,0,0])
+  	# set the value at the index of the label to be 1, if the sample is a 0, set index 0 to be a 1
   	y[int(row[0])] = 1
+  	# The x values are located from the first index in the row to the end, length of x right now is 784
   	xInputs = row[1:len(row)]
+  	# Add the bias term to the end of the sample
   	xInputs.append(1)
+
+  	samps.append(Sample(xInputs, y))
 
   
   # Counter to keep track of current element within the nonBiasTerms list
