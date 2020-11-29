@@ -178,8 +178,18 @@ class MiniNN:
         self.print_progress()   
       self.update_weights() # update weights, and new prediction will be printed each epoch
 
+
+class Sample:
+	def __init__(self, x, y):
+		self.x = x
+		self.y = y
+
+
 if __name__ == "__main__": 
 
+
+  file = open("train.csv", "r")
+  file.readline()
 
   # The training sample
   x_0 = numpy.array(([1., 1, 0])) # just one sample, augmented 
