@@ -127,30 +127,33 @@ class MiniNN:
       # technically, no need to loop to l=0 the input layer. But we do it anyway
       # l is the layer index 
       W, X = self.Ws[l], sample.getLayer(l)
-      print(W)
-      print(X)
       delta = self.backpropagate(delta, W, self.psi, X)
-      print(delta)
       sample.getDeltas().insert(0, delta) # prepend, because BACK-propagate
       
-  def update_weights(self):
+  def update_AverageGradientWeights(self, sample):
     """ Given a sequence of Deltas and a sequence of Xs, compute the gradient of error on each transform matrix and update it using gradient descent 
 
     Note that the first element on each delta is on the bias term. It should not be involved in computing the gradient on any weight because the bias term is not connected with previous layer. 
     """
-    self.Grads = []
-    for l in range(len(Ws)): # l is layer index
-      x = self.Xs[l]
-      delta = self.Deltas[l+1]
+    
+    for l in range(len(AverageGradients)): # l is layer index
+      x = sample.getLayer(l)
+      delta = sample.getDeltas(l + 1)
       # print (l, x, delta)
       gradient = numpy.outer(x, delta[1:])
-      self.Ws[l] -= 1 * gradient  # descent! 
-
-      self.Grads.append(gradient)
+      self.AverageGradients[l] = numpy.Add(self.AverageGradients[l], gradient)
     
     # show that the new prediction will be better to help debug
     # self.predict(self.Xs[0])
     # print ("new prediction:", self.oracle)
+
+  def averageSumOfGradients(self, size):
+  	for matrix in self.AverageGradients:
+  		matrix = numpy.true_divide(matrix, size)
+
+  def update_weights(self):
+  	for l in range(len(Ws)):
+  		self.Ws[l] -= 1 * self.AverageGradients[l]
 
   def train(self,max_iter=100):
     """feedforward, backpropagation, and update weights
@@ -165,6 +168,7 @@ class MiniNN:
     """
     for epoch in range(max_iter):   
       print ("epoch", epoch, end=":")
+      self.averageGradients(self.Ws)
 
       for s in self.samples:
       	s.clearLayers()
@@ -173,7 +177,8 @@ class MiniNN:
       	self.get_deltas(s)
       	
 
-      
+      self.averageSumOfGradients(len(samples))	
+      self.update_weights()
       # self.get_deltas(y) # backpropagate
       # self.update_weights() # update weights, and new prediction will be printed each epoch
 
