@@ -117,17 +117,21 @@ class MiniNN:
     target: 1-D numpy array, the target of a sample 
     delta : 1-D numpy array, delta at current layer
     """
-    delta = numpy.subtract(sample.getOutputPrediction, sample.getY)  # delta at output layer is prediction minus target 
+    delta = numpy.subtract(sample.getOutputPrediction()[1:], sample.getY())  # delta at output layer is prediction minus target 
                                  									 # only when activation function is logistic 
-    delta = numpy.concatenate(([0], delta)) # artificially prepend the delta on bias to match that in non-output layers. 
-    self.Deltas = [delta] # log delta's at all layers
+    delta = numpy.concatenate(([0], delta)) # artificially prepend the bias on delta to match that in non-output layers. 
+
+    print(delta)
 
     for l in range(len(self.Ws)-1, -1, -1): # propagate error backwardly 
       # technically, no need to loop to l=0 the input layer. But we do it anyway
       # l is the layer index 
       W, X = self.Ws[l], sample.getLayer(l)
+      print(W)
+      print(X)
       delta = self.backpropagate(delta, W, self.psi, X)
-      sample.getDeltas.insert(0, delta) # prepend, because BACK-propagate
+      print(delta)
+      sample.getDeltas().insert(0, delta) # prepend, because BACK-propagate
       
   def update_weights(self):
     """ Given a sequence of Deltas and a sequence of Xs, compute the gradient of error on each transform matrix and update it using gradient descent 
@@ -163,6 +167,7 @@ class MiniNN:
       print ("epoch", epoch, end=":")
 
       for s in self.samples:
+      	s.clearLayers()
       	self.predict(s) # forward 
 
       	self.get_deltas(s)
@@ -225,7 +230,7 @@ if __name__ == "__main__":
   	y[int(row[0])] = 1
   	# The x values are located from the first index in the row to the end, length of x right now is 784
   	xInputs = row[1:len(row)]
-  	# Add the bias term to the end of the sample
+  	# Add the bias term to the beginning of the sample
   	xInputs = numpy.insert(xInputs, 0,1.)
 
   	samps.append(Sample(xInputs, y))
