@@ -172,7 +172,9 @@ class MiniNN:
       print("epoch " , epoch)
       self.setAveGradientsZero(self.Ws)
 
-      for s in self.samples[:1000]:
+      numTrainingSamples = 100
+
+      for s in self.samples[:numTrainingSamples]:
       	self.predict(s) # forward 
 
       	self.get_deltas(s)
@@ -180,7 +182,7 @@ class MiniNN:
       	self.update_AverageGradientWeights(s)
       
 
-      self.averageSumOfGradients(1000)	
+      self.averageSumOfGradients(numTrainingSamples)	
       self.update_weights()
 
   def predictAll(self, predictionSet):
@@ -263,8 +265,9 @@ if __name__ == "__main__":
 
   MNN = MiniNN(Ws=Ws, SampleList = samps) # initialize an NN with the transfer matrixes given, as well as the samples to train the NN
   print("Training...")
-  MNN.train(max_iter = 100)
+  MNN.train(max_iter = 100000)
 
+  print("Predicting...")
   MNN.predictAll(samps)
 
 
