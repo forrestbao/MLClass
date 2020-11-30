@@ -111,14 +111,14 @@ class MiniNN:
     # hadamard product This ONLY works when activation function is logistic
     return delta_now
 
-  def get_deltas(self, target):
+  def get_deltas(self, sample):
     """Produce deltas at every layer 
 
     target: 1-D numpy array, the target of a sample 
     delta : 1-D numpy array, delta at current layer
     """
-    delta = self.oracle - target # delta at output layer is prediction minus target 
-                                 # only when activation function is logistic 
+    delta = numpy.subtract(sample.getOutputPrediction, sample.getY)  # delta at output layer is prediction minus target 
+                                 									 # only when activation function is logistic 
     delta = numpy.concatenate(([0], delta)) # artificially prepend the delta on bias to match that in non-output layers. 
     self.Deltas = [delta] # log delta's at all layers
 
@@ -181,17 +181,19 @@ class MiniNN:
       for s in self.samples:
       	self.predict(s) # forward 
 
+      	
+
       
-      self.get_deltas(y) # backpropagate
-      self.update_weights() # update weights, and new prediction will be printed each epoch
+      # self.get_deltas(y) # backpropagate
+      # self.update_weights() # update weights, and new prediction will be printed each epoch
 
 
 class Sample:
 	def __init__(self, x, y):
-		self.x = x
-		self.y = y
+		self.x = numpy.array(x)
+		self.y = numpy.array(y)
 		self.currentValues = []
-		self.currentValues.append(x)
+		self.currentValues.append(numpy.array(x))
 
 	def getX(self):
 		return self.x
@@ -200,10 +202,13 @@ class Sample:
 		return self.y
 
 	def addValueLayer(self, x):
-		self.currentValues.append(x)
+		self.currentValues.append(numpy.array(x))
 
 	def clearLayers(self):
 		self.currentValues = []
+
+	def getOutputPrediction(self):
+		return self.currentValues[len(self.currentValues) - 1]
 
 
 if __name__ == "__main__": 
@@ -246,7 +251,8 @@ if __name__ == "__main__":
 
 
   MNN = MiniNN(Ws=Ws, SampleList = samps) # initialize an NN with the transfer matrixes given, as well as the samples to train the NN
-
+  print("Training...")
+  MNN.train(max_iter = 1)
 
 
 
