@@ -171,17 +171,16 @@ class MiniNN:
       print ("epoch", epoch, end=":")
       self.setAveGradientsZero(self.Ws)
 
-      for s in self.samples[:1]:
+      for s in self.samples:
       	s.clearLayers()
       	self.predict(s) # forward 
 
       	self.get_deltas(s)
       	
-      	print(s.getOutputPrediction())
       	self.update_AverageGradientWeights(s)
       
 
-      self.averageSumOfGradients(1)	
+      self.averageSumOfGradients(len(self.samples))	
       self.update_weights()
       # self.get_deltas(y) # backpropagate
       # self.update_weights() # update weights, and new prediction will be printed each epoch
@@ -216,7 +215,7 @@ class Sample:
 	def getDeltas(self):
 		return self.deltas
 
-	deg clearDeltas(self):
+	def clearDeltas(self):
 		self.deltas = []
 
 
