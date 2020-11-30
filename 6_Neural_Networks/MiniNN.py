@@ -104,7 +104,7 @@ class MiniNN:
     """
     delta_next = delta_next[1:] # drop the derivative of error on bias term 
 
-    # first propagate error to the output of previou layer
+    # first propagate error to the output of previous layer
     delta_now = numpy.matmul(W_now, delta_next) # transfer backward
     # then propagate thru the activation function at previous layer 
     delta_now *= self.psi(x_now) 
@@ -125,25 +125,9 @@ class MiniNN:
     for l in range(len(self.Ws)-1, -1, -1): # propagate error backwardly 
       # technically, no need to loop to l=0 the input layer. But we do it anyway
       # l is the layer index 
-      W, X = self.Ws[l], self.Xs[l]
+      W, X = self.Ws[l], sample.getLayer(l)
       delta = self.backpropagate(delta, W, self.psi, X)
-      self.Deltas.insert(0, delta) # prepend, because BACK-propagate
-
-  def print_progress(self):
-    """print Xs, Deltas, and gradients after a sample is feedforwarded and backpropagated 
-    """
-    print ("\n prediction: ", self.oracle)
-    for l in range(len(self.Ws)+1): 
-      print ("layer", l)
-      print ("        X:", self.Xs[l], "^T")
-      print ("    delta:", self.Deltas[l], "^T")
-      if l < len(self.Ws): # last layer has not transfer matrix
-        print ('        W:', numpy.array2string(self.Ws[l], prefix='        W: '))
-      try: # because in first feedforward round, no gradient computed yet
-           # also, last layer has no gradient
-        print(' gradient:', numpy.array2string(self.Grads[l], prefix=' gradient: '))
-      except: 
-        pass
+      sample.getDeltas.insert(0, delta) # prepend, because BACK-propagate
       
   def update_weights(self):
     """ Given a sequence of Deltas and a sequence of Xs, compute the gradient of error on each transform matrix and update it using gradient descent 
@@ -181,6 +165,7 @@ class MiniNN:
       for s in self.samples:
       	self.predict(s) # forward 
 
+      	self.get_deltas(s)
       	
 
       
@@ -194,6 +179,7 @@ class Sample:
 		self.y = numpy.array(y)
 		self.currentValues = []
 		self.currentValues.append(numpy.array(x))
+		self.deltas = []
 
 	def getX(self):
 		return self.x
@@ -207,8 +193,14 @@ class Sample:
 	def clearLayers(self):
 		self.currentValues = []
 
+	def getLayer(self, index):
+		return self.currentValues[index]
+
 	def getOutputPrediction(self):
 		return self.currentValues[len(self.currentValues) - 1]
+
+	def getDeltas(self):
+		return self.deltas
 
 
 if __name__ == "__main__": 
