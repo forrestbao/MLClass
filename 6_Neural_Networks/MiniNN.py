@@ -85,6 +85,7 @@ class MiniNN:
 
     X_0: 1-D numpy array, the input vector, AUGMENTED
     """
+    sample.clearLayers()
     X = sample.getX()
     sample.addValueLayer(X)
     # print (self.Ws)
@@ -168,11 +169,10 @@ class MiniNN:
 
     """
     for epoch in range(max_iter):   
-      print ("epoch", epoch, end=":")
+      print("epoch " , epoch)
       self.setAveGradientsZero(self.Ws)
 
-      for s in self.samples:
-      	s.clearLayers()
+      for s in self.samples[:1000]:
       	self.predict(s) # forward 
 
       	self.get_deltas(s)
@@ -180,11 +180,14 @@ class MiniNN:
       	self.update_AverageGradientWeights(s)
       
 
-      self.averageSumOfGradients(len(self.samples))	
+      self.averageSumOfGradients(1000)	
       self.update_weights()
-      # self.get_deltas(y) # backpropagate
-      # self.update_weights() # update weights, and new prediction will be printed each epoch
 
+  def predictAll(self, predictionSet):
+
+  	for s in predictionSet:
+  		self.predict(s)
+  		print(s.getOutputPrediction())
 
 class Sample:
 	def __init__(self, x, y):
@@ -260,8 +263,9 @@ if __name__ == "__main__":
 
   MNN = MiniNN(Ws=Ws, SampleList = samps) # initialize an NN with the transfer matrixes given, as well as the samples to train the NN
   print("Training...")
-  MNN.train(max_iter = 10)
+  MNN.train(max_iter = 100)
 
+  MNN.predictAll(samps)
 
 
 
