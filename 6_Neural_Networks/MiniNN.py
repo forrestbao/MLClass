@@ -53,12 +53,13 @@ class MiniNN:
     self.samples = SampleList
     self.Ws = Ws
     self.AverageGradients = []
-    self.averageGradients(self.Ws)
+    self.setAveGradientsZero(self.Ws)
     self.L = len(Ws) # number of layers 
     self.phi = self.logistic # same activation function for all neurons
     self.psi = self.logistic_psi
 
-  def averageGradients(self, Ws):
+  def setAveGradientsZero(self, Ws):
+  	self.AverageGradients = []
   	for W in Ws:
   		self.AverageGradients.append(numpy.zeros(W.shape))
 
@@ -117,11 +118,11 @@ class MiniNN:
     target: 1-D numpy array, the target of a sample 
     delta : 1-D numpy array, delta at current layer
     """
+    sample.clearDeltas()
     delta = numpy.subtract(sample.getOutputPrediction()[1:], sample.getY())  # delta at output layer is prediction minus target 
                                  									 # only when activation function is logistic 
     delta = numpy.concatenate(([0], delta)) # artificially prepend the bias on delta to match that in non-output layers. 
-
-    print(delta)
+    sample.getDeltas().insert(0, delta)
 
     for l in range(len(self.Ws)-1, -1, -1): # propagate error backwardly 
       # technically, no need to loop to l=0 the input layer. But we do it anyway
@@ -136,20 +137,20 @@ class MiniNN:
     Note that the first element on each delta is on the bias term. It should not be involved in computing the gradient on any weight because the bias term is not connected with previous layer. 
     """
     
-    for l in range(len(AverageGradients)): # l is layer index
+    for l in range(len(self.AverageGradients)): # l is layer index
       x = sample.getLayer(l)
-      delta = sample.getDeltas(l + 1)
+      delta = sample.getDeltas()[l + 1]
       # print (l, x, delta)
       gradient = numpy.outer(x, delta[1:])
-      self.AverageGradients[l] = numpy.Add(self.AverageGradients[l], gradient)
+      self.AverageGradients[l] = numpy.add(self.AverageGradients[l], gradient)
     
     # show that the new prediction will be better to help debug
     # self.predict(self.Xs[0])
     # print ("new prediction:", self.oracle)
 
   def averageSumOfGradients(self, size):
-  	for matrix in self.AverageGradients:
-  		matrix = numpy.true_divide(matrix, size)
+  	for i in range(len(self.AverageGradients)):
+  		self.AverageGradients[i] = numpy.true_divide(self.AverageGradients[i], size)
 
   def update_weights(self):
   	for l in range(len(Ws)):
@@ -168,16 +169,19 @@ class MiniNN:
     """
     for epoch in range(max_iter):   
       print ("epoch", epoch, end=":")
-      self.averageGradients(self.Ws)
+      self.setAveGradientsZero(self.Ws)
 
-      for s in self.samples:
+      for s in self.samples[:1]:
       	s.clearLayers()
       	self.predict(s) # forward 
 
       	self.get_deltas(s)
       	
+      	print(s.getOutputPrediction())
+      	self.update_AverageGradientWeights(s)
+      
 
-      self.averageSumOfGradients(len(samples))	
+      self.averageSumOfGradients(1)	
       self.update_weights()
       # self.get_deltas(y) # backpropagate
       # self.update_weights() # update weights, and new prediction will be printed each epoch
@@ -211,6 +215,9 @@ class Sample:
 
 	def getDeltas(self):
 		return self.deltas
+
+	deg clearDeltas(self):
+		self.deltas = []
 
 
 if __name__ == "__main__": 
@@ -254,13 +261,10 @@ if __name__ == "__main__":
 
   MNN = MiniNN(Ws=Ws, SampleList = samps) # initialize an NN with the transfer matrixes given, as well as the samples to train the NN
   print("Training...")
-  MNN.train(max_iter = 1)
+  MNN.train(max_iter = 10)
 
 
 
-
-
-# In[ ]:
 
 
 
