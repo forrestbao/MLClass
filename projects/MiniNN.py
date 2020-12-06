@@ -87,9 +87,7 @@ class MiniNN:
     X_0: 1-D numpy array, the input vector, AUGMENTED
     """
     Xs = [X_0]; X=X_0
-    # print (self.Ws)
     for W in self.Ws:
-      # print (W,X, self.phi)
       X = self.feedforward(X, W, self.phi)
       Xs.append(X)
     self.Xs = Xs
@@ -131,22 +129,6 @@ class MiniNN:
       W, X = self.Ws[l], self.Xs[l]
       delta = self.backpropagate(delta, W, self.psi, X)
       self.Deltas.insert(0, delta) # prepend, because BACK-propagate
-
-  def print_progress(self):
-    """print Xs, Deltas, and gradients after a sample is feedforwarded and backpropagated 
-    """
-    print ("\n prediction: ", self.oracle)
-    for l in range(len(self.Ws)+1): 
-      print ("layer", l)
-      print ("        X:", self.Xs[l], "^T")
-      print ("    delta:", self.Deltas[l], "^T")
-      if l < len(self.Ws): # last layer has not transfer matrix
-        print ('        W:', numpy.array2string(self.Ws[l], prefix='        W: '))
-      try: # because in first feedforward round, no gradient computed yet
-           # also, last layer has no gradient
-        print(' gradient:', numpy.array2string(self.Grads[l], prefix=' gradient: '))
-      except: 
-        pass
       
   def update_weights(self):
     """ Given a sequence of Deltas and a sequence of Xs, compute the gradient of error on each transform matrix and update it using gradient descent 
