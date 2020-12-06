@@ -207,8 +207,10 @@ class MiniNN:
           self.get_gradient()  # get batch gradient
         for l in range(self.L):
           p = 1  # learning rate
-
-          self.Ws[l] -= p * self.gradient[l]  # batch gradient descent
+          if self.L2:  # L2 regularization
+            self.Ws[l] = (1 - p * self.lambd) * self.Ws[l] - p * self.gradient[l]
+          else:
+            self.Ws[l] -= p * self.gradient[l]  # batch gradient descent
 
 if __name__ == "__main__":
 
