@@ -129,27 +129,22 @@ class MiniNN:
       W, X = self.Ws[l], self.Xs[l]
       delta = self.backpropagate(delta, W, self.psi, X)
       self.Deltas.insert(0, delta) # prepend, because BACK-propagate
-      
-  def update_weights(self):
-    """ Given a sequence of Deltas and a sequence of Xs, compute the gradient of error on each transform matrix and update it using gradient descent 
 
-    Note that the first element on each delta is on the bias term. It should not be involved in computing the gradient on any weight because the bias term is not connected with previous layer. 
-    """
-    self.Grads = []
-    for l in range(len(Ws)): # l is layer index
-      x = self.Xs[l]
-      delta = self.Deltas[l+1]
-      # print (l, x, delta)
-      gradient = numpy.outer(x, delta[1:])
-      self.Ws[l] -= 1 * gradient  # descent! 
+  def get_gradient(self):
+      """ Given a sequence of Deltas and a sequence of Xs, compute the gradient of error on each transform matrix and update it using gradient descent
 
-      self.Grads.append(gradient)
-    
-    # show that the new prediction will be better to help debug
-    # self.predict(self.Xs[0])
-    # print ("new prediction:", self.oracle)
+      Note that the first element on each delta is on the bias term. It should not be involved in computing the gradient on any weight because the bias term is not connected with previous layer.
+      """
 
-    # check the correct rate of NN
+      # get the gradient of each sample in batch then accumulate the gradient
+      for l in range(self.L):  # l is layer index
+        x = self.Xs[l]
+        delta = self.Deltas[l + 1]
+        # print (l, x, delta)
+        gradient = numpy.outer(x, delta[1:])
+        self.gradient[l] += gradient / self.batch
+
+        # check the correct rate of NN
 
   def test(self, x, y):
     score = 0
@@ -198,14 +193,22 @@ class MiniNN:
     self.Ws = Ws
     # print(Ws)
 
-    for epoch in range(max_iter):   
-      print ("epoch", epoch, end=":")
-      self.predict(x) # forward 
-      print (self.oracle)
-      self.get_deltas(y) # backpropagate
-      if verbose:
-        self.print_progress()   
-      self.update_weights() # update weights, and new prediction will be printed each epoch
+    for epoch in range(max_iter):
+      # print ("epoch", epoch, end=":")
+      for slice in gen_batches(sample_count, self.batch):
+        # print(slice)
+        x_batch = x[slice]  # slice the samples and labels to the same size
+        y_batch = y[slice]
+        self.gradient = [0] * self.L
+        for k, xx in enumerate(x_batch):
+          self.predict(xx)  # forward
+          # print(self.oracle, y_batch[k])
+          self.get_deltas(y_batch[k])  # backpropagate
+          self.get_gradient()  # get batch gradient
+        for l in range(self.L):
+          p = 1  # learning rate
+
+          self.Ws[l] -= p * self.gradient[l]  # batch gradient descent
 
 if __name__ == "__main__":
 
