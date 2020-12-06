@@ -22,6 +22,10 @@
 
 import numpy 
 import numpy.random
+from sklearn.utils import gen_batches
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 numpy.set_printoptions(precision=3, floatmode="fixed")
 
 class MiniNN: 
@@ -45,15 +49,20 @@ class MiniNN:
     """
     return x * (1-x)
 
-  def __init__(self, Ws=None):
+  def __init__(self, hidden_layer=[5], L2=False, lambd=0.01, batch_size=1, seed=1):
     """Initialize an NN
 
-    hidden_layer: does not include bias 
+    hidden_layer: does not include bias
     """
-    self.Ws = Ws
-    self.L = len(Ws) # number of layers 
-    self.phi = self.logistic # same activation function for all neurons
+    # replace Ws by hidden_layer
+    self.hidden_layer = hidden_layer  # hidden layers
+    self.L = len(hidden_layer) + 1  # number of transfer matrix
+    self.phi = self.logistic  # same activation function for all neurons
     self.psi = self.logistic_psi
+    self.L2 = L2  # L2 regularization
+    self.lambd = lambd  # hyperparameter of L2 regularization
+    self.batch = batch_size  # size of batch
+    self.seed = seed  # seed of random matrix
 
   def feedforward(self, x, W, phi):
       """feedforward from previou layer output x to next layer via W and Phi
@@ -158,7 +167,7 @@ class MiniNN:
     # self.predict(self.Xs[0])
     # print ("new prediction:", self.oracle)
 
-  def train(self, x, y, max_iter=100, verbose=False):
+  def train(self, x, y, max_iter=100):
     """feedforward, backpropagation, and update weights
     The train function updates an NN using one sample. 
     Unlike scikit-learn or Tensorflow's fit(), x and y here are not a bunch of samples. 
@@ -169,6 +178,30 @@ class MiniNN:
     y: 1-D numpy array, the target
 
     """
+
+    # determine the input layer size and output layer size accroding to x and y
+    if len(x.shape) == 1:
+      lenx = len(x) - 1
+      leny = len(y)
+      sample_count = 1
+    else:
+      lenx = x.shape[1] - 1
+      leny = y.shape[1]
+      sample_count = len(x)
+
+    self.sample_count = sample_count
+    self.hidden_layer.append(leny)
+    self.hidden_layer.insert(0, lenx)  # insert input layer and output layer
+
+    # initialize transfer matrix, use random matrix to form
+    Ws = []
+    numpy.random.seed(self.seed)
+    for i in range(self.L):
+      Wi = numpy.random.random((self.hidden_layer[i] + 1, self.hidden_layer[i + 1]))
+      Ws.append(2 * Wi - 1)
+    self.Ws = Ws
+    # print(Ws)
+
     for epoch in range(max_iter):   
       print ("epoch", epoch, end=":")
       self.predict(x) # forward 
@@ -178,41 +211,26 @@ class MiniNN:
         self.print_progress()   
       self.update_weights() # update weights, and new prediction will be printed each epoch
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
 
-  # Transfer matrix from input layer to hidden layer 1
-  W_0 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
-                      [.7, -.4],
-                      [-.2, .3]]))
+  # this part use mak_classification to create samples for the test. the sample size 100, 2 classes.
+  n = 2
+  x, y = make_classification(n_samples=1000, n_features=2, n_informative=n, n_classes=n, n_redundant=0)
+  bias = numpy.ones((len(x), 1))
+  x_0 = numpy.hstack((bias, x))
+  y_0 = numpy.zeros((len(y), n))
+  for i in range(len(y)):
+    y_0[i][y[i]] = 1
 
-  # Transfer matrix from hidden layer 1 to hidden layer 2
-  W_1 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
-                      [.7, -.4],
-                      [-.2, .3]]))
+  # slpit samples into train and test
+  x_train, x_test, y_train, y_test = train_test_split(x_0, y_0, test_size=0.2, random_state=1)
 
-  # Transfer matrix from hidden layer 2 to input layer
-  W_2 = numpy.array(([[-.3], # the first row maps the bias term to the two neurons of the next layer
-                      [.5],
-                      [.1]] ))
+  hidden = [8]
+  MNN = MiniNN(hidden_layer=hidden, L2=False, lambd=0.01, batch_size=1, seed=1)  # initialize an NN
 
-  Ws = [W_0, W_1, W_2]
-  MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
-
-  # The training sample
-  x_0 = numpy.array(([1., 1, 0])) # just one sample, augmented 
-  y_0 = numpy.array(([1])) # We support only one dimension in the output
-                          # this number must be between 0 and 1 because we used logistic activation and cross entropy loss. 
-
-  # To use functions individually 
-  # MNN.predict(x_0)
-  # MNN.get_deltas(y_0)
-  # MNN.print_progress()
-  # MNN.update_weights()
-  # MNN.print_progress()
-
-  # Or a recursive training process 
-  MNN = MiniNN(Ws=Ws) # re-init
-  MNN.train(x_0, y_0, max_iter=20, verbose=False)
+  MNN.train(x_train, y_train, max_iter=10)
+  print("train:")
+ 
 
 
 
