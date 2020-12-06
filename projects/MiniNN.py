@@ -167,6 +167,20 @@ class MiniNN:
     # self.predict(self.Xs[0])
     # print ("new prediction:", self.oracle)
 
+    # check the correct rate of NN
+
+  def test(self, x, y):
+    score = 0
+    # print("test:")
+    for i in range(len(x)):
+      self.predict(x[i])
+      predict = self.oracle
+      # print(predict, y[i])
+      index = numpy.argmax(predict)
+      if y[i][index] == 1:
+        score += 1
+    print(score / len(x))
+
   def train(self, x, y, max_iter=100):
     """feedforward, backpropagation, and update weights
     The train function updates an NN using one sample. 
@@ -230,7 +244,16 @@ if __name__ == "__main__":
 
   MNN.train(x_train, y_train, max_iter=10)
   print("train:")
- 
+  MNN.test(x_train, y_train)
+  print("test:")
+  MNN.test(x_test, y_test)
+
+  # plot the samples
+  c1 = x[y == 0]
+  c2 = x[y == 1]
+  plt.plot(c1[:, 0], c1[:, 1], '.b')
+  plt.plot(c2[:, 0], c2[:, 1], '.r')
+  plt.show()
 
 
 
