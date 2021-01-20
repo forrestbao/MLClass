@@ -1,6 +1,6 @@
 # Project idea 1: Organic chemistry 
 
-Organic chemistry is hard. So let's ML tackle it. 
+Organic chemistry is hard. So let ML tackle it. 
 
 For **due date**, see the [readme file](./readme.md). 
 
