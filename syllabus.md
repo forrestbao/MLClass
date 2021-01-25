@@ -27,26 +27,26 @@ OFFICE HOURS: After each meeting of the class, or by appointment.
 
 - Homework (including programming assignments): 30% for 574 and 50% for 474, weekly or biweekly depending on the topic
 - Exams (middle-term and final): 50%
-- Project: 20% for 574 and 20% bonus for 474
+- Project: 20% for 574 and 20% bonus for 474 [Candidate project ideas](../projects)
 
 ## MEETING SCHEDULE
 
 | Week | Topic |
 |:--:|:--|
-|1| Introduction (history, background, simple examples),math and Python warm-up |
+|1| Introduction (history, background, simple examples), math and Python warm-up |
 |2| Linear classifiers (Fisher, perceptron, MSE, gradient decent) | 
-|3| Regression | 
+|3| Workflow of ML, cross-validation, regularization |
 |4| SVMs |
-|5| Decision trees, and random forests |
+|5| Regression | 
+|6| Decision trees, and random forests |
 | | **Midterm-exam**  |
-|6| Neural networks, and deep learning | 
-|7| Unsupervised learning, clustering |
-|8| Reinforcement learning |
-|9| Ensemble learning, PCA, regularization, cross-validation |
-|10| ML applications in NLP, SP, and CV |
-|11| ML and hardware (ML from sensory data and ML on microcontrollers) |
-|12| Project demonstration and Q&A
-|13| Project demonstration and Q&A
+|7| Neural networks | 
+|8| Deep learning |
+|9| Unsupervised learning, clustering |
+|10| Reinforcement learning |
+|11| Ensemble learning, PCA, |
+|12| ML and hardware (ML from sensory data and ML on microcontrollers), Selected applications of ML in other areas |
+|13| TBD and Q&A
 |finals week| **final exam** |
 
 # On free expression
