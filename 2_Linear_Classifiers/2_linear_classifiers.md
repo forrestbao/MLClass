@@ -20,6 +20,152 @@ header-includes: |
      \setlength{\leftmargini}{0pt}
 ---
 
+# Vectors
+<!-- - Quite often, some operations are applied to a batch of numbers in parallel, 
+  or to two batches of numbers with one-to-one correspondence. 
+  -->
+- Imagine a grocery store selling the following items: 
+  - juice, at 1 dollar per bottle
+  - sugar, at 2 dollars per bag
+  - tomatoes, at 3 dollars each  
+- Now customer A wants to buy 2 bottles of juice, 3 bags of sugar, and 5 tomatoes. 
+  The total is $1\times 2 +  2\times 3 + 3 \times 5=23$ 
+- For any customer who wants to buy $x$ bottles of juice, $y$ bags of sugar, and $z$ tomatoes, 
+  the total is $1x + 2y + 3z$. 
+- We see two groups of numbers here: the unit prices and the amounts of items. 
+  And there is always a one-to-one correpondence between them when computing the total price. 
+- For each of the groups, we could use an \emph{ordered} list to represent the numbers. 
+- Hence, we introduce the concept of \emph{vectors}. For example, the vector $\mathbf{u}=[u_0, u_1, u_2]$ for unit prices and the vector $\mathbf{v}=[v_0, v_1, v_2]$ for respective amounts. A number in a vector is called an \emph{element}. 
+- Note that we use bold font for vectors. The notation $\vec{u}$ is also used. 
+
+# Vectors II
+- The sum of pairwise products, e.g., the total price in the grocery example, is called the \emph{dot product} denoted as $\mathbf{u}\cdot \mathbf{v}$. 
+- For example, for customer A, the total is $[1,2,3]\cdot [2,3,5]= 23$ where $\mathbf{u}=[1,2,3]$ (dollars) and $\mathbf{v}=[2,3,5]$ (amounts).
+- Generalize: any expression of the form $$\sum_i x_iy_i = x_1y_1+x_2y_2+ \dots$$ is the dot product $\mathbf{x}\cdot \mathbf{y}$ between two vectors $\mathbf{x} = [x_1, x_2, \dots]$ and $\mathbf{y} = [y_1, y_2, \dots]$. 
+- It is also called....\emph{the weighted sum}. 
+- More examples of dot product: taxi (start price, mileage, time, tips), cloud service (storage, instance, badnwidth)
+- In contrast to a vector,  a \emph{scalar} has only one number. 
+- A vector resembles a 1-D array in computer programming. Demo. 
+
+# Dot product 
+
+In numpy: 
+
+```python3
+In [5]: numpy.array((1,2,3))@numpy.array((4,5,6))
+Out[5]: 32
+
+In [6]: numpy.array((1,2,3)).dot(numpy.array((4,5,6))) 
+Out[6]: 32
+
+In [7]: numpy.matmul(numpy.array((1,2,3)), \
+                     numpy.array((4,5,6)))
+Out[7]: 32
+```
+
+[Dot and matmul differ](https://numpy.org/doc/stable/reference/generated/numpy.matmul.html). 
+
+In TF: matmul
+
+# Why vectors matter in machine learning? 
+- Earlier we mentioned that each sample is often characterized by a set of factors known as \emph{feature values}, e.g., [factors related to house price](https://scikit-learn.org/stable/datasets/toy_dataset.html#boston-dataset), [sizes of parts for flowers](https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-dataset), or just a sequence of raw information unit, e.g., [pixels of hardwritten digits](https://www.tensorflow.org/datasets/catalog/mnist)
+- For an ML model, the input is a vector -- order of elements matters. 
+- The simplest model is a weighted sum of such vector. Hence we need dot products. 
+  - For example, predicting the fuel efficiency of a car from the number of seats and the price. 
+- The batched multiplicaton and summation operations can be very predicable and efficient if parallelized or vectorized. Hence, GPU and SIMD are used widely in ML. (See [FMA](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation#Fused_multiply%E2%80%93add))
+- ``Computer science is no more about computers than astronomy is about telescopes.'' -- Edsger Dijkastra
+
+# Matrixes (matrices)
+- In the grocery store example, what if we want to compute the total prices for two customers at once? 
+- We introduce \emph{matrixes} which can be considered as the stacked vectors. 
+- For example, Customer A's amount vector is $\mathbf{v_A}=[2,3,5]$, and Customer B's amount vector is $\mathbf{v_B}=[4, 2, 1]$. Their totals are $\mathbf{u} \cdot \mathbf{v_A}$ and $\mathbf{u} \cdot \mathbf{v_B}$, respecitvely. 
+- We could stack $\mathbf{v_A}$ and $\mathbf{v_B}$ into a matrix of two \emph{rows} and three \emph{columns}
+  $$\mathbf{V}=
+  \begin{pmatrix}
+  2 & 3 & 5 \\
+  4 & 2 & 1 
+  \end{pmatrix}
+  $$
+- And then (tentatively!!!)
+  $$\mathbf{u} \cdot \mathbf{V}=
+    \mathbf{u} \cdot 
+                      \begin{pmatrix}
+                      \mathbf{v_A} \\
+                      \mathbf{v_B}
+                      \end{pmatrix}
+    =
+  \begin{pmatrix}
+  [1,2,3] \cdot [2,3,5]\\
+  [1,2,3] \cdot [4,2,1]
+  \end{pmatrix}
+  = 
+  \begin{pmatrix}
+  23\\
+  11
+  \end{pmatrix}
+  <!-- \label{eq:wrong_matrix} -->
+  $$
+- In principle, yes. In notation, no. 
+
+# Matrixes II 
+- Matrixes are derived from systems of linear equations. 
+- For example, the system of linear equations ($x$ and $y$ are unknowns)
+  $\begin{cases} 
+  a_1x + b_1y = & c_1 \\
+  a_2x + b_2y = & c_2
+  \end{cases}$
+  can be written into matrix representation as
+  $\begin{pmatrix}
+  a_1 & b_1\\
+  a_2 & b_2 
+  \end{pmatrix}
+  \begin{pmatrix}
+  x\\ y 
+  \end{pmatrix}
+  = 
+  \begin{pmatrix}
+  c_1 \\c_2
+  \end{pmatrix}$
+- Caught your eyes? $x$ and $y$ are written vertically. 
+- In matrix multiplication, the second matrix is sliced vertically, and a vertical slice is dot-produced with rows of the first matrix to populate one column in the resulting matrix. 
+- The proper way to write the grocery totals: 
+  $$\mathbf{u} \cdot \mathbf{V}^T=
+    \mathbf{u} \cdot 
+                      \begin{pmatrix}
+                      \vertbar & \vertbar \\
+                      \mathbf{v_A}^T  & 
+                      \mathbf{v_B}^T \\
+                      \vertbar & \vertbar 
+                      \end{pmatrix}
+    =
+  \begin{pmatrix}
+  [1,2,3] \cdot [2,3,5]^T\\
+  [1,2,3] \cdot [4,2,1]^T
+  \end{pmatrix}
+  = 
+  \begin{pmatrix}
+  23 &  11
+  \end{pmatrix}
+  <!-- \label{eq:wrong_matrix} -->
+  $$
+- What is the superscript T? 
+
+# Matrixes III 
+- The superscript T means \emph{transpose}, basically swapping the row and the column. 
+- Allow us to extend the definition of a vector: a vector is a matrix of only one column (a \emph{column vector}) or one row (\emph{row vector}). 
+- The vertical bars in previous slide do not mean anything numerical. They simply indicate that $v_A$ or $v_B$ is a column vector, and $V$ is the result of horizontally stacking them (Demo: \texttt{hstack} and \texttt{vstack}). 
+- Due to ML convention, any vector is a column vector in this class. And the dot product between any two (column) vectors $\mathbf{u}$ and $\mathbf{v}$ will be written as $\mathbf{u}^T \mathbf{v}$ or $\mathbf{v}^T \mathbf{u}$
+- Given two matrixes $\mathbf{A}$ and $\mathbf{B}$, $AB$ is not always the same as $BA$. 
+
+# Tensors
+- In computers, matrixes and vectors are special cases of tensors.
+- row-major vs column-major 
+- axses 
+- Hadamard product
+- Outer/tensor product 
+- [Broadcast](https://numpy.org/doc/stable/user/basics.broadcasting.html), tensor product 
+- Squeeze 
+
 # The hyperplane
 
 :::::::::::::: columns
