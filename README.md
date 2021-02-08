@@ -24,8 +24,13 @@ There maybe delays in PDF syncing.
 10. Ensemble Learning
 11. CV, NLP, tiny ML
 
+# How to audit (for ISU students only) 
+
+Now students can request to audit a course electronically by going to AccessPlus, clicking on the Student tab, clicking on Registrar Forms, and clicking  "Schedule Change Form". They will need to attach an e-mail from their instructor saying they have permission to audit the course. After attaching documentation, the form can then be routed for approval. 
+
 ## Setups hint for TAs
 ### JupyterHub/TLJH
 To setup the Jupyter Hub (TLJH), follow [this instruction](https://tljh.jupyter.org/en/latest/install/custom-server.html). 
 If run into errors, try [this](https://github.com/jupyterhub/the-littlest-jupyterhub/issues/438) first. 
 Accessible only from on-campus or on-VPN. 
+
