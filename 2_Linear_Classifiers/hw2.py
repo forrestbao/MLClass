@@ -29,6 +29,28 @@ def generate_data(Para1, Para2, seed=0):
     X = numpy.transpose(X)
     return X, Y 
 
+def plot_data_hyperplane(X, y, w, filename):
+    """
+    X: 2-D numpy array, each row is a sample, not augmented 
+    y: 1-D numpy array, the labels 
+    w: 1-by-3 numpy array, the last element of which is the bias term
+
+    Examples
+    --------------
+
+    >>> X = numpy.array([[1,2,3], \
+                         [4,5,6], \
+                         [7,8,9]]) 
+    >>> y = numpy.array([1,-1,1])
+    >>> w = [1, 2, -10]
+    >>> filename = "test.png"
+    >>> plot_data_hyperplane(X, y, w, filename)
+    >>> hashlib.md5(open(filename, 'rb').read()).hexdigest()
+    '9df878adf0a4f5276ade67e61d00a123'
+    """
+
+    # your code here
+
 def plot_mse(X, y, filename):
     """
     X: 2-D numpy array, each row is a sample, not augmented 
@@ -54,11 +76,10 @@ def plot_mse(X, y, filename):
 
     # your code here
     
-    # limit the range of plot to the dataset only
-    matplotlib.pyplot.xlim(numpy.min(X[:,0]), numpy.max(X[:,0]))
-    matplotlib.pyplot.ylim(numpy.min(X[:,1]), numpy.max(X[:,1]))
-    matplotlib.pyplot.savefig(filename)
-    matplotlib.pyplot.close('all') # it is important to always clear the plot
+
+    # Plot after you have w. 
+    plot_data_hyperplane(X, y, w, filename)
+
     return w
 
 def plot_fisher(X, y, filename): 
@@ -86,11 +107,9 @@ def plot_fisher(X, y, filename):
 
     # your code here 
 
-    # limit the range of plot to the dataset only
-    matplotlib.pyplot.xlim(numpy.min(X[:,0]), numpy.max(X[:,0]))
-    matplotlib.pyplot.ylim(numpy.min(X[:,1]), numpy.max(X[:,1]))
-    matplotlib.pyplot.savefig(filename)
-    matplotlib.pyplot.close('all') # it is important to always clear the plot
+
+    # Plot after you have w. 
+    plot_data_hyperplane(X, y, w, filename)
     return w
 
 
