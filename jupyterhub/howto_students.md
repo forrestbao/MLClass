@@ -1,57 +1,47 @@
-# How to use Jupyter Hub 
+# Jupyter hub instructions
+If you have problems setting up Python, Numpy, or Matplotlib on your own computer, you can launch your own Jupyter server on ISU's infra. Go to https://class-jupyterhub.its.iastate.edu  and follow the instructions here https://www.hpc.iastate.edu/guides/jupyterhub
 
-If you run into issues, [create a ticket here](https://github.com/forrestbao/MLClass/issues) 
-The instructor and the TAs will assist you. 
-You are also more than welcome to help the entire class by editing this user guide and creating pull requests. 
+You need to connect to ISU's VPN to use it. All packages needed for this class, numpy, scipy, matplotlib, and tensorflow are installed. Just select the proper kernel (see below). 
 
-## 0. Networking
-First connect to ISU VPN or connect to a network on campus. 
-Then open http://atan-bao.cs.iastate.edu:8080 in your web browser. 
+# (Re-)Launch your server
 
-## 1. Usernames and passwords
-Upon open the link above, you will see a login page.
-Your username is your lastname.firstname (**both lowercase**) as they appear on Canvas. If you have trouble, please email the TA Roger Ge Luo. 
-Create a password for yourself. Since you only enter it once, and keystrokes are replaced with asterisks immediately, enter carefully and remember it. 
+The interface has changed slightly from what was in the instruction above. This section here is to clarify the discrepancy. 
 
 If you see a Launch Server page like below, just click `Launch Server`. 
 
 ![](./launch.png)
 
-## 2. Uploading your scripts (`.py` or `.ipynb`)
-Upon login, your Jupter Server shall start automatically presenting you an interface below. 
+ You will see a window like below: 
 
+![](./spawn_server.png)
+
+Then you need to select a node type: 
+* `short` is generic - normally this is what you should select. 
+* `mem` is for memory-intensive cases, which is not normally needed in this class. 
+* `debug` unsure. Avoid for now. 
+* `gpu` is when you want to use GPU computing via CUDA -- needed toward the end of the semester. 
+
+For Number of Cores, just select 1 in most cases. 
+
+For Job Duration, set as 1 hour. When the 1 hour expires, you can come back to  https://class-jupyterhub.its.iastate.edu  to re-launch your server. Rest assured that all your files are there. 
+
+# Select the correct Jupyter kernel 
+
+Once spawened, you will see an interface like below where you can create new notebooks or upload existing notebooks (`*.ipynb`) or Python scripts (`*.py`). It's important to ensure that the correct Jupyter kernel is used to execute them. 
+
+When creating a new notebook, please select the `coms474_574-CPU` or `coms474_574-GPU` (if you created the node type as GPU in the previous step ). This will associate your newly created notebook with that kernel - until you change it. 
+
+You may also upload files by clicking the `Upload` button. Files uploaded will appear under `Files` tab. 
 ![](./usage_annotated.png)
 
-You may upload your scripts by clicking the `Upload` button. 
-Files uploaded will appear to the left, like `hw3_solution.py`
-You can upload either `.py` scripts or `.ipynb` notebooks. 
+To select the kernel for a Jupyter notebook, first open the Jupyter notebook. Then select a proper kernel as below: 
+![](./select_kernel_isu.png) Again, select  `coms474_574-CPU` for most of the semester or `coms474_574-GPU` only when need to use GPUs via CUDA.
 
-## 3. Using `.ipynb` Jupyter/IPython Notebooks
+You may import functions defined in Python scripts (`*.py`) in a Jupyter notebook, or execute the script from an Jupyter notebook like `%run your_script.py`. However, do not run the script from Terminal as the COMS474/574 kernel is not accessible from Terminal. 
 
-For a Jupyter/Ipython notebook, click the file link shall open it. And you can edit and execute each cell as on your own computer. 
+# What you should NOT do
+You should not need to install new pacakages. So skip the "Creating custom conda environments" section in [this link](https://www.hpc.iastate.edu/guides/jupyterhub).  
 
-For how to run `doctest` in IPython notebook, see [this notebook](./doctest_demo.ipynb) 
+Do not do things prohibited on ISU computers. 
 
-## 4. Running `.py` Python scripts
-To run a `.py` script, in the interface above, click the `New` button, and then `Terminal` on the pull-down menu. 
-
-A UNIX shell shall open for you in a newly opened/popped webpage. First, run `ls` to see whether the file is there. 
-Then, you can run it. You can even use `nano` or `vim` to edit it. 
-
-![](./terminal.png)
-
-## 5. Create new Python script or Jupyter/IPython notebooks
-
-You may also directly create files on the Jupyter server. Just click the `New` button in Section 2 above and select the proper options. 
-
-## 6. If your server crashes
-
-Go to the interface in Section 2. Click `Control Panel` to restart your server. 
-Don't be afraid of impacting the whole class. It only restarts your own virtual Jupyter server. 
-
-## 7. Advanced usages
-
-You can, even connect to the server via remote tools, such as `ssh` or [Remote Development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) of Microsoft VS Code. 
-The username is `jupyter-{firstname}.{lastname}` while the password is the one you set up in Section 1. 
-
-## $\infty$. Lastly, do not do bad things on this server. 
+Do not do evil things, such as developing NLP algorithms to assist a foreign government to censor the Internet. 
