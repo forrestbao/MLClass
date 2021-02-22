@@ -39,6 +39,10 @@ To select the kernel for a Jupyter notebook, first open the Jupyter notebook. Th
 
 You may import functions defined in Python scripts (`*.py`) in a Jupyter notebook, or execute the script from an Jupyter notebook like `%run your_script.py`. However, do not run the script from Terminal as the COMS474/574 kernel is not accessible from Terminal. 
 
+# Use `doctest` in Jupyter notebooks
+
+See [this demo notebook](./doctest_demo.ipynb)
+
 # What you should NOT do
 You should not need to install new pacakages. So skip the "Creating custom conda environments" section in [this link](https://www.hpc.iastate.edu/guides/jupyterhub).  
 
