@@ -29,13 +29,17 @@ For Job Duration, set as 1 hour. When the 1 hour expires, you can come back to  
 
 Once spawened, you will see an interface like below where you can create new notebooks or upload existing notebooks (`*.ipynb`) or Python scripts (`*.py`). It's important to ensure that the correct Jupyter kernel is used to execute them. 
 
+![](./usage_annotated.png)
+
 When creating a new notebook, please select the `coms474_574-CPU` or `coms474_574-GPU` (if you created the node type as GPU in the previous step ). This will associate your newly created notebook with that kernel - until you change it. 
 
 You may also upload files by clicking the `Upload` button. Files uploaded will appear under `Files` tab. 
-![](./usage_annotated.png)
 
 To select the kernel for a Jupyter notebook, first open the Jupyter notebook. Then select a proper kernel as below: 
-![](./select_kernel_isu.png) Again, select  `coms474_574-CPU` for most of the semester or `coms474_574-GPU` only when need to use GPUs via CUDA.
+
+![](./select_kernel_isu.png) 
+
+Again, select  `coms474_574-CPU` for most of the semester or `coms474_574-GPU` only when need to use GPUs via CUDA.
 
 You may import functions defined in Python scripts (`*.py`) in a Jupyter notebook, or execute the script from an Jupyter notebook like `%run your_script.py`. However, do not run the script from Terminal as the COMS474/574 kernel is not accessible from Terminal. 
 
