@@ -83,9 +83,6 @@ classoption:
 -   Note that $\mathbf{x}_k$ is not necessarily the $k$-th training
     sample due to the loop.
 
-# 
-
-Now let's begin the SVM journey. 
 
 # An example of single-sample preceptron algorithm
 
@@ -187,6 +184,11 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 :::
 ::::::::::::::
 
+# 
+
+Now let's begin the SVM journey. 
+
+
 # Getting ready for SVMs
 
 -   Earlier our discussion used the augmented definition of linear
@@ -223,14 +225,14 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 
 ::: {.column width="65%"}
 1.   Let the point on the hyperplane closest to $\mathbf{z}$ be $\mathbf{x}$. Define
-    $\mathbf{y} = \mathbf{x} - \mathbf{z}$.
+    $\mathbf{z} = \mathbf{x} + \mathbf{y}$.
 
 2.   Because both $\mathbf{y}$ and $\mathbf{w}$ are perpendicular to the
     hyperplane, we can rewrite
     $\mathbf{y} = v \frac{\mathbf{w}}{||\mathbf{w}||}$, where $v$ is the
-    Euclidean distance from $\mathbf{z}$ to $\mathbf{x}$ (what we are trying to get) and
+    Euclidean distance from $\mathbf{z}$ to $\mathbf{x}$ (what we are trying to get), 
     $\frac{\mathbf{w}}{||\mathbf{w}||}$ is the unit vector pointing at
-    the direction of $\mathbf{w}$.
+    the direction of $\mathbf{w}$, $||\mathbf{w}||$ is the $l^2$ norm of $\mathbf{w}$.
 
 3.   Therefore,
     $\mathbf{z} = \mathbf{x} + v \frac{\mathbf{w}}{||\mathbf{w}||}$.
@@ -291,16 +293,18 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
 ::::::::::::::
 
 :::::::::::::: columns
-::: {.column width="55%"}
+::: {.column width="57%"}
 
 - The idea of an SVM is to find a direction (defined by $\mathbf{w}$) along which closest samples of both classes are apart the most.
 
-- Hence, we want to maximize $\frac{d_1}{||\mathbf{w}||} + \frac{d_2}{||\mathbf{w}||}$, known as the **margin**.
+- **margin**: the strip between $\mathbf{w}^T\mathbf{x} + w_b = d_1$ and  
+$\mathbf{w}^T\mathbf{x} + w_b = - d_2$ where no sample falls into. 
 
 ::: 
 
 ::: {.column width="50%"}
--  Finally: $\begin{cases}
+- Width of the margin $\frac{d_1}{||\mathbf{w}||} + \frac{d_2}{||\mathbf{w}||}$. 
+-  We want to maximize margin width: $\begin{cases}
                \max & \frac{d_1}{||\mathbf{w}||} + \frac{d_2}{||\mathbf{w}||} \\
                s.t. & \mathbf{w}^T\mathbf{x} + w_b - d_ 1\ge 0, \forall \mathbf{x} \in C_{+1} \\
                     & \mathbf{w}^T\mathbf{x} + w_b + d_ 2\le 0, \forall \mathbf{x} \in C_{-1}
@@ -617,3 +621,6 @@ Source: Wikipedia/SVM.
 - In that case, the constraint is the same as that for hard margin linear SVMs: $y_k(\mathbf{w}^T\mathbf{x} + w_b) \ge 0$. 
 
 - The expression $\max(0, 1-y\cdot \hat{y})$ where $y\in\{+1, -1\}$ is the ground truth label and $\hat{y}$ is prediction for a classifier, is called a **hinge loss**. It's "hinge" because as long as the classification is correct, the loss/error is (capped at) 0. 
+
+# Extended reading
+* A Gentle Introduction to Support Vector Machines in Biomedicine, Statnikov et al., AIMA 2019
