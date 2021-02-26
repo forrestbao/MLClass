@@ -138,7 +138,7 @@ For theory part, submit as a PDF file. For programming part, work on the templat
                   [7,8,9]]) # class +1
   y = numpy.array([1,-1,1])
   ```
-  In Problem 7, you need to convert `X` into the augmented and normalized version first. 
+  In Problem 7, you need to convert `X` into the augmented ~~and normalized~~ version first. 
   In Problem 8, you do not need to. 
   
 
