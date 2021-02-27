@@ -40,6 +40,8 @@ $\mathbb{X}=   \begin{pmatrix}
   \end{pmatrix}$, 
   each **row** of which is re-purposed into a normalized and augmented feature vector. The right most column of the new $\mathbb{X}$ should contain only $1$'s and $-1$'s.
 
+5. There is no problem 5. 
+
 ## Programming
 
 A template [`hw2.py`](https://github.com/forrestbao/MLClass/blob/master/2_Linear_Classifiers/hw2.py) is provided. Insert your code into the place marked as `# your code here`. A helper function `generate_data` is included in `hw2.py` to generate data. The test cases are given in docstring in `hw2.py`. To test whether your program works properly, you may take advantage of the `doctest` code in it. Information on `doctest` is given [here](https://docs.python.org/3/library/doctest.html).
@@ -67,7 +69,7 @@ The demo code discussed in class is in [`2_Linear_Classifiers.ipynb`](https://gi
 
     * How to plot in Python: Use the `plot` function provided by the Python module `matplotlib`. [See here](https://matplotlib.org/3.3.4/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot) or re-watch the demo video in class. 
 
-    * How to visualize samples in scatter plot: For each sample `X[i]`, which is a 1-by-2 vector, use its first value as the horizontal coordinate and the second value as the vertical coordinate, e.g., `plot(X[i][0], X[i][1])` -- however, it is very inefficient to loop over samples to plot one each time. A more efficient way is to extract the horizontal and vertical coordinates of many samples into two vector and feed them to `plot` function once, e.g., `plot(A, B)`. A sample `X[i]`'s class is given in corresponding `y[i]`.  Use red circles (e.g., `plot(x,y, 'r0')`) for class +1 and blue circles (e.g., `plot(x,y,'bo')`) for class -1. 
+    * How to visualize samples in scatter plot: For each sample `X[i]`, which is a 1-by-2 vector, use its first value as the horizontal coordinate and the second value as the vertical coordinate, e.g., `plot(X[i][0], X[i][1])` -- however, it is very inefficient to loop over samples to plot one each time. A more efficient way is to extract the horizontal and vertical coordinates of many samples into two vector and feed them to `plot` function once, e.g., `plot(A, B)`. A sample `X[i]`'s class is given in corresponding `y[i]`.  Use red circles (e.g., `plot(x,y, 'ro')`) for class +1 and blue circles (e.g., `plot(x,y,'bo')`) for class -1. 
     
     * How to separate samples of two classes: 
 
@@ -77,7 +79,7 @@ The demo code discussed in class is in [`2_Linear_Classifiers.ipynb`](https://gi
       X1 = X[y == +1] # samples of class +1
       X2 = X[y == -1] # samples of class -1
       ```
-    * How to plot the hyperplane: First compute the coordinates of two points on the hyperplane (see below). The call `plot` in line style (e.g., `plot(x,y, '-')`) to produce a line going through the two points. Use a black line. 
+    * How to plot the hyperplane: First compute the coordinates of two points on the hyperplane (see below). The call `plot` in line style (e.g., `plot(x,y, 'k-')`) to produce a line going through the two points. Use a black line. 
 
     * Given the equation of a line $\mathbf{w}^T\mathbf{x}=0$, how to compute two points through which we can visualize the line? 
       Let the horizontal coordinates of the two points be 
