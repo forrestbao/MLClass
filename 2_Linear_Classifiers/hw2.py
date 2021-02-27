@@ -46,7 +46,7 @@ def plot_data_hyperplane(X, y, w, filename):
     >>> filename = "test.png"
     >>> plot_data_hyperplane(X, y, w, filename)
     >>> hashlib.md5(open(filename, 'rb').read()).hexdigest()
-    '9df878adf0a4f5276ade67e61d00a123'
+    '242f39ee1cf8d7874609b98de8585fa0'
     """
 
     # your code here
