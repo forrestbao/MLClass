@@ -7,6 +7,8 @@ import matplotlib.pyplot # import again
 import numpy.linalg 
 import numpy.random
 
+import bash
+
 
 def generate_data(Para1, Para2, seed=0):
     """Generate binary random data
@@ -38,9 +40,9 @@ def plot_data_hyperplane(X, y, w, filename):
     Examples
     --------------
 
-    >>> X = numpy.array([[1,2,3], \
-                         [4,5,6], \
-                         [7,8,9]]) 
+    >>> X = numpy.array([[1,2], \
+                         [4,5], \
+                         [7,8]]) 
     >>> y = numpy.array([1,-1,1])
     >>> w = [1, 2, -10]
     >>> filename = "test.png"
