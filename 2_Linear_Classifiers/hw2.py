@@ -7,7 +7,7 @@ import matplotlib.pyplot # import again
 import numpy.linalg 
 import numpy.random
 
-import bash
+import hashlib
 
 
 def generate_data(Para1, Para2, seed=0):
