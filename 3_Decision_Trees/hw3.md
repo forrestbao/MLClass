@@ -11,7 +11,7 @@ Unless otherwise stated,
 
 A precompiled PDF is [here](https://www.dropbox.com/s/zrrxxmc4m4v2oho/hw3.pdf?dl=0)
 
-## Hand computation [4pts]
+## Hand computation [5pts]
 
 **You may develop a program to do the computation for you here.** 
 
@@ -30,7 +30,7 @@ A precompiled PDF is [here](https://www.dropbox.com/s/zrrxxmc4m4v2oho/hw3.pdf?dl
 
 2. [1pt] Do the same for a condition $S2: a\le 5$. Again, intermediate steps need to be shown. 
 
-3. [1pt] Based on the results from the two problems above, compute the expectation for gini impurity for the feature $a$ and the threshold $5$. Please show the estimatons of the probabilities of both conditions, i.e., $P(a>5)$ and $P(a\le 5)$. If you just show a final result, no point. 
+3. [2pt] Based on the results from the two problems above, compute the expectation for gini impurity for the feature $a$ and the threshold $5$. Please show the estimatons of the probabilities of both conditions, i.e., $P(a>5)$ and $P(a\le 5)$. If you just show a final result, no point. 
 
 4. [1pt] Using the decision tree below, decide the classification outcomes for all samples in Problem 1. Left branch is True and right branch is False. Present your result as a two-column table. 
 
@@ -51,7 +51,7 @@ A precompiled PDF is [here](https://www.dropbox.com/s/zrrxxmc4m4v2oho/hw3.pdf?dl
     | 1       |  ? |  
     | 2       |  ? |  
 
-## Programming [6pts]
+## Programming [5pts plus 3 bonus points]
 
 Please work from a provided file `hw3.py` and just upload this file. 
 
@@ -82,18 +82,17 @@ Please work from a provided file `hw3.py` and just upload this file.
     Note that there may be no sample satisfying a comparison expression at all. In such cases, when computing $Pr(class=s|S)$, it will result in division by zero. To avoid that, please set $Pr(class=s|S)$ to a very small number `numpy.finfo(float).eps` when it is zero. AND, in such a case, the gini impurity should be 1 because $Pr(class=c|S)$ is zero for either class. 
 
     
-6. [2pt] **The expectation of Gini impurity.** 
+6. [3pt] **The expectation of Gini impurity.** 
     Turn the computational steps you did in Problem 3 into the function `estimate_gini_impurity_expectation` that computes the expectation of Gini impurity given 
     * values of a feature on a set of samples,
     * a threshold,
     * and, labels corresponding to the samples. 
 
-7. [bonus, 2pt] **The split of a node**
+7. [bonus, 3pt] **The split of a node**
     Each node of a decision tree is a comparison on a feature against a threshold. To determine the feature and the threshold, a common practice is a grid search. Search over every feature, against a set of thresholds. In the end, pick the combination of feature and threshold that minimize the expectation of Gini impurity. The function to implement in this problem is `grid_search_split_midpoint`. 
 
     There are many ways to establish the thresholds. Here we use a common practice that for each feature, the thresholds are the mindpoints of any two consecutive values. For example, if the values on a feature is `[5,4,2,1,3]`, then the thresholds are `[1.5, 2.5, 3.5, 4.5]`. Note that because values on features differ (e.g., in feature 1, `[1,2,3,4,5]` and in feature 2, `[0.1, 0.2, 0.9, 0.1, -0.8]`]), thresholds for features differ. To help you start, the thresholds for each feature are constructed in the function `grid_search_split_midpoint` in `hw3` already. So you can directly make use of the variable `thresholds`, each column of which corresponds to a feature dimension. 
 
-    
     The function shall return 3 variables:
 
       a. `grid`: 2D numpy array, the expectations of Gini impurity. Each column corresponds to one feature and each row orresponds to a threshold. Note that each feature has its own thresholds. 
