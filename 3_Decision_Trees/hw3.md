@@ -53,7 +53,7 @@ A precompiled PDF is [here](https://www.dropbox.com/s/zrrxxmc4m4v2oho/hw3.pdf?dl
 
 ## Programming [6pts]
 
-Now, let's try to implement node split using grid search and compare the result with scikit-learn's implementation. Please work from a provided file `hw3.py` and just upload this file. 
+Please work from a provided file `hw3.py` and just upload this file. 
 
 5. [2pt] **Estimating Gini impurity** 
 
@@ -88,11 +88,12 @@ Now, let's try to implement node split using grid search and compare the result 
     * a threshold,
     * and, labels corresponding to the samples. 
 
-7. [2pt] **The split of a node**
-    Each node of a decision tree is a comparison on a feature against a threshold. To determine the feature and the threshold, a common practice is a grid search. Search over every feature, against a set of thresholds. In the end, pick the combination of feature and threshold that minimize the expectation of Gini impurity. 
+7. [bonus, 2pt] **The split of a node**
+    Each node of a decision tree is a comparison on a feature against a threshold. To determine the feature and the threshold, a common practice is a grid search. Search over every feature, against a set of thresholds. In the end, pick the combination of feature and threshold that minimize the expectation of Gini impurity. The function to implement in this problem is `grid_search_split_midpoint`. 
 
-    There are many ways to establish the thresholds. Here we use a common practice that for each feature, the thresholds are the means of all pairs of its two consecutive values on all samples. For example, if the values on a feature is `[5,4,2,1,3]`, then the thresholds are `[1.5, 2.5, 3.5, 4.5]`. Note that because values on features differ (e.g., in feature 1, `[1,2,3,4,5]` and in feature 2, `[0.1, 0.2, 0.9, 0.1, -0.8]`]), thresholds for features differ. To help you start,  the thresholds for each feature are constructed  the function `grid_search_split_midpoint` in `hw3` already. So you can directly make use of the variable `thresholds`, each column of which corresponds to a feature dimension. 
+    There are many ways to establish the thresholds. Here we use a common practice that for each feature, the thresholds are the mindpoints of any two consecutive values. For example, if the values on a feature is `[5,4,2,1,3]`, then the thresholds are `[1.5, 2.5, 3.5, 4.5]`. Note that because values on features differ (e.g., in feature 1, `[1,2,3,4,5]` and in feature 2, `[0.1, 0.2, 0.9, 0.1, -0.8]`]), thresholds for features differ. To help you start, the thresholds for each feature are constructed in the function `grid_search_split_midpoint` in `hw3` already. So you can directly make use of the variable `thresholds`, each column of which corresponds to a feature dimension. 
 
+    
     The function shall return 3 variables:
 
       a. `grid`: 2D numpy array, the expectations of Gini impurity. Each column corresponds to one feature and each row orresponds to a threshold. Note that each feature has its own thresholds. 
@@ -113,7 +114,7 @@ Now, let's try to implement node split using grid search and compare the result 
 
 Test cases for all functions are provided in `doctest`. You can visually compare the outputs of your functions. Or you can run the `hw3.py` script as `python3 hw3.py`. If you see no error, then all your functions are correct. 
 
-In addition to the doctest cases, an additional function `you_rock` is provided. It generates many random datasets and compares the results computed by your functions against those by scikit-learn's `tree` module. Because of the slight implementation difference, your `best_feature` and `best_threshold` may not be always the same as scikit-learns'. But you should see they are the same for 70% of the cases or more, when calling it as `you_rock(1000, 100, 3)` (1000 samples, feature values ranging from 1 to 100, 3 features). 
+In addition to the doctest cases, an additional function `you_rock` is provided to test your bonus problem solution. It generates many random datasets and compares the results from your `grid_search_split_midpoint` function against those by scikit-learn's `tree` module. Because of the slight implementation difference, your `best_feature` and `best_threshold` may not be always the same as scikit-learns'. But you should see they are the same for 70% of the cases or more, when calling it as `you_rock(1000, 100, 3)` (1000 samples, feature values ranging from 1 to 100, 3 features). 
 
 ### Hints for programming:
 1. Instead of for-loops, take advantage of numpy's array-wise operations. For example, 
@@ -144,4 +145,4 @@ In addition to the doctest cases, an additional function `you_rock` is provided.
     shall return `2`. 
 
 ## How to submit
-For hand computation part, upload one PDF file. For programming part, upload your edited `hw3.py`. Do NOT delete contents in the template for programming.  
+For hand computation part, upload one PDF file. For programming part, upload your edited `hw3.py`. Do NOT delete contents in the template for programming.  Besure that in your submitted `hw3.py`, you include only module importing and function definitions above the `if __name__ == "__main__":` line. 
