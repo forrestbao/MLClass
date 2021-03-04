@@ -111,7 +111,7 @@ Please work from a provided file `hw3.py` and just upload this file.
 
 ### How to test your submission
 
-Test cases for all functions are provided in `doctest`. You can visually compare the outputs of your functions. Or you can run the `hw3.py` script as `python3 hw3.py`. If you see no error, then all your functions are correct. 
+Test cases for all functions are provided in `doctest`. You can visually compare the outputs of your functions. Or you can run the `hw3.py` script as `python3 hw3.py` in a system command shell or `%run hw3.py` in a Jupyter hub cell. If you see no error, then all your functions are correct. 
 
 In addition to the doctest cases, an additional function `you_rock` is provided to test your bonus problem solution. It generates many random datasets and compares the results from your `grid_search_split_midpoint` function against those by scikit-learn's `tree` module. Because of the slight implementation difference, your `best_feature` and `best_threshold` may not be always the same as scikit-learns'. But you should see they are the same for 70% of the cases or more, when calling it as `you_rock(1000, 100, 3)` (1000 samples, feature values ranging from 1 to 100, 3 features). 
 
