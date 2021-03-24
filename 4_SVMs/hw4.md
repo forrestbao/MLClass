@@ -65,7 +65,7 @@ Weblinks are in pink.
 
 ## Programming [4pts]
 
-Code template: `hw4.py`
+Code template: [`hw4.py`](https://github.com/forrestbao/MLClass/blob/master/4_SVMs/hw4.py)
 
 For all functions below, every argument is a 1-D list of floats or integers while every return is a float or integer.
 
