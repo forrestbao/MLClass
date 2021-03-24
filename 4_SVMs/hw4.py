@@ -85,5 +85,5 @@ def study_C_and_sigma_gridCV(C_range, sigma_range):
 
 if __name__ == "__main__":
     import doctest
-    # doctest.testmod()
-    doctest.run_docstring_examples(study_C_and_sigma_gridCV, globals())
+    doctest.testmod()
+    # doctest.run_docstring_examples(study_C_and_sigma_gridCV, globals())
