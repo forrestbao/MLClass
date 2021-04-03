@@ -9,20 +9,14 @@ header-includes:
 
 # HW 5: Neural networks I and HW 6: Neural networks II
 
-HW5 due Nov. 12 and HW6 due Nov. 19. Both are Thursdays and both at 11:59PM central time. 
-
-**Update Nov. 11**:
-
-1. HW6 is all bonus problems.
-2. HW5 deadline extended to: Saturday Nov. 14, 11:59PM 
-3. A make-up help session for HW5 to be held Thursday, Nov. 12, 8-9PM. 
+HW5 due Apr. 18 and HW6 due Apr. 25. Both are Sundays and both at 11:59PM central time. 
 
 Help sessions for answering HW-related questions:
 
-* HW5: Sunday, Nov. 8, 8-9PM, Wednesday, Nov. 11, 8-9PM, and office hours
-* HW6: Sunday, Nov. 15, 8-9PM, Wednesday, Nov. 18, 8-9PM, and office hours
+* HW5: Saturday, Apr. 17, 7-8PM
+* HW6: Saturday, Apr. 24, 7-8PM
 
-**Pre-compiled PDF** is [here](https://www.dropbox.com/s/ziub9g1d5sjws4l/hw6.pdf). Command to compile on your own: `pandoc hw5_and_6.md -o hw5_and_6.pdf`
+**Pre-compiled PDF** is [here](https://www.dropbox.com/s/ziub9g1d5sjws4l/hw5_and_6.pdf?dl=0). Command to compile on your own: `pandoc hw5_and_6.md -o hw5_and_6.pdf`  Figures were compiled from their LaTeX source files under `figs` folder. 
 
 Please show intermediate steps for all computational problems below. Giving only the final result will result in zero point. For numerical answers, **keep 3 digits after the decimal point**. 
 
@@ -83,7 +77,7 @@ Please show intermediate steps for all computational problems below. Giving only
 
    Your answers should be two column real-valued vectors.
 
-   Hint for second question: See the last equation on the same page with Eq. (2). But note that that $E$ for that equation is neg log loss, not the assumed loss for Problem 7. 
+   Hint for second question: See the last equation on the same page with Eq. (2). But note that the $E$ for that equation is neg log loss, not the assumed loss for Problem 7. 
 
 # HW6: Operations on a neural network [10pts plus 5 bonus pts]
 
