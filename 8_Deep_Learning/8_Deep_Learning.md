@@ -228,9 +228,9 @@ Note that the activation functions $\sigma_g, \sigma_c, \sigma_h$ may not all be
   * http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
 
-<!-- # Neural language model in Elman network
+# Neural language models in Elman network
 
--   Recall that a language model predicts the Probability of a sequence
+-   A language model predicts the Probability of a sequence
     of (words, characters, etc. )
 
 -   Because of the properties of conditional probability, we want the
@@ -257,11 +257,9 @@ Note that the activation functions $\sigma_g, \sigma_c, \sigma_h$ may not all be
 -   The new language model:
     $P(w_{t+1} | \mathbf{w}(t), \mathbf{s}(t-1)),$ predicting the next
     output word given a short history $\mathbf{w}(t)$ up to current step
-    $t$ and the hidden layer up to previous step $t-1$. -->
+    $t$ and the hidden layer up to previous step $t-1$.
 
-# Neural language models
-
--   A language model: $P(w_{t+1} | w_{i}, i\in [t-k..t])$
+# Neural language models -- additional reading 
 
 -   Feedforward: "A neural Probabilistic Language Model", Beigio et al.,
     JMLR, 3:1137--1155, 2003

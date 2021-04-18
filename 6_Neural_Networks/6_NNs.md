@@ -398,7 +398,7 @@ In order to approximate the relation $h={1\over 2}gt^2$
 
 - We talked about log-loss in Unit 5 Regression. [Google also has a good refreshing material](https://developers.google.com/machine-learning/crash-course/logistic-regression/model-training)
 
-- Given a prediction $\hat{y}$ and a ground truth target $y$, the neg-log-loss is $- y\log \hat{y} - (1-y)(1-\log \hat{y})$
+- Given a prediction $\hat{y}$ and a ground truth target $y$, the neg-log-loss is $- y\log \hat{y} - (1-y)\log (1- \hat{y})$
 
 - **The discussion above about neg-log-loss is for classification only. For regression, MSE is still used de facto.**
 
@@ -421,8 +421,8 @@ In order to approximate the relation $h={1\over 2}gt^2$
         {\partial \hat{y} \over \partial \mathbf{w}^T\mathbf{x}} \pause
         {\partial \mathbf{w}^T\mathbf{x} \over \partial w_i} \label{eq:gradient_simplest}
     \end{equation}
-- Derivative of log-loss: 
-${\partial E \over \partial \hat{y}} = {\partial~ - y\log \hat{y} - (1-y)(1-\log \hat{y}) \over \pause \partial \hat{y} } = {\hat{y} - y \over \hat{y}(1-\hat{y}) } \pause$
+- Derivative of neg-log-loss: 
+${\partial E \over \partial \hat{y}} = {\partial~ - y\log \hat{y} - (1-y)\log (1-\hat{y}) \over \pause \partial \hat{y} } = {\hat{y} - y \over \hat{y}(1-\hat{y}) } \pause$
 - Derivative of activation function (from calculus, the derivative of $\sigma(x) \pause = 1/(1+e^{-x})$ is $\sigma(x)(1-\sigma(x))$): 
 ${\partial \hat{y} \over \partial \mathbf{w}^T\mathbf{x}}  
 ={\partial \phi\left (\mathbf{w}^T\mathbf{x} \right ) \over \partial \mathbf{w}^T\mathbf{x}}
@@ -481,9 +481,11 @@ ${\partial \hat{y} \over \partial \mathbf{w}^T\mathbf{x}}
 ::::
 :::: {.column width=0.73}
 - Let's consider the gradient of error/loss over one weight $w_{1,1}$:
-  $${ \partial E \over \partial w_{1,1}} 
+  \begin{equation}
+  { \partial E \over \partial w_{1,1}} 
         ={ \partial E \over \partial o_1}
-        {\partial o_1 \over \partial w_{1,1}}$$
+        {\partial o_1 \over \partial w_{1,1}}
+  \end{equation}
 
 - Expand the first term (partially making use of results in Eq. \ref{eq:gradient_simplest})
   <!-- \begin{align} -->
@@ -526,11 +528,11 @@ ${\partial E / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
   ${\partial E / \partial \mathbf{w}_2} = (\hat{y}-y) (v_2) \left ( o_2(1-o_2) \right ) \mathbf{x}$
 
   (Note the change from $v_1$ to $v_2$ and that from $o_1$ to $o_2$)
-- Denote the partial derivative of the output of the activation function over its input ${\partial \phi(\mathbf{w}_i \mathbf{x}) \over \partial \mathbf{w}_i \mathbf{x}}$ as 
- \begin{equation}
- \psi(o_i) = \phi'(\phi^{-1} (o_i)). \label{eq:psi} 
- \end{equation} where $\phi'(\cdot)$ and $\phi^{-1}(\cdot)$ mean the first derivative and inverse of function $\phi$. 
- When the activation function is logistic, we have $\psi(o_i) = o_i(1-o_i).$ \label{page:psi}
+- Denote the partial derivative ${\partial o_i \over \partial \mathbf{w}_i \mathbf{x}}  = {\partial \phi(\mathbf{w}_i \mathbf{x}) \over \partial \mathbf{w}_i \mathbf{x}}$ as 
+  \begin{equation}
+  \psi(o_i) = \phi'(\phi^{-1} (o_i)). \label{eq:psi} 
+  \end{equation} where $\phi'(\cdot)$ and $\phi^{-1}(\cdot)$ mean the first derivative and inverse of function $\phi$. 
+  When the activation function is logistic, we have $\psi(o_i) = o_i(1-o_i).$ \label{page:psi}
 - Stack ${\partial E / \partial \mathbf{w}_1}$ and ${\partial E / \partial \mathbf{w}_2}$ together:  
 ::::
 :::
@@ -600,7 +602,7 @@ ${\partial E / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
     {\partial E \over \partial \hat{y}}
     \psi(\hat{y})
     {\partial \mathbf{v}^T \mathbf{o} \over o_2}
-    {\partial o_2 \over x_2} \nonumber \\
+    {\partial o_2 \over x_1} \nonumber \\
     = &
     {\partial E \over \partial \hat{y}}   
     \psi(\hat{y})
@@ -612,7 +614,7 @@ ${\partial E / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
     \psi(\hat{y})  
     {\partial \mathbf{v}^T \mathbf{o} \over o_2}
     {\partial o_2 \over \mathbf{w_2}^T \mathbf{x}}
-    {\partial \mathbf{w_2}^T \mathbf{x}\over x_2} \nonumber \\
+    {\partial \mathbf{w_2}^T \mathbf{x}\over x_1} \nonumber \\
     = & 
     {\partial E \over \partial \hat{y}}   
     \psi(\hat{y})
@@ -640,7 +642,7 @@ ${\partial E / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
             \begin{pmatrix}
             v_1  \\
             v_2  \\
-            \end{pmatrix}}_{\mathbb{V} }
+            \end{pmatrix}}_{\mathbb{V}_{[1..]} }
             \underbrace{
             {\partial E \over \partial \hat{y}}   
             \psi(\hat{y})}_{\bm{\delta}^{(-1)}}
@@ -694,7 +696,7 @@ ${\partial E / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
     \label{eq:delta_2_from_1_general}
     \end{align}
     where $\bm{\delta}^{(-2)} = \bigg [
-    \psi\left (\mathbf{o} \right ) \circ \left ( \mathbb{V} \bm{\delta}^{(-1)} \right ) \bigg ]$, and $\bm{\delta}^{(-2)}_{[1..]}$ consists of elements of $\bm{\delta}^{(-2)}$ starting from index $1$. 
+    \psi\left (\mathbf{o} \right ) \circ \left ( \mathbb{V} \bm{\delta}^{(-1)} \right ) \bigg ]$, whereas $\bm{\delta}^{(-2)}_{[1..]}$ consists of elements of $\bm{\delta}^{(-2)}$ starting from index $1$. 
 
 - Why not $\bm{\delta}^{(-1)}_{[1..]}$? Because no bias term in the output layer. 
 ::::
@@ -1173,156 +1175,3 @@ See the MiniNN demo.
 # Dark margic or alchemy?
 
 Configuring the hyperparameters for an ANN is very empirical. Sometimes you don't know why it works or why it doesn't work. It's very much like an experimental science. Just imagine how Edison invented the light bulb.
-
-# Deep Learning
-
--   Feature extraction:
-
-    -   Conventional ML: manually craft a set of features.
-
-    -   Problem: Sometimes features are too difficult to be manually
-        designed, e.g., from I/O system log.
-
-    -   A (no-brainer) solution: let computers find it for us, even by
-        brutal force.
-
--   Not all weights matter:
-
-    -   There are more tasks that need function fitting beyond
-        conventional classification and regression.
-
-    -   Ex. producing a sequence (e.g., a sentence)
-
-    -   Sometimes we use the network to get something else useful, such
-        as word embedding.
-
-    -   Maybe weights of only a small set of layers are what we need
-        from training.
-
--   Equally important to network architecture, the training scheme also
-    matters (not just simple pairs of feature/input vectors and labels).
-
-CNN
-
--   Convolutional layer: imagine convolution as matching two
-    shapes/sequences/strings
-
--   Pooling layer
-
--   ReLU layer
-
--   Fully connected layer (basically this is the regular ANN)
-
--   Avoid overfitting: dropout, stochastic pooling, etc.
-
--   implementation: text-cnn
-
--   Visualization of the output at layers:
-    <http://cs231n.github.io/convolutional-networks/>
-
--   Do we use backpropagation to update weights in every layer?
-
--   Some layers are unsupervised!
-
-Vanilla RNN
-
--   An RNN is just an IIR filter (are you also a EE major?):
-    $$y[n] = \sum_{l=1}^N a_l y[n-l] + \sum_{k=0}^{M} b_k x[n-k]$$ where
-    $x[i]$ (or $y[i]$) is the $i$-th element (a scalar) in the input (or
-    output) sequence.
-
--   RNN allows the output of a neuron to be used as the input of itself
-    (typically) or others. Typically,
-    $\mathbf{s}_{t+1} = U\mathbf{x}_t + W\mathbf{s}_t$ where
-    $\mathbf{s}_{t+1}$ and $\mathbf{s}_{t}$ are the output of the neuron
-    at steps $s+1$ and $s$ respectively.
-
--   Unrolling/unfolding an RNN unit:
-
-    ![image](figures/rnn_unrolling.png){width=".8\\textwidth"}
-
-Neural language model in Elman network
-
--   Recall that a language model predicts the Probability of a sequence
-    of (words, characters, etc. )
-
--   Because of the properties of conditional probability, we want the
-    probability of next word, given a short history of the sequence:
-    $P(w_{t+1} | w_{i}, i\in [t-k..t])$
-
--   Elman network/simple RNN. Three layers:
-
-    -   Input layer is the concatenation $\mathbf{x}(t)$ of two parts:
-        the current **sequence** (not just one element!!!)
-        $\mathbf{w}(t) = [w_{t-k}, \dots, w_{t}]$, plus output from the
-        hidden layer in previous step $\mathbf{s}(t-1)$.
-
-    -   hidden/context layer:
-        $\mathbf{s}(t) = f\left( \mathbb{X} \mathbf{x}(t) \right)$ where
-        $\mathbb{X}$ is the matrix of weights from the input layer to
-        hidden layer.
-
-    -   Output layer: multiple neurons, one of which of the highest
-        activation corresponds to the best prediction. Each neuron
-        corresponds to one element in the sequence, e.g.,
-        word/character/etc.
-
--   The new language model:
-    $P(w_{t+1} | \mathbf{w}(t), \mathbf{s}(t-1)),$ predicting the next
-    output word given a short history $\mathbf{w}(t)$ up to current step
-    $t$ and the hidden layer up to previous step $t-1$.
-
-Neural language models
-
--   Feedforward: "A neural Probabilistic Language Model", Beigio et al.,
-    JMLR, 3:1137--1155, 2003
-
--   "Recurrent neural network based language model", Mikolov et al.,
-    Interspeech 2010
-
--   Multiplicative RNN: "Generating Text with Recurrent Neural
-    Networks", Sutskever, ICML 2011
-
-LTSM and GRU
-
--   Motivations:
-
-    -   An simply deep RNN can be unrolled into many many layers.
-        Gradient vanishing is significant.
-
-    -   We also want weights to be attenuated/gated based on the states.
-
--   LSTM and GRU
-
-    -   Instead of layers, we have cells.
-
-    -   LSTM: forget gate, input gate, and output gate. The 3 gates are
-        computed from current input $\mathbf{x}(t)$ and output from
-        previous cell $\mathbf{s}(t-1)$. Then we "make a choice" between
-        using previous state $\mathbf{c}(t-1)$ and current input and use
-        the choice and output gate to make the final output.
-
-    -   GRU: simpler, just reset gate and update gate.
-
-    -   <http://www.wildml.com/2015/10/recurrent-neural-network-tutorial-part-4-implementing-a-grulstm-rnn-with-python-and-theano/>
-
-    -   <http://colah.github.io/posts/2015-08-Understanding-LSTMs/>
-
-LSTM ![image](figures/LSTM_unrolled.png){width="\\textwidth"} Source:
-Listen, Attend, and Walk: Neural Mapping of Navigational Instructions to
-Action Sequences, Mei et al., AAAI-16
-
-Seq-to-seq learning
-
--   Let's go one more level up.
-
--   Instead of predicting the next element in an input sequence, can we
-    produce the entire output sequence from the input sequence?
-
--   There could be no overlap between the two sequences, e.g., from a
-    Chinese sentence to a German sentence.
-
--   Two RNNs: encoder and decoder
-
--   "Learning Phrase Representations using RNN Encoder--Decoder for
-    Statistical Machine Translation", Cho et al., EMNLP 2014
