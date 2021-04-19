@@ -55,7 +55,7 @@ Please show intermediate steps for all computational problems below. Giving only
 
     Hint: Eq. (1)
 
-7. [3pt] Continuing from problem 6 above, if the loss is defined  as $E=\hat{y}-y$, what is the value of $\partial E / \partial x_1$? And what is the value of $\partial E / \partial w_1$?
+7. [3pt] Continuing from problem 6 above, if the loss is defined  as $E=\hat{y}-y$, what is the value of $\partial E / \partial x_1$? And what is the value of $\partial E / \partial w_1$? Please treat $y$ as a constant. 
 
     Hint for second question: Eq. (2). And think what is the new ${\partial E \over \partial \hat{y}} = {\partial \hat{y}-y \over \partial \hat{y}}$?
 
