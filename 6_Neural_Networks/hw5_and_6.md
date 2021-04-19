@@ -59,7 +59,7 @@ Please show intermediate steps for all computational problems below. Giving only
 
     Hint for second question: Eq. (2). And think what is the new ${\partial E \over \partial \hat{y}} = {\partial \hat{y}-y \over \partial \hat{y}}$?
 
-8. [2pt] What is the value of 
+8. [Bonus, 2pt] What is the value of 
    ${\partial E \over \partial \mathbf{x}} = 
    \begin{pmatrix}
    \partial E \over \partial  x_0 \\
