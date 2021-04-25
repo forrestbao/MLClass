@@ -75,7 +75,7 @@ Please show intermediate steps for all computational problems below. Giving only
    \vdots \\
    \end{pmatrix}$? 
 
-   Your answers should be two column real-valued vectors.
+   Your answers should be two column vectors containing real values.
 
    Hint for second question: See the last equation on the same page with Eq. (2). But note that the $E$ for that equation is neg log loss, not the assumed loss for Problem 7. 
 
@@ -100,4 +100,4 @@ Hint: The slides "Recap:..." and "A grounded example..."
 
 13. [1.5pts] Finally, how should $\mathbb{W}^{(l)}$ given in Problem 9 be updated to based on $\nabla^{(l)}$ obtained in Problem 12, for all $l\in[0..2]$? Assume the learning rate $\rho=1$. 
 
-14. [5pts] In [the demo for Unit 5 Regression](https://github.com/forrestbao/MLClass/blob/master/5_Regression/5_regression.ipynb), we used a neural network with $\tanh$ as the activation function for all neurons. The range of $\tanh$ is from -1 to 1, which means that the output from that neural network is limited between -1 and 1.  But in that problem, the target or the prediction ranges from 0 to 4. How do you explain? Look into the source code of scikit-learn to find out. 
+14. [Bonus, 5pts] In [the demo for Unit 5 Regression](https://github.com/forrestbao/MLClass/blob/master/5_Regression/5_regression.ipynb), we used a neural network with $\tanh$ as the activation function for all neurons. The range of $\tanh$ is from -1 to 1, which means that the output from that neural network is limited between -1 and 1.  But in that problem, the target or the prediction ranges from 0 to 4. How do you explain? Look into the source code of scikit-learn to find out. 
