@@ -9,11 +9,11 @@ header-includes:
 
 # Solution for HW6
 
-Copyright 2020 Forrest Sheng Bao
+Copyright 2020-2021 Forrest Sheng Bao
 
 9. $\dim(\mathbb{W}^{(0)}) = 3\times 3$, $\dim(\mathbb{W}^{(1)}) = 4\times 2$, and $\dim(\mathbb{W}^{(2)}) = 3\times 2$
 
-10. $\mathbf{x}^{(1)} = \phi(\mathbb{W}^{(0)T}\mathbf{x}^{(0)}) = 
+10. $\mathbf{x}^{(1)}_{[1..]} = \phi(\mathbb{W}^{(0)T}\mathbf{x}^{(0)}) = 
     \phi \left (
     \begin{pmatrix}
     0.1 & 0.1 & 0.1 \\
@@ -40,7 +40,7 @@ Copyright 2020 Forrest Sheng Bao
     0.574
     \end{pmatrix}$
 
-    $\mathbf{x}^{(2)} = \phi(\mathbb{W}^{(1)T}\mathbf{x}^{(1)}) = 
+    $\mathbf{x}^{(2)}_{[1..]} = \phi(\mathbb{W}^{(1)T}\mathbf{x}^{(1)}) = 
     \phi \left (
     \begin{pmatrix}
     2 & 2 \\
@@ -236,7 +236,6 @@ Copyright 2020 Forrest Sheng Bao
     \begin{pmatrix}
     0.004  & 0.004 & 0.004  \\
     0.004  & 0.004 & 0.004  \\
-    0.004  & 0.004 & 0.004  \\
     0.004  & 0.004 & 0.004 
     \end{pmatrix}$    
 
@@ -297,12 +296,10 @@ Copyright 2020 Forrest Sheng Bao
     \begin{pmatrix}
     0.004  & 0.004 & 0.004  \\
     0.004  & 0.004 & 0.004  \\
-    0.004  & 0.004 & 0.004  \\
     0.004  & 0.004 & 0.004 
     \end{pmatrix}
     = 
     \begin{pmatrix}
-    0.096 & 0.096 & 0.096 \\
     0.096 & 0.096 & 0.096 \\
     0.096 & 0.096 & 0.096 \\
     0.096 & 0.096 & 0.096
