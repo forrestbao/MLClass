@@ -20,7 +20,7 @@ There maybe delays in PDF syncing.
 6. [Neural networks](https://www.dropbox.com/s/kd7dkvlp427keld/6_NNs.pdf?dl=0)
 7. [Clustering](https://www.dropbox.com/s/y4vkegjawisu8b8/7_Clustering.pdf?dl=0)
 8. [Deep Learning](https://www.dropbox.com/s/h7wwzxiks1mtp06/8_Deep_Learning.pdf?dl=0)
-9. Reinforcement Learning
+9. [Reinforcement Learning](https://www.dropbox.com/s/h3m9cwrtt2dvz6n/9_Reinforcement_Learning.pdf?dl=0)
 10. Ensemble Learning
 11. CV, NLP, tiny ML
 
