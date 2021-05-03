@@ -188,14 +188,28 @@ class MiniNN:
     y: 1-D numpy array, the target
 
     """
+    self.predict(x[0])
+    self.get_deltas(y[0])    
+    grads = self.get_gradients()
     for epoch in range(max_iter):   
         print ("\nepoch", epoch, end=":\n\n")
         vals = random.sample(range(len(x)), len(x))
         #print(vals)
         for i in range(math.ceil(len(x)/batchSize)):
+            grads = [grads[l] * 0 for l in range(len(grads))]
+            k=0
             for j in range(batchSize):
                 curr = ((i*batchSize)+j)
                 if(curr < len(x)):
+                    self.predict(x[vals[curr]]) # forward 
+                    print ("prediction for sample ", vals[curr], ":", self.oracle)
+                    self.get_deltas(y[vals[curr]]) # backpropagate
+                    g = self.get_gradients()
+                    grads = [grads[l] + g[l] for l in range(len(g))]
+                    k += 1
+            grads = [grads[l] / k for l in range(len(grads))]
+            for l in range(len(Ws)):
+                self.Ws[l] -= 1 * grads[l]
 
 if __name__ == "__main__": 
 
