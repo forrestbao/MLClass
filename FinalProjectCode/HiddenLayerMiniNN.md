@@ -193,6 +193,13 @@ def createWs(inp, hidden, out):
     W = numpy.ones((layers[0], layers[1]))
     W = 0.5 * W
     Ws = [W]
+    
+    for i in range(num):
+        W = numpy.ones((layers[i+1]+1, layers[i+2]))
+        W = 0.5 * W
+        Ws.append(W)
+        
+    return Ws
 
 if __name__ == "__main__": 
 
