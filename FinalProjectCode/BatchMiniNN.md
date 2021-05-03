@@ -211,6 +211,14 @@ class MiniNN:
             grads = [grads[l] / k for l in range(len(grads))]
             for l in range(len(Ws)):
                 self.Ws[l] -= 1 * grads[l]
+            if verbose:
+                for m in range(len(Ws)):
+                    print("\nlayer ", m)
+                    print ('        W:', numpy.array2string(self.Ws[m], prefix='        W: '))
+                    try:
+                        print(' gradient:', numpy.array2string(grads[m], prefix=' gradient: '))
+                    except:
+                        pass
 
 if __name__ == "__main__": 
 
