@@ -178,6 +178,22 @@ class MiniNN:
         self.print_progress()   
       self.update_weights() # update weights, and new prediction will be printed each epoch
 
+def createWs(inp, hidden, out):
+    """This will take the array given as the input and create the transfer matrices
+    using the valuse in the array as the number of neurons in each hidden layer. It will 
+    set all values in the matrices to 0.5"""
+    
+    layers = [inp.size]
+    for x in hidden:
+        layers.append(x)
+    layers.append(out.size)
+    
+    num = len(layers) - 2
+    
+    W = numpy.ones((layers[0], layers[1]))
+    W = 0.5 * W
+    Ws = [W]
+
 if __name__ == "__main__": 
 
   # The training sample
