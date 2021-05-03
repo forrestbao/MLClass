@@ -45,11 +45,12 @@ class MiniNN:
     """
     return x * (1-x)
 
-  def __init__(self, Ws=None):
+  def __init__(self, Ws=None, batchSize=None):
     """Initialize an NN
 
     hidden_layer: does not include bias 
     """
+    self.batchSize = batchSize
     self.Ws = Ws
     self.L = len(Ws) # number of layers 
     self.phi = self.logistic # same activation function for all neurons
@@ -229,19 +230,20 @@ if __name__ == "__main__":
                       [.1]] ))
 
   Ws = [W_0, W_1, W_2]
-  MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
+  batchSize = 1
+  MNN = MiniNN(Ws=Ws, batchSize=batchSize) # initialize an NN with the transfer matrixes given 
 
   # The training sample
-  x_0 = numpy.array(([1., 1, 0])) # just one sample, augmented 
-  y_0 = numpy.array(([1])) # We support only one dimension in the output
+  x_0 = numpy.array(([[1., 1, 0]])) # just one sample, augmented 
+  y_0 = numpy.array(([[1]])) # We support only one dimension in the output
                           # this number must be between 0 and 1 because we used logistic activation and cross entropy loss. 
 
   # To use functions individually 
-  MNN.predict(x_0)
+  """MNN.predict(x_0)
   MNN.get_deltas(y_0)
   MNN.print_progress()
   MNN.update_weights()
-  MNN.print_progress()
+  MNN.print_progress()"""
 
   # Or a recursive training process 
   MNN = MiniNN(Ws=Ws) # re-init
