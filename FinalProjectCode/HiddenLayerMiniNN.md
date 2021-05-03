@@ -180,28 +180,13 @@ class MiniNN:
 
 if __name__ == "__main__": 
 
-  # Transfer matrix from input layer to hidden layer 1
-  W_0 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
-                      [.7, -.4],
-                      [-.2, .3]]))
-
-  # Transfer matrix from hidden layer 1 to hidden layer 2
-  W_1 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
-                      [.7, -.4],
-                      [-.2, .3]]))
-
-  # Transfer matrix from hidden layer 2 to input layer
-  W_2 = numpy.array(([[-.3], # the first row maps the bias term to the two neurons of the next layer
-                      [.5],
-                      [.1]] ))
-
-  Ws = [W_0, W_1, W_2]
-  MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
-
   # The training sample
   x_0 = numpy.array(([1., 1, 0])) # just one sample, augmented 
   y_0 = numpy.array(([1])) # We support only one dimension in the output
                           # this number must be between 0 and 1 because we used logistic activation and cross entropy loss. 
+  hidden_layer = [2,2]
+  Ws = MiniNN.createWs(x_0, hidden_layer, y_0)
+  MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
 
   # To use functions individually 
   MNN.predict(x_0)
@@ -213,9 +198,6 @@ if __name__ == "__main__":
   # Or a recursive training process 
   MNN = MiniNN(Ws=Ws) # re-init
   MNN.train(x_0, y_0, max_iter=20, verbose=True)
-
-
-
 
 
 # In[ ]:
