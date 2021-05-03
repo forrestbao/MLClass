@@ -20,6 +20,8 @@
 # Contact him for any suggestions or questions: forrest dot bao aT Gmail 
 # Opinions expressed here do not reflect those of Iowa State University
 
+import math
+import random
 import numpy 
 import numpy.random
 numpy.set_printoptions(precision=3, floatmode="fixed")
