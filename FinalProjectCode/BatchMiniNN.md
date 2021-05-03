@@ -157,6 +157,25 @@ class MiniNN:
     # show that the new prediction will be better to help debug
     # self.predict(self.Xs[0])
     # print ("new prediction:", self.oracle)
+  
+  def get_gradients(self):
+    """ Given a sequence of Deltas and a sequence of Xs, compute the gradient of error on each transform matrix and update it using gradient descent 
+
+    Note that the first element on each delta is on the bias term. It should not be involved in computing the gradient on any weight because the bias term is not connected with previous layer. 
+    """
+    self.Grads = []
+    for l in range(len(Ws)): # l is layer index
+      x = self.Xs[l]
+      delta = self.Deltas[l+1]
+      # print (l, x, delta)
+      gradient = numpy.outer(x, delta[1:])
+
+      self.Grads.append(gradient)
+    
+    return self.Grads
+    # show that the new prediction will be better to help debug
+    # self.predict(self.Xs[0])
+    # print ("new prediction:", self.oracle)
 
   def train(self, x, y, max_iter=100, verbose=False):
     """feedforward, backpropagation, and update weights
