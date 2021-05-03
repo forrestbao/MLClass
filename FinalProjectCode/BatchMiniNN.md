@@ -170,13 +170,13 @@ class MiniNN:
 
     """
     for epoch in range(max_iter):   
-      print ("epoch", epoch, end=":")
-      self.predict(x) # forward 
-      print (self.oracle)
-      self.get_deltas(y) # backpropagate
-      if verbose:
-        self.print_progress()   
-      self.update_weights() # update weights, and new prediction will be printed each epoch
+        print ("\nepoch", epoch, end=":\n\n")
+        vals = random.sample(range(len(x)), len(x))
+        #print(vals)
+        for i in range(math.ceil(len(x)/batchSize)):
+            for j in range(batchSize):
+                curr = ((i*batchSize)+j)
+                if(curr < len(x)):
 
 if __name__ == "__main__": 
 
