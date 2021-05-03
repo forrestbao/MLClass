@@ -45,15 +45,23 @@ class MiniNN:
     """
     return x * (1-x)
 
-  def __init__(self, Ws=None):
+  def __init__(self, Ws=None, SampleList=None):
     """Initialize an NN
 
     hidden_layer: does not include bias 
     """
+    self.samples = SampleList
     self.Ws = Ws
+    self.AverageGradients = []
+    self.setAveGradientsZero(self.Ws)
     self.L = len(Ws) # number of layers 
     self.phi = self.logistic # same activation function for all neurons
     self.psi = self.logistic_psi
+
+  def setAveGradientsZero(self, Ws):
+  	self.AverageGradients = []
+  	for W in Ws:
+  		self.AverageGradients.append(numpy.zeros(W.shape))
 
   def feedforward(self, x, W, phi):
       """feedforward from previou layer output x to next layer via W and Phi
@@ -72,19 +80,19 @@ class MiniNN:
                 ) # end of phi
               )) # end of concatenate
 
-  def predict(self, X_0):
+  def predict(self, sample):
     """make prediction, and log the output of all neurons for backpropagation later 
 
     X_0: 1-D numpy array, the input vector, AUGMENTED
     """
-    Xs = [X_0]; X=X_0
+    sample.clearLayers()
+    X = sample.getX()
+    sample.addValueLayer(X)
     # print (self.Ws)
     for W in self.Ws:
       # print (W,X, self.phi)
       X = self.feedforward(X, W, self.phi)
-      Xs.append(X)
-    self.Xs = Xs
-    self.oracle = X[1:] # it is safe because Python preserves variables used in for-loops
+      sample.addValueLayer(X)
 
   def backpropagate(self, delta_next, W_now, psi, x_now):
     """make on step of backpropagation 
@@ -98,67 +106,58 @@ class MiniNN:
     """
     delta_next = delta_next[1:] # drop the derivative of error on bias term 
 
-    # first propagate error to the output of previou layer
+    # first propagate error to the output of previous layer
     delta_now = numpy.matmul(W_now, delta_next) # transfer backward
     # then propagate thru the activation function at previous layer 
     delta_now *= self.psi(x_now) 
     # hadamard product This ONLY works when activation function is logistic
     return delta_now
 
-  def get_deltas(self, target):
+  def get_deltas(self, sample):
     """Produce deltas at every layer 
 
     target: 1-D numpy array, the target of a sample 
     delta : 1-D numpy array, delta at current layer
     """
-    delta = self.oracle - target # delta at output layer is prediction minus target 
-                                 # only when activation function is logistic 
-    delta = numpy.concatenate(([0], delta)) # artificially prepend the delta on bias to match that in non-output layers. 
-    self.Deltas = [delta] # log delta's at all layers
+    sample.clearDeltas()
+    delta = numpy.subtract(sample.getOutputPrediction()[1:], sample.getY())  # delta at output layer is prediction minus target 
+                                 									 # only when activation function is logistic 
+    delta = numpy.concatenate(([0], delta)) # artificially prepend the bias on delta to match that in non-output layers. 
+    sample.getDeltas().insert(0, delta)
 
     for l in range(len(self.Ws)-1, -1, -1): # propagate error backwardly 
       # technically, no need to loop to l=0 the input layer. But we do it anyway
       # l is the layer index 
-      W, X = self.Ws[l], self.Xs[l]
+      W, X = self.Ws[l], sample.getLayer(l)
       delta = self.backpropagate(delta, W, self.psi, X)
-      self.Deltas.insert(0, delta) # prepend, because BACK-propagate
-
-  def print_progress(self):
-    """print Xs, Deltas, and gradients after a sample is feedforwarded and backpropagated 
-    """
-    print ("\n prediction: ", self.oracle)
-    for l in range(len(self.Ws)+1): 
-      print ("layer", l)
-      print ("        X:", self.Xs[l], "^T")
-      print ("    delta:", self.Deltas[l], "^T")
-      if l < len(self.Ws): # last layer has not transfer matrix
-        print ('        W:', numpy.array2string(self.Ws[l], prefix='        W: '))
-      try: # because in first feedforward round, no gradient computed yet
-           # also, last layer has no gradient
-        print(' gradient:', numpy.array2string(self.Grads[l], prefix=' gradient: '))
-      except: 
-        pass
+      sample.getDeltas().insert(0, delta) # prepend, because BACK-propagate
       
-  def update_weights(self):
+  def update_AverageGradientWeights(self, sample):
     """ Given a sequence of Deltas and a sequence of Xs, compute the gradient of error on each transform matrix and update it using gradient descent 
 
     Note that the first element on each delta is on the bias term. It should not be involved in computing the gradient on any weight because the bias term is not connected with previous layer. 
     """
-    self.Grads = []
-    for l in range(len(Ws)): # l is layer index
-      x = self.Xs[l]
-      delta = self.Deltas[l+1]
+    
+    for l in range(len(self.AverageGradients)): # l is layer index
+      x = sample.getLayer(l)
+      delta = sample.getDeltas()[l + 1]
       # print (l, x, delta)
       gradient = numpy.outer(x, delta[1:])
-      self.Ws[l] -= 1 * gradient  # descent! 
-
-      self.Grads.append(gradient)
+      self.AverageGradients[l] = numpy.add(self.AverageGradients[l], gradient)
     
     # show that the new prediction will be better to help debug
     # self.predict(self.Xs[0])
     # print ("new prediction:", self.oracle)
 
-  def train(self, x, y, max_iter=100, verbose=False):
+  def averageSumOfGradients(self, size):
+  	for i in range(len(self.AverageGradients)):
+  		self.AverageGradients[i] = numpy.true_divide(self.AverageGradients[i], size)
+
+  def update_weights(self):
+  	for l in range(len(Ws)):
+  		self.Ws[l] -= 1 * self.AverageGradients[l]
+
+  def train(self,max_iter=100):
     """feedforward, backpropagation, and update weights
     The train function updates an NN using one sample. 
     Unlike scikit-learn or Tensorflow's fit(), x and y here are not a bunch of samples. 
@@ -170,55 +169,108 @@ class MiniNN:
 
     """
     for epoch in range(max_iter):   
-      print ("epoch", epoch, end=":")
-      self.predict(x) # forward 
-      print (self.oracle)
-      self.get_deltas(y) # backpropagate
-      if verbose:
-        self.print_progress()   
-      self.update_weights() # update weights, and new prediction will be printed each epoch
+      print("epoch " , epoch)
+      self.setAveGradientsZero(self.Ws)
+
+      numTrainingSamples = 100
+
+      for s in self.samples[:numTrainingSamples]:
+      	self.predict(s) # forward 
+
+      	self.get_deltas(s)
+      	
+      	self.update_AverageGradientWeights(s)
+      
+
+      self.averageSumOfGradients(numTrainingSamples)	
+      self.update_weights()
+
+  def predictAll(self, predictionSet):
+
+  	for s in predictionSet:
+  		self.predict(s)
+  		print(s.getOutputPrediction())
+
+class Sample:
+	def __init__(self, x, y):
+		self.x = numpy.array(x)
+		self.y = numpy.array(y)
+		self.currentValues = []
+		self.currentValues.append(numpy.array(x))
+		self.deltas = []
+
+	def getX(self):
+		return self.x
+
+	def getY(self):
+		return self.y
+
+	def addValueLayer(self, x):
+		self.currentValues.append(numpy.array(x))
+
+	def clearLayers(self):
+		self.currentValues = []
+
+	def getLayer(self, index):
+		return self.currentValues[index]
+
+	def getOutputPrediction(self):
+		return self.currentValues[len(self.currentValues) - 1]
+
+	def getDeltas(self):
+		return self.deltas
+
+	def clearDeltas(self):
+		self.deltas = []
+
 
 if __name__ == "__main__": 
 
-  # Transfer matrix from input layer to hidden layer 1
-  W_0 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
-                      [.7, -.4],
-                      [-.2, .3]]))
 
-  # Transfer matrix from hidden layer 1 to hidden layer 2
-  W_1 = numpy.array(([[.4, .6,], # the first row maps the bias term to the two neurons of the next layer
-                      [.7, -.4],
-                      [-.2, .3]]))
+  print("Reading in data...")
+  # Read in all data from the file
+  inArray = numpy.genfromtxt('train.csv',delimiter=',')
+  # Get rid of first row, this row is not needed
+  inArray = numpy.delete(inArray, obj = 0, axis = 0)
+  print("Done reading data...")
 
-  # Transfer matrix from hidden layer 2 to input layer
-  W_2 = numpy.array(([[-.3], # the first row maps the bias term to the two neurons of the next layer
-                      [.5],
-                      [.1]] ))
+  samps = []
 
-  Ws = [W_0, W_1, W_2]
-  MNN = MiniNN(Ws=Ws) # initialize an NN with the transfer matrixes given 
+  #Like the example, let user select this, set first and last values to be length of x - 1 and length of y.
+  nonBiasTerms = [inArray.shape[1] - 1,15,15,10]
 
-  # The training sample
-  x_0 = numpy.array(([1., 1, 0])) # just one sample, augmented 
-  y_0 = numpy.array(([1])) # We support only one dimension in the output
-                          # this number must be between 0 and 1 because we used logistic activation and cross entropy loss. 
+  # Go through each row in the input array and split each row into its label and x values
+  for row in inArray:
+  	y = numpy.array([0,0,0,0,0,0,0,0,0,0])
+  	# set the value at the index of the label to be 1, if the sample is a 0, set index 0 to be a 1
+  	y[int(row[0])] = 1
+  	# The x values are located from the first index in the row to the end, length of x right now is 784
+  	xInputs = row[1:len(row)]
+  	# Add the bias term to the beginning of the sample
+  	xInputs = numpy.insert(xInputs, 0,1.)
 
-  # To use functions individually 
-  MNN.predict(x_0)
-  MNN.get_deltas(y_0)
-  MNN.print_progress()
-  MNN.update_weights()
-  MNN.print_progress()
+  	samps.append(Sample(xInputs, y))
 
-  # Or a recursive training process 
-  MNN = MiniNN(Ws=Ws) # re-init
-  MNN.train(x_0, y_0, max_iter=20, verbose=True)
+  
+  # Counter to keep track of current element within the nonBiasTerms list
+  count = 0
+  # Initialize the array of Ws
+  Ws = []
+  for x in nonBiasTerms[:-1]:
+  	#Append a W for each layer in the list except the last layer, assume one bias term
+  	Ws.append(numpy.random.rand(x + 1, nonBiasTerms[count + 1]))
+  	# Increse counter to properly index into the next term in the list
+  	count += 1
 
 
+  MNN = MiniNN(Ws=Ws, SampleList = samps) # initialize an NN with the transfer matrixes given, as well as the samples to train the NN
+  print("Training...")
+  MNN.train(max_iter = 100000)
+
+  print("Predicting...")
+  MNN.predictAll(samps)
 
 
-
-# In[ ]:
 
 
 
