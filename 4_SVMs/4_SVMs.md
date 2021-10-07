@@ -37,21 +37,21 @@ classoption:
 # All samples are equal. But some samplers are equaler. 
 
 - Let's first see a demo of a linear classifier for linearly separable cases. Pay attention to the prediction outcome. 
-- Think about the error-based loss function for a classifier: $\sum_i (\hat{y} - y )^2$ where $y$ is the ground truth label and $\hat(y)$ is the prediction. 
+- Think about the error-based loss function for a classifier: $\sum_i (\hat{y} - y )^2$ where $y$ is the ground truth label and $\hat{y}$ is the prediction. 
 - If $y=+1$ and $\hat{y} = +1.5$, should the error be 0.25 or 0 (because properly classified)? 
 
 # The perceptron algorithm
 
 -   Recall earlier that a sample $(\mathbf{x}_i, y_i)$ is correctly
-    classified if $\mathbf{w}^T \mathbf{x}_i y_i > 0$ .
+    classified if $\mathbf{w}^T \mathbf{x}_i y_i > 0$ and $y_i\in \{1, -1\}$.
 
 -   Let's define a new cost function to be minimized:
     $J(\mathbf{w}) = \sum\limits_{x_i \in \mathcal{M}} - \mathbf{w}^T \mathbf{x}_iy_i$
     where $\mathcal{M}$ is the set of all samples misclassified
-    ($\mathbf{W}^T \mathbf{X}_i y_i < 0$).
+    ($\mathbf{w}^T \mathbf{x}_i y_i < 0$).
 
 -   Then,
-    $\nabla J(\mathbf{w}) =  \sum\limits_{\mathbf{x}_i \in \mathcal{M}} - \mathbf{X}_iy_i$
+    $\nabla J(\mathbf{w}) =  \sum\limits_{\mathbf{x}_i \in \mathcal{M}} - \mathbf{x}_iy_i$
     (because $\mathbf{w}$ is the coefficients.)
 
 -   Only those misclassified matter! 
@@ -71,9 +71,9 @@ classoption:
 
     2.  In the $k$-th iteration, use sample $\mathbf{x}_j$ such that
         $j = k \mod n$ to update the $\mathbf{w}$ by:
-        $$        \mathbf{W}_{k+1} = \begin{cases}
-                                 \mathbf{W}_k + \rho \mathbf{X}_j y_j & \text{, if } \mathbf{W}_j^T \mathbf{X_j} y_j \leq 0, \text{~(wrong prediction)} \\
-                                 \mathbf{W}_k  & \text{, if } \mathbf{W}_j^T \mathbf{X_j} y_j > 0 \text{~(correct classification)}
+        $$        \mathbf{w}_{k+1} = \begin{cases}
+                                 \mathbf{w}_k + \rho \mathbf{x}_j y_j & \text{, if } \mathbf{w}_j^T \mathbf{x_j} y_j \leq 0, \text{~(wrong prediction)} \\
+                                 \mathbf{w}_k  & \text{, if } \mathbf{w}_j^T \mathbf{x_j} y_j > 0 \text{~(correct classification)}
                                \end{cases}        $$
         where $\rho$ is a constant called **learning rate**.
 
@@ -88,7 +88,7 @@ classoption:
 
 :::::::::::::: columns
 ::: {.column width="50%"}
-- Feature vectors and labels: 
+- Feature vectors **not augmented** and corresponding labels: 
 
   - $\mathbf{x}'_1= (0, 0)^T$, $y_1=1$
   - $\mathbf{x}'_2= (0, 1)^T$, $y_2=1$
@@ -97,7 +97,7 @@ classoption:
 
  - First, let's augment them and multiply with the labels: 
    - $\mathbf{x}_1y_1 = (0, 0, 1)^T$, 
-   - $\mathbf{x}_2y_2= (0, 1,1 )^T$, 
+   - $\mathbf{x}_2y_2= (0, 1, 1 )^T$, 
    - $\mathbf{x}_3y_3= (-1, 0, -1)^T$
    - $\mathbf{x}_4y_4= (-1, -1, -1)^T$
 :::
@@ -106,7 +106,7 @@ classoption:
 
 0. Begin our iteration. Let $\mathbf{w}_1= (0,0,0)^T$ and $\rho=1$.
 
-1.  $\mathbf{W}_1^T \cdot \mathbf{x}_1 y_1= 
+1.  $\mathbf{w}_1^T \cdot \mathbf{x}_1 y_1= 
     \begin{pmatrix}
     0 & 0 & 0
     \end{pmatrix}
@@ -114,8 +114,10 @@ classoption:
     0 \\
     0 \\
     1
-    \end{pmatrix} = 0 \leq 0$. Need to update $\mathbf{W}$:
-    $\mathbf{W}_2 = \mathbf{W}_1 + \rho \cdot \mathbf{x}_1 y_1 = 
+    \end{pmatrix} = 0 \leq 0$. 
+    
+    Need to update $\mathbf{w}$:
+    $\mathbf{w}_2 = \mathbf{w}_1 + \rho \cdot \mathbf{x}_1 y_1 = 
     \begin{pmatrix}
     0 \\
     0 \\
@@ -135,7 +137,7 @@ classoption:
 :::
 ::::::::::::::
 
-2.  $\mathbf{W}_2^T \cdot \mathbf{x}_2 y_2= 
+2.  $\mathbf{w}_2^T \cdot \mathbf{x}_2 y_2= 
     \begin{pmatrix}
     0 & 0 & 1
     \end{pmatrix}
@@ -154,7 +156,7 @@ classoption:
 
 Continue in [perceptron.ipynb](./perceptron.ipynb)
 
-14.   In the end, we have $\mathbf{W}_{14} = 
+14.   In the end, we have $\mathbf{w}_{14} = 
      \begin{pmatrix}
      -3 \\
      0 \\
@@ -162,8 +164,8 @@ Continue in [perceptron.ipynb](./perceptron.ipynb)
     \end{pmatrix}$, let's verify how well it works
 
 -   $$\begin{cases}
-             \mathbf{w}_{14}\cdot \mathbf{x}_1 y_1 &= 1 > 0 \\
-             \mathbf{w}_{14}\cdot \mathbf{x}_2 y_2&= 1 > 0 \\
+             \mathbf{w}_{14}\cdot \mathbf{x}_1 y_1 &= 2 > 0 \\
+             \mathbf{w}_{14}\cdot \mathbf{x}_2 y_2&= 2 > 0 \\
              \mathbf{w}_{14}\cdot \mathbf{x}_3 y_3&= 1 > 0 \\
              \mathbf{w}_{14}\cdot \mathbf{x}_4 y_4&= 1 > 0
              \end{cases}$$
@@ -365,7 +367,24 @@ $\mathbf{w}^T\mathbf{x} + w_b = - d_2$ where no sample falls into.
             \end{cases}$$
     The last condition is sometimes written in the equivalent form $\sum_k \lambda_k h_k(\mathbf{x}) = 0$. 
 
-# Properties of hard margin linear SVM
+# The Lagrangian function of a hard-margin linear SVM
+* Given a nonlinear optimization problem 
+  $\begin{cases}
+               \min & f(\mathbf{x}) \\
+               s.t. & h_k(\mathbf{x}) \ge 0, \forall k \in [1..K],
+            \end{cases}$ where $\mathbf{x}$ is a vector, and
+    $h_k(\cdot)$ is linear, its Lagrangian function is:
+    $$L(\mathbf{x}, \mathbf{\lambda}) = f(\mathbf{x}) - \sum_{k=1}^{K} \lambda_k h_k(\mathbf{x})$$
+* Thus, given the primal form of SVMs: 
+  $\begin{cases}
+               \min & \frac{1}{2} ||\mathbf{w}||^2 = \frac{1}{2} \mathbf{w}^T\mathbf{w} \\
+               s.t. & y_k(\mathbf{w}^T\mathbf{x}_k + w_b) \ge 1, \forall \mathbf{x}_k.
+            \end{cases}$
+  its Lagrangian function is: 
+$$L(\mathbf{w}, \mathbf{\lambda}) = {1\over 2} \mathbf{w}^T \mathbf{w} - \sum_{k=1}^{K} y_k(\mathbf{w}^T\mathbf{x}_k + w_b) - 1$$
+   where $K$ is the total number of samples. 
+
+# The KKT conditions and properties of hard margin linear SVM
 
 For an SVM problem, the KKT conditions thus are: $$\begin{cases}
               A: \frac{\partial L}{\partial w} = \mathbf{0}, & \\
@@ -497,29 +516,59 @@ $$\begin{cases}
 
 - Instead of finding $\mathbf{w}$, find $K$ $\lambda_k$'s. (Is an SVM really non-parametric?)
 
-- The new SVM: $g(\mathbf{x}) = \mathbf{w}^T\mathbf{x} = \sum_{k=1}^K \lambda_k y_k (\mathbf{x}^T \mathbf{x_k}) + w_b$. 
+- The new SVM: $g(\mathbf{x}) + w_b = \mathbf{w}^T\mathbf{x}  + w_b  = \sum_{k=1}^K \lambda_k y_k (\mathbf{x}^T \mathbf{x_k}) + w_b$. 
 
 - To store an SVM model, just store the support vectors $\mathbf{x}_i$'s, their labels $y_i$'s and weights $\lambda_i$'s, and the bias $w_b$. 
 
 :::
 ::::::::::::::
 
+# SVMs are similarity-based classifiers 
+
+* The prediction for a sample $\mathbf{x}$: $$\sum_{k=1}^K \lambda_k y_k (\mathbf{x}^T \mathbf{x_k}) + w_b$$
+* Recall that $y_k = +1$ if a sample $\mathbf{x}_k$ belongs to class $+1$ (the set $C_{+1}$), while  $y_k = -1$ if class $-1$ (the set $C_{-1}$). 
+* Thus the prediction can be rewritten into three terms: 
+  $$\underbrace{\sum_{\mathbf{x_k} \in C_{+1}}\lambda_k (\mathbf{x}^T \mathbf{x_k})}_{\text{weighted similarity to positive samples}}
+    - \underbrace{\sum_{\mathbf{x_k} \in C_{-1}}\lambda_k (\mathbf{x}^T \mathbf{x_k})}_{\text{weighted similarity to negative samples}}
+    + w_b$$
+- The expression above basically says: whether the sample $\mathbf{x}$ is more like the negative ($-1$) samples or the positive ($+1$) samples. 
+* Similarities are weighted by sample weights $\lambda_i$. Samples whose $\lambda_i=0$ have no "voting power." Only support vectors, i.e., those whose  $\lambda_i> 0$, have. 
+
 # **Kernel tricks**: achieving non-linearity on SVMs
 - In the previous slides, any two samples "interact" with each other thru dot product, e.g., $\mathbf{x_i}^T\mathbf{x}_j$ (in training, between two samples) or $\mathbf{x}^T \mathbf{x_k}$ (in prediction, between a sample to be predicted and a support vector). 
 
+- Note that dot product is about measuring similarity between two vectors. 
+
 - It can be expanded to any function, denoted as $\mathcal{K}(\mathbf{x}, \mathbf{y})$ ($\mathbf{x}$ and $\mathbf{y}$ are any two vectors of same dimension. Not the input and output of an estimator), between two vectors, known as the **kernel function** or **kernel tricks**. 
 
+- SVM dual form using the kernel function $\mathcal{K}$ (to solve, not for prediction): 
+  $$\begin{cases}   
+    \max & -\frac{1}{2} \sum\limits_{i=1}^K \sum\limits_{j=1}^K \lambda_i \lambda_j y_i y_j 
+  \mathcal{K}(\mathbf{x}_i^T, \mathbf{x}_j) + \sum\limits_{k=1}^K\lambda_k \\
+    s.t. & \lambda_k \ge 0, \forall k \in [1..K], \sum\limits_{k=1}^K \lambda_ky_k=0
+  \end{cases}$$ 
+
+- An SVM using the kernel function (predicting): $\sum_{k=1}^K \lambda_k y_k \mathcal{K}(\mathbf{x}^T \mathbf{x_k}) + w_b$
+
+# Types of kernels
 - Linear kernels: what we have seen so far in SVMs. 
 
 - Polynomial kernels: $\mathcal{K}(\mathbf{x}, \mathbf{y})= (\mathbf{x}\cdot \mathbf{y} + b)^p$ where $p\in\mathbb{Z^+}$ and $b\in \mathbb{R}$. 
 
 - Gaussian (radial basis function, RBF) kernels (that build contours around support vectors when $\mathbf{y}$ is a support vector): $\mathcal{K}(\mathbf{x}, \mathbf{y}) = \exp (-||\mathbf{x}- \mathbf{y}||^2 / \sigma)$
+
+- A Gaussian kernel amplifies the influence of close samples and attenuates that of distant samples. 
+
 - Usually linear and Gaussian are good enough. A Gaussian kernel can be decomposed into many polynomial terms. 
 
 # Transforming a nonlinearly separable problem to a linearly separable one
 
 ![](figs/kernel_machine.png){width="100%"}
 Source: Wikipedia/SVM. 
+
+# How to get the $w_b$? 
+- The optimization problem itself, in either the dual or primal form, ignores the bias term $w_b$. 
+- So how? 
 
 # Generalized Linear Classifier
 
