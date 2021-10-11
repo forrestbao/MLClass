@@ -65,14 +65,14 @@ To compile this file, be sure you first compile all `.tex` files under `figs` fo
     *  $x_{0}=1$ is augmented and $w_0$ is the bias, 
     *  the part of $\mathbf{x}$ without $x_0$ is denoted as $\mathbf{x}_{[1..]} = [x_1, x_2, \dots, x_d]$, the feature vector of a sample or the raw input. Because in NNs, it is often the raw input, let's call it **input vector**. 
     *  $\phi(\cdot)$ is an **activation function**, which could be nonlinear, e.g., step or logistic ($\sigma$).
-    *  The output $\hat{y}$ of a neuron, is also called the activation. 
+    *  The output $\hat{y}$ of a neuron is also called the **activation**. 
 <!-- \underbrace{x_{d+1}}_{\text{the augmented 1,\\ often omitted.}}$.  -->
 ::::
 :::
 
 -   This is a linear classifier: $\phi(\mathbf{w}^T \mathbf{x})$ where
     $\phi(\cdot)$ can be, e.g., a step or sign function. (If using a continuous
-    function for $h(\cdot)$, we get a regressor. In the regressor case, $h$ is often nonlinear.) 
+    function for $\phi(\cdot)$, we get a regressor. In the regressor case, $\phi$ is often nonlinear.) 
 
 
 # Notations and terminology
@@ -280,16 +280,23 @@ Yellow nodes are bias nodes. Layer index starts from 0.
 
  
    $\phi \Bigg( \mathbb{W}^{(L)T} 
+            \Bigg [1 \oplus
             \overbrace{    
                 \phi \bigg( \mathbb{W}^{(2)T} 
-                            \underbrace{\phi \left ( \mathbb{W}^{(1)T} \mathbf{x}^{(0)}  \right )}_{\mathbf{x}^{(1)}} 
+                          \bigg [
+                            1 \oplus
+                            \underbrace{\phi \left ( \mathbb{W}^{(1)T} \mathbf{x}^{(0)}  \right )}_{\mathbf{x}^{(1)}_{[1..]}} 
+                          \bigg ]
                     \bigg) 
             }
-            ^{\mathbf{x}^{(2)}}            
+            ^{\mathbf{x}^{(2)}_{[1..]}}            
             \cdots 
+            \Bigg ]
     \Bigg)$
 
-For the example NN in the figure left: 
+where $\oplus$ means concatenation. Here we use it to prepend the bias 1 to output from a layer in preparation for transferring to the next layer. 
+
+- For the example NN in the figure left: 
 
 <!-- $
 \begin{pmatrix}
@@ -334,7 +341,7 @@ $\begin{blockarray}{c}
       \end{block}
  \end{blockarray}$. 
 
-Once again, the last/outoput layer has no bias. 
+Once again, the last/output layer has no bias. 
 
 ::::
 :::
@@ -353,10 +360,6 @@ Once again, the last/outoput layer has no bias.
 - An ANN can have any arbitrary number of hidden layers. Even zero. 
 
 # An ANN for XOR
-
-The activation function here is linear: $\phi(x) = x$. Or you could say, no activation. 
-
-![](figs/XOR.png){width=50%}
 
 Any logic operation: Fig. 2.9 of [the Neural Network Ebook comes with the `neuralnetwork` package for LaTeX](https://github.com/battlesnake/neural/blob/master/examples/neural-networks-ebook.pdf)
 
@@ -815,9 +818,9 @@ There is NO $\delta_0^{(l)}$ if layer $l$ is output.
   \begin{align*}
   \bm{\delta}^{(l)} 
 = & {\partial E \over \partial \mathbf{x}^{(l)} } 
-  {\partial \mathbf{x}^{(l)} \over \partial \mathbb{W}^{(l-1)}\mathbf{x}^{(l-1)}} \\
+  {\partial \mathbf{x}^{(l)} \over \partial \mathbb{W}^{(l-1)T}\mathbf{x}^{(l-1)}} \\
 = & {\partial E \over \partial \mathbf{x}^{(l)} } 
-  {\partial \phi(\mathbb{W}^{(l-1)}\mathbf{x}^{(l-1)}) \over \partial \mathbb{W}^{(l-1)}\mathbf{x}^{(l-1)}} 
+  {\partial \phi(\mathbb{W}^{(l-1)T}\mathbf{x}^{(l-1)}) \over \partial \mathbb{W}^{(l-1)T}\mathbf{x}^{(l-1)}} 
 = {\partial E \over \partial \mathbf{x}^{(l)} } \psi(\mathbf{x}^{(l)})
 \end{align*}
 (For the definition of $\psi(\cdot)$, refer to Eq. \ref{eq:psi})
@@ -827,7 +830,7 @@ There is NO $\delta_0^{(l)}$ if layer $l$ is output.
 - We will use the notation $\delta_i^{(l)}$ to denote the pre-activation error on the $i$-th neuron at layer $l$. For example, to the network on the left, 
 $\bm{\delta}^{(2)} 
 = [
-   \delta_0^{(1)} ,  \delta_1^{1} , \delta_2^{1}  , \delta_3^{1} 
+   \delta_0^{(2)} ,  \delta_1^{(2)} , \delta_2^{(2)}  , \delta_3^{(2)} 
   ]^T$
 
 - But note that $\delta_0^{(l)}$ for any **non-output** layer $l$ is just a placeholder -- because the bias neuron in any layer has no activation function, and it is not connected with any neurons in the layer in prior. 
