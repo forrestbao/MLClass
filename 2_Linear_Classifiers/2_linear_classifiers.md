@@ -166,10 +166,18 @@ In TF: matmul
 - [Broadcast](https://numpy.org/doc/stable/user/basics.broadcasting.html), tensor product 
 - Squeeze 
 
+# Matrix calculus
+
+[Matrix calculus on Wikipedia](https://en.wikipedia.org/wiki/Matrix_calculus)
+
+# Demo: Think ``matricsilly''
+* scalar multiplication  
+* no/avoiding for-loops. use matrixes for batch operations. 
+
 # The hyperplane
 
 :::::::::::::: columns
-::: {.column width="40%"}
+::: {.column width="50%"}
 ![](figs/p2.pdf){width=140%}
 :::
 
@@ -180,11 +188,11 @@ In TF: matmul
 :::
 ::::::::::::::
 
--  In matrix form: 
+-  In matrix form (By default, all vectors are column vectors): 
 $$
 \left (  x_1, x_2, 1 \right) 
 \begin{pmatrix}
-  w_1 \\ w_2 \\ -w_1w_2
+  w_1 \\ w_2 \\ -w_1 w_2
 \end{pmatrix}
 = 
 \underbrace{
@@ -213,58 +221,63 @@ $$
       \mathbf{w} = \begin{pmatrix}
                       w_1 \\ w_2 \\ -w_1w_2
                    \end{pmatrix}
-    $$ (By default, all vectors are column vectors.) 
+    $$ 
   - $x_1$ and $x_2$ are two **feature values** comprising the feature vector. $1$ is **augmented** for the bias $-w_1w_2$.
   - Then the equation is rewritten into matrix form: $\mathbf{x}^T \cdot \mathbf{w} = 0$.
     For space sake, $\mathbf{x}^T \mathbf{w} = \mathbf{x}^T \cdot \mathbf{w}$. 
+  - Further, since both $\mathbf{x}$ and $\mathbf{w}$ are vectors, $\mathbf{x}^T \mathbf{w} = \mathbf{w}^T \mathbf{x}$. 
 
 # The hyperplane (cond.)
   - Expand to $n$-dimension. 
     $$
-      \mathbf{X} = \begin{pmatrix}
+      \mathbf{x} = \begin{pmatrix}
                       x_1 \\ x_2 \\ \vdots \\ x_n \\ 1 
                    \end{pmatrix}
     $$  
     and
-    $$\mathbf{W} = \begin{pmatrix}
-                      w_1 \\ w_2 \\ \vdots \\w_n \\ -w_1w_2
+    $$\mathbf{w} = \begin{pmatrix}
+                      w_1 \\ w_2 \\ \vdots \\w_n \\ -w_1w_2\cdots w_n
                    \end{pmatrix}.
     $$ 
 
-    Then $\mathbf{X}^T \cdot \mathbf{W} = 0$, denoted as the \emph{hyperplane} in $\mathbb{R}^n$.
+    Then $\mathbf{x}^T \cdot \mathbf{w} = 0$, denoted as the \emph{hyperplane} in $\mathbb{R}^n$.
   
 
 # Binary Linear Classifier
-  - A binary linear classier is a function $f(X)=\mathbf{W} \mathbf{X}$, such that
+  - A binary linear classier is a function $\hat{f}(\mathbf{x})=\text{sgn}(\mathbf{w}^T \mathbf{x})\in\{-1,0,1\}$ where $\text{sgn}$ is the sign function. 
+  Note that the $\mathbf{x}$ has been augmented as mentioned before. 
+  - A properly trained binary linear classifier should hold that 
   \begin{equation}
     \begin{cases}
-      \mathbf{W}^T\mathbf{X} >0 & \forall X\in C_1\\
-      \mathbf{W}^T\mathbf{X} <0 & \forall X\in C_2
+      \mathbf{w}^T\mathbf{x} >0 & \forall \mathbf{x} \in C_1\\
+      \mathbf{w}^T\mathbf{x} <0 & \forall \mathbf{x} \in C_2
     \end{cases}
     \label{eq:binary_classifier}
   \end{equation}
-  where $C_1$ and $C_2$ are the two classes. Note that the $\mathbf{X}$ has been augmented with 1 as mentioned before. 
-  - $\mathbf{W}\mathbf{X}$ is the prediction for a sample $\mathbf{x}$
-  - Using the function $f$ to make decision is called \emph{test}. Given a new sample whose augmented feature vector is $\mathbf{X}$, if $\mathbf{W}^T\mathbf{X} >0$, then we classify the sample to class $C_1$. Otherwise, class $C_2$. 
-  - Example. Let $\mathbf{W}^T = (2, 4, -8)$, what's the class for new sample $\mathbf{X}= (1,1,1)$ ($1$ is augmented)? 
-  - $\mathbf{W}^T\mathbf{X} = -2 <0$. Hence the sample of feature value $(1,1)$ belongs to class $C_1$.
+  where $C_1$ and $C_2$ are the two classes. 
+  - When preparing the training data, we define the label $y=+1$ for every sample $\mathbf{x}\in C_1$, and $y=-1$ for every sample $\mathbf{x}\in C_2$.  
+  <!-- - $\mathbf{w}\mathbf{x}$ is the prediction for a sample $\mathbf{x}$ -->
+  <!-- - Using the function $\hat{f}$ to make decisions is called \emph{test}.  -->
+  - Given a new sample whose augmented feature vector is $\mathbf{x}$, if $\mathbf{w}^T\mathbf{x} >0$, it is classified to $C_1$, or equivalently its predicted label $\hat{y}=+1$. Otherwise, class $C_2$, or $\hat{y}=-1$. 
+  - Example: Let $\mathbf{w} = (2, 4, -8)^T$, what's the class for new sample $\mathbf{x}= (1,1,1)^T$ (already augmented)? 
+  - Solution: $\mathbf{w}^T\mathbf{x} = -2 <0$. Hence the sample of feature value $(1,1)$ belongs to class $C_1$.
 
 # Normalized feature vector
 - Eq. \ref{eq:binary_classifier} has two directions. Let's unify them into one. 
-- A correctly classified sample $(\mathbf{X_i}, y_i)$ shall satisfy the inequality $\mathbf{W}_i^T\mathbf{X} y_i > 0$.  (The $y_i$ flips the direction of the inequality. )
-- \textit{normalize} the feature vector: $\mathbf{X}_i y_i$ for $y_i\in  \{+1, -1\}$.
-- Example: 
+- A correctly classified sample $\mathbf{x_i}$ of label $y_i\in\{+1, -1\}$ shall satisfy the inequality $\mathbf{w}_i^T\mathbf{x} y_i > 0$.  (When $y_i$ is negative, it flips the direction of the inequality. )
+- $\mathbf{x}_i y_i$  is called the \textbf{normalized feature vector} for sample $\mathbf{x_i}$.
+<!-- - Example: 
     * $\mathbf{x}'_1= (0, 0 )^T$, $\mathbf{x}'_2= (0, 1)^T$, $\mathbf{x}'_3= (1, 0)^T$, $\mathbf{x}'_4= (1, 1)^T$, 
     * $y_1=1, y_2= 1, y_3= -1, y_4= -1$
     * First, augment: 
   $\mathbf{x}_1= (0, 0, 1)^T$, $\mathbf{x}_2= (0, 1,1 )^T$, $\mathbf{x}_3= (1, 0, 1)^T$, $\mathbf{x}_4= (1, 1, 1)^T$
-    * Then, normalize $\mathbf{x}''_1= \mathbf{x}_1$, $\mathbf{x}''_2= \mathbf{x}_2$, $\mathbf{x}''_3 =- \mathbf{x}_3 = (-1, 0, -1)^T$, $\mathbf{x}''_4 = \mathbf{x}_4 = (-1, -1, -1)^T$
-- Please note that the term ''normalized'' could have different meanings in different context of ML.  
+    * Then, normalize $\mathbf{x}''_1= \mathbf{x}_1$, $\mathbf{x}''_2= \mathbf{x}_2$, $\mathbf{x}''_3 =- \mathbf{x}_3 = (-1, 0, -1)^T$, $\mathbf{x}''_4 = \mathbf{x}_4 = (-1, -1, -1)^T$-->
+- Please note that the term "normalized" could have different meanings in different context of ML.   
 
 # Solving inequalities: the simplest way to find the $\mathbf{W}$
   - Let's look at a case where the feature vector is 1-D. 
-  - Let the training set be $\{(4, C_1), (5, C_1), (1, C_2), (2, C_2)\}$. Their augmented feature vectors are: $X_1=(4, 1)^T$, $X_2=(5, 1)^T$, $X_3=(1, 1)^T$, $X_4=(2, 1)^T$.
-  - Let $\mathbf{W}^T = (w_1, w_2)$. In the training process, we can establish 4 inequalities: 
+  - Let the training set be $\{(4, +1), (5, +1), (1, -1), (2, -1)\}$. Their augmented feature vectors are: $x_1=(4, 1)^T$, $x_2=(5, 1)^T$, $x_3=(1, 1)^T$, $x_4=(2, 1)^T$.
+  - Let $\mathbf{w}^T = (w_1, w_2)$. In the training process, we can establish 4 inequalities: 
   $$
     \begin{cases}
       4 w_1+ w_2 & >0  \\
@@ -302,16 +315,16 @@ $$
     * Define a cost function to be minimized (The learning is the about minimizing the cost function)
     * Choose an algorithm to minimize (e.g., gradient, least squared error etc. )
   - One intuitive criterion can be the sum of error square: 
-  $$ J(\mathbf{W}) = \sum_{i=1}^N (\mathbf{W}^T\mathbf{x}_i -y_i)^2 = \sum_{i=1}^N (\mathbf{x}_i^T \mathbf{W} -y_i)^2 $$
-  where $\mathbf{x}_i$ is the i-th sample (we have $N$ samples here), $y_i$ the corresponding label, $\mathbf{W}^T\mathbf{X}$ is the prediction. 
-  - For each sample $\mathbf{x}_i$, the error of the classifier is $\mathbf{W}^T\mathbf{x} - y_i$. 
-  The square is to avoid that errors on difference samples cancele out, e.g., $[+1-(-1)] - [-1-(+1)] = 0$. 
+  $$ J(\mathbf{w}) = \sum_{i=1}^N (\mathbf{w}^T\mathbf{x}_i -y_i)^2 = \sum_{i=1}^N (\mathbf{x}_i^T \mathbf{w} -y_i)^2 $$
+  where $\mathbf{x}_i$ is the i-th sample (we have $N$ samples here), $y_i$ the corresponding label, $\mathbf{w}^T\mathbf{X}$ is the prediction. 
+  - For each sample $\mathbf{x}_i$, the error of the classifier is $\mathbf{w}^T\mathbf{x} - y_i$. 
+  The square is to avoid that errors on difference samples cancel out, e.g., $[+1-(-1)] - [-1-(+1)] = 0$. 
 
 
 # Finding the linear classifier via zero-gradient (cond.)
-  - Minimizing $J(\mathbf{W})$ means: $\frac{\partial J(\mathbf{W})}{\partial \mathbf{W}} = 2\sum\limits_{i=1}^N \mathbf{x}_i (\mathbf{x}_i^T \mathbf{W} - y_i) = (0, \dots, 0)^T$ 
+  - Minimizing $J(\mathbf{w})$ means: $\frac{\partial J(\mathbf{w})}{\partial \mathbf{w}} = 2\sum\limits_{i=1}^N \mathbf{x}_i (\mathbf{x}_i^T \mathbf{w} - y_i) = (0, \dots, 0)^T$ 
   - Hence, 
-  $\sum\limits_{i=1}^N \mathbf{x}_i \mathbf{x}_i^T \mathbf{W} = \sum\limits_{i=1}^N \mathbf{x}_i y_i$
+  $\sum\limits_{i=1}^N \mathbf{x}_i \mathbf{x}_i^T \mathbf{w} = \sum\limits_{i=1}^N \mathbf{x}_i y_i$
   - The sum of a column vector multiplied with a row vector produces a matrix.
  $$ 
 \sum_{i=1}^N \mathbf{x}_i \mathbf{x}_i^T = 
@@ -345,14 +358,14 @@ $$
 \end{pmatrix}
 =\mathbb{X}^T \mathbf{y}
 $$
-- $\mathbb{X}^T\mathbb{X}\mathbf{W} = \mathbb{X}^T \mathbf{y}$
-- $(\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T\mathbb{X}\mathbf{W} = (\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T \mathbf{y}$
-- $\mathbf{W} 
+- $\mathbb{X}^T\mathbb{X}\mathbf{w} = \mathbb{X}^T \mathbf{y}$
+- $(\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T\mathbb{X}\mathbf{w} = (\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T \mathbf{y}$
+- $\mathbf{w} 
  = (\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T \mathbf{y}$
 
 
 # Gradient descent approach
-  Since we define the target function as $J(\mathbf{W})$, finding $J(\mathbf{W})=0$ or minimizing $J(\mathbf{W})$ is intuitively the same as reducing $J(\mathbf{W})$ along the gradient. The algorithm below is a general approach to minimize any multivariate function: changing the input variable  proportionally to the gradient.
+  Since we define the target function as $J(\mathbf{w})$, finding $J(\mathbf{w})=0$ or minimizing $J(\mathbf{w})$ is intuitively the same as reducing $J(\mathbf{w})$ along the gradient. The algorithm below is a general approach to minimize any multivariate function: changing the input variable  proportionally to the gradient.
   \begin{columns}
     \begin{column}{.6\textwidth}
       \begin{algorithm}[H]
@@ -377,7 +390,7 @@ $$
 
 
 # Fisher's linear discriminant
-- What really is $\mathbf{w}^T \mathbf{x}$? The vector $\mathbf{x}$ is projected to a 1-D space (actually along $\mathbf{w}$) in which the classification decision is done. 
+- What really is $\mathbf{w}^T \mathbf{x}$? The vector $\mathbf{x}$ is projected to a 1-D space (actually perpendicular to $\mathbf{w}$) in which the classification decision is done. 
 - This is what we prefer after the projection: 
     * samples of each class distribute tightly around its center (minimized intra-class difference)
     * the distribution centers of two classes are very far from each other (maximized inter-class difference)
@@ -405,7 +418,6 @@ $$
   \mathbf{w}
   = \mathbf{w}^T \mathbf{S}_i \mathbf{w}$
 
-
   - Hence $J(\mathbf{w}) 
     = \frac{\mathbf{w}^T \mathbf{S}_B \mathbf{w}}{\mathbf{w}^T (\mathbf{S}_1 + \mathbf{S}_2) \mathbf{w}}
     = \frac{\mathbf{w}^T \mathbf{S}_B \mathbf{w}}{\mathbf{w}^T \mathbf{S}_w \mathbf{w}}$
@@ -416,7 +428,7 @@ $$
   - Finally
     $\mathbf{w} = \mathbf{S}_w^{-1} (\mathbf{m}_1 - \mathbf{m}_2)$.
     (Derivation saved.)
-  - What about bias? $\mathbf{w}^T \mathbf{m} + w_b = 0$ where $\mathbf{m}=(\mathbf{m}_1+\mathbf{m}_2)/2$ such that the decision hyperplane lies exactly in the middle of the centers of two classes. 
+  - What about bias? $\mathbf{w}^T \mathbf{m} + w_b = 0$ where $\mathbf{m}=(\mathbf{m}_1+\mathbf{m}_2)/2$ such that the decision hyperplane lies exactly in the middle between the centers of the two classes. 
 
 <!-- # Programming hints for Fisher's
 - First, get $\mathbf{m}_i$. In Numpy, for each class, just sum over samples (or along columns because each column in $X$ corresponds to a feature) and divide the number of samples per class. 
