@@ -18,7 +18,7 @@ header-includes: |
     \newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2ex}}
     \newcommand*{\horzbar}{\rule[.5ex]{2ex}{0.5pt}}
     \setlength\labelsep   {.5pt}  
-    \setbeamersize{text margin left=3mm,text margin right=4mm} 
+    \setbeamersize{text margin left=1mm,text margin right=1mm} 
     \setlength{\leftmargini}{15pt}
     \usepackage{hyperref}
     \hypersetup{
@@ -203,6 +203,8 @@ $\phi \left [
     \end{pmatrix}
     = \mathbf{o}_{1+}$
 
+- The subscript $1+$ means non-bias neurons. We will see more about it  in the next slide. 
+
 - Rewrite into a shorter form: 
     $$\phi(\mathbb{W}^T\mathbf{x}) = \mathbf{o}_{1+}$$
     where 
@@ -217,6 +219,8 @@ $\phi \left [
     \mathbf{W}_1 & \mathbf{W}_2 \\
     \vertbar & \vertbar 
     \end{pmatrix}$. 
+
+
 ::::
 :::
 
@@ -226,7 +230,10 @@ $\phi \left [
 ![](figs/one_hidden_layer.pdf){width=100%}
 ::::
 :::: {.column width=0.6}
-- Finish the last three connections: $o_0 \rightarrow \hat{y}$, $o_1 \rightarrow \hat{y}$, and $o_2 \rightarrow \hat{y}$. 
+- Now we further expand the network by feeding $o_1$ and $o_2$ to another neuron $\hat{y}$.
+- Three connections: $o_0 \rightarrow \hat{y}$ (the bias), $o_1 \rightarrow \hat{y}$, and $o_2 \rightarrow \hat{y}$. 
+- $\mathbf{o}=[1] \oplus \mathbf{o}_{1+}$ is the result of concatenating ($\oplus$) the bias $1$ with the output $\mathbf{o}_{1+}$ from the previous slide.
+
 -   $\hat{y}=
   \phi \left [
   \begin{pmatrix}
@@ -261,8 +268,8 @@ Yellow nodes are bias nodes. Layer index starts from 0.
 - The transform $\mathbf{o} = \phi(\mathbb{W}^T\mathbf{x})$ or $\hat{y} = \phi(\mathbb{V}^T\mathbf{o})$ is called **feedforward** where the outputs from a **layer** (to be defined later) of neurons are **fed** into another layer.
 - To generalize, we use the notation $\mathbf{x}^{(l)}=[x^{(l)}_0, x^{(l)}_1, x^{(l)}_2, \dots]$ to represent neurons at layer $l$ ($x^{(l)}_i$ is the $i$-th neuron in layer $l$), and $\mathbb{W}^{(l)}$ to denote the transfer matrix from layer $l$ to layer $l+1$. We call $l$ the **layer index** and $i$ in this context the **node index**. 
 - Generalized feedforward between any two layers:
-  $$\mathbf{x}^{(l+1)}_{1+} = \phi(\mathbb{W}^{(l)} \mathbf{x}^{(l)})$$
-  The subscript $_{1+}$ because bias terms are not produced by feedforward. 
+  $$\mathbf{x}^{(l+1)}_{1+} = \phi(\mathbb{W}^{(l)} \mathbf{x}^{(l)}) = \phi(\mathbb{W}^{(l)} \left [1 \oplus \mathbf{x}^{(l)} \right ]) $$
+  The subscript $_{1+}$ because bias terms are not produced by feedforward.
 - The bias neuron $x^{(l)}_0=1$ always except for the last/output layer which has no bias neuron (why?) 
 - Hence for the last/output layer, $\mathbf{x}^{(-1)} = [x^{(-1)}_1, x^{(-1)}_2, \dots]$. 
 
@@ -282,19 +289,19 @@ Yellow nodes are bias nodes. Layer index starts from 0.
    $\phi \Bigg( \mathbb{W}^{(L)T} 
             \Bigg [1 \oplus
             \overbrace{    
-                \phi \bigg( \mathbb{W}^{(2)T} 
+                \phi \bigg( \mathbb{W}^{(1)T} 
                           \bigg [
                             1 \oplus
-                            \underbrace{\phi \left ( \mathbb{W}^{(1)T} \mathbf{x}^{(0)}  \right )}_{\mathbf{x}^{(1)}_{1+}} 
+                            \underbrace{\phi \left ( \mathbb{W}^{(0)T} \mathbf{x}^{(0)}  \right )}_{\mathbf{x}^{(0)}_{1+}} 
                           \bigg ]
                     \bigg) 
             }
-            ^{\mathbf{x}^{(2)}_{1+}}            
+            ^{\mathbf{x}^{(1)}_{1+}}            
             \cdots 
             \Bigg ]
     \Bigg)$
 
-where $\oplus$ means concatenation. Here we use it to prepend the bias 1 to output from a layer in preparation for transferring to the next layer. 
+
 
 - For the example NN in the figure left: 
 
@@ -405,7 +412,7 @@ In order to approximate the relation $h={1\over 2}gt^2$
 
 - **The discussion above about neg-log-loss is for classification only. For regression, MSE is still used de facto.**
 
-# Gradient descent in ANNs: simplest case
+# Gradient descent in ANNs: the simplest case, just one neuron
 
 ::: {.columns}
 :::: {.column width=0.2}
@@ -413,28 +420,30 @@ In order to approximate the relation $h={1\over 2}gt^2$
 ::::
 :::: {.column width=0.8}
 
-- If just one neuron, it's something similar to perceptron algorithm [See the first part of Unit 4 SVMs slides.], except that we will use neg-log-loss instead of (mean or sum) squared error. 
+- If just one neuron, it's something similar to perceptron algorithm [Part I of Unit 4 SVMs slides], except that we will use neg-log-loss instead of mean/sum squared error. 
 
 - Warm-up: $\hat{y} = \phi(\mathbf{w}^T\mathbf{x})$
 
-- Gradient for each weight $w_i$ based on chain rule: 
+- Based on chain rule of derivative ($J$ is a function [loss] of $\hat{y}$, which is a function [activation] of $\mathbf{w}^T\mathbf{x}$, which is a function [dot product] of $w_{i}$), gradient for each weight $w_i$ is: 
     \begin{equation}
     { \partial J \over \partial w_i} 
         = {\partial J \over \partial \hat{y}} \pause
         {\partial \hat{y} \over \partial \mathbf{w}^T\mathbf{x}} \pause
         {\partial \mathbf{w}^T\mathbf{x} \over \partial w_i} \label{eq:gradient_simplest}
     \end{equation}
-- Derivative of neg-log-loss: 
+- If the loss is neg-log-loss: 
 ${\partial J \over \partial \hat{y}} = {\partial~ - y\log \hat{y} - (1-y)\log (1-\hat{y}) \over \pause \partial \hat{y} } = {\hat{y} - y \over \hat{y}(1-\hat{y}) } \pause$
-- Derivative of activation function (from calculus, the derivative of $\sigma(x) \pause = 1/(1+e^{-x})$ is $\sigma(x)(1-\sigma(x))$): 
+- If using sigmoid activation function $\phi(x)=\sigma(x) = 1/(1+e^{-x})$,  from calculus, its derivative is $\sigma(x)(1-\sigma(x))$, and thus  
 ${\partial \hat{y} \over \partial \mathbf{w}^T\mathbf{x}}  
 ={\partial \phi\left (\mathbf{w}^T\mathbf{x} \right ) \over \partial \mathbf{w}^T\mathbf{x}}
-= \hat{y}(1-\hat{y})\pause$
+={\partial \sigma\left (\mathbf{w}^T\mathbf{x} \right ) \over \partial \mathbf{w}^T\mathbf{x}}
+=  \sigma\left (\mathbf{w}^T\mathbf{x} \right ) (1-  \sigma\left (\mathbf{w}^T\mathbf{x} \right ))
+= \hat{y}(1-\hat{y})$
 
-- Lastly, ${\partial \mathbf{w}^T\mathbf{x} \over \partial w_i } = x_i \pause$. 
+- Lastly, ${\partial \mathbf{w}^T\mathbf{x} \over \partial w_i } = x_i$. 
 
-- Put together: Gradient for each weight $w_i$: 
-    ${ \partial J \over \partial w_i} = (\hat{y}-y) x_i \pause$ 
+- Put together: 
+    ${ \partial J \over \partial w_i} = (\hat{y}-y) x_i$ 
 
 - Or in matrix form for all weights: 
     ${ \partial J \over \partial \mathbf{w}} = (\hat{y}-y) \mathbf{x}$. 
@@ -443,26 +452,46 @@ ${\partial \hat{y} \over \partial \mathbf{w}^T\mathbf{x}}
 
 # What about neurons more upstream? 
 ::: {.columns}
-:::: {.column width=0.3}
+:::: {.column width=0.35}
 ![](figs/one_hidden_layer.pdf){width=100%}
 ::::
-:::: {.column width=0.73}
-- Things become trickier for a neuron that is not directly connected to the output layer. 
+:::: {.column width=0.65}
+<!-- - Things become trickier for a neuron that is not directly connected to the output layer.  -->
 
-- Use the steps we did in previous slide: $${ \partial J \over \partial w_{1,1}} 
-        ={ \partial J \over \partial o_1}
-        {\partial o_1 \over \partial w_{1,1}}$$
-    where ${\partial J \over \partial o_1}$ traces error to the neuron destinated by $w_{1,1}$. 
+- Apply the chain rule again: 
+  \begin{equation}
+  { \partial J \over \partial w_{1,1}} 
+  ={ \partial J \over \partial o_1}
+  \cdot
+  {\partial o_1 \over \partial w_{1,1}}
+  = {\partial J \over \partial \hat{y}} 
+    {\partial \hat{y}\over \partial \mathbf{v}^T \mathbf{o}}
+    {\partial \mathbf{v}^T \mathbf{o} \over \partial o_1} 
+    ~\cdot~
+    {\partial o_1 \over \partial \mathbf{w_1}^T \mathbf{x}} 
+    {\partial \mathbf{w}_1^T \mathbf{x} \over \partial w_{1,1}}
+  \label{eq:chain_rule_2nd}  
+  \end{equation}
 
-- What is the error over $o_1$? 
+- This is the idea of **backpropagation**. In order to compute the partial derivative of the loss over a weight, first reversely propagate the loss to a neuron (here $\partial J \over \partial o_1$) __destinated by the weight__, then compute the partial derivative of the neuron's output over the weight (here $\partial o_1 \over \partial w_{1,1}$), finally multiply the two. 
 
-- It involves an algorithm called **backpropagation**. 
+- Because we will often use the partial derivative of an activation function $\phi$ over its input $\mathbf{w}^T \mathbf{x}$, we introduce a notation to express it in terms of its _output_ $\phi ({\mathbf{w}^T \mathbf{x}})$: 
+  \begin{equation}
+  \psi (\phi ( \mathbf{w}^T \mathbf{x})) =  {\partial \phi ( \mathbf{w}^T \mathbf{x} ) \over \partial \mathbf{w}^T \mathbf{x}} 
+  \label{eq:psi}
+  \end{equation} 
+  <!-- Note that here the  are generic.  -->
+  <!-- = \phi'(\phi^{-1} (\phi (\mathbf{w}^T \mathbf{x}))). \label{eq:psi}  -->
+  <!-- where $\phi'(\cdot)$ and $\phi^{-1}(\cdot)$ mean the first derivative and inverse of function $\phi$. 
 
-- Let's see the intuition. 
+<!-- - Let's see the intuition.  -->
 ::::
 :::
 
+- When the activation function is logistic, we have $\psi(\sigma(\mathbf{w}^T \mathbf{x})) = \sigma(\mathbf{w}^T \mathbf{x})(1-\sigma(\mathbf{w}^T \mathbf{x})).$ \label{page:psi} 
 
+
+<!-- 
 # The intuition behind backpropagation
 ::: {.columns}
 :::: {.column width=0.5}
@@ -474,24 +503,114 @@ ${\partial \hat{y} \over \partial \mathbf{w}^T\mathbf{x}}
 - Which department is to be blamed more? 
 - What're the losses contributed by Pickup division and sedan division respectively? 
 ::::
-:::
+::: -->
+
+# What about neurons more upstream? II 
 
 
-# Backpropagation: an example I 
+\footnotesize
+
 ::: {.columns}
 :::: {.column width=0.3}
 ![](figs/one_hidden_layer.pdf){width=100%}
 ::::
-:::: {.column width=0.73}
-- Let's consider the gradient of error/loss over one weight $w_{1,1}$:
+:::: {.column width=0.7}
+<!-- - Things become trickier for a neuron that is not directly connected to the output layer.  -->
+
+
+- Subsituting Eq. (\ref{eq:psi}) into Eq. (\ref{eq:chain_rule_2nd}), we have: 
+  
+  \begin{equation}
+    { \partial J \over \partial w_{1,1}} 
+    ={ \partial J \over \partial o_1}
+    \cdot
+    {\partial o_1 \over \partial w_{1,1}}
+    = {\partial J \over \partial \hat{y}} 
+      \psi ( \hat{y} ) 
+      v_1
+      ~\cdot~
+      \psi (o_1)
+      x_1
+    \end{equation}
+
+- Generalize for all weights in $\mathbf{w}_1 = [w_{0,1}, w_{1,1}, w_{2,1}, \dots, w_{d,1}]^T$:
+${\partial J / \partial \mathbf{w}_1} = 
+ {\partial J \over \partial \hat{y}} 
+      \psi ( \hat{y} ) 
+      v_1
+      \psi (o_1)
+      \mathbf{x}$ (column vector)
+
+- And for all weights in $\mathbf{w}_2 = [w_{0,2}, w_{1,2}, w_{2,2}, \dots, w_{d,2}]^T$:
+${\partial J / \partial \mathbf{w}_2} = 
+ {\partial J \over \partial \hat{y}} 
+      \psi ( \hat{y} ) 
+      v_2
+      \psi (o_2)
+      \mathbf{x}$ (column vector)
+
+- In matrix form ($(d+1)\times 2$): 
+  \begin{align}
+  & 
+  \nabla J_{\mathbf{w}}  =  
+  \begin{pmatrix}
+    \vertbar & \vertbar \\
+    {\partial J \over \partial \mathbf{w_1}} & {\partial J \over \partial \mathbf{w_2}} \\
+    \vertbar & \vertbar
+  \end{pmatrix}
+  = \mathbf{x}
+    {\partial J \over \partial \hat{y}}
+    \psi (\hat{y})
+    \begin{pmatrix}
+      v_1\psi(o_1) &  v_2\psi(o_2)
+    \end{pmatrix} \\
+  & =  \mathbf{x}
+    {\partial J \over \partial \hat{y}}
+    \psi (\hat{y})
+    \left [
+    \begin{pmatrix}
+      v_1 \\ v_2 
+    \end{pmatrix}
+    \circ 
+    \psi
+    \begin{pmatrix}
+      o_1 \\ o_2
+    \end{pmatrix}
+    \right ] 
+    ^T 
+  = \mathbf{x}
+    {\partial J \over \partial \hat{y}}
+    \psi (\hat{y})
+    \left [
+    \mathbb{V}_{1+}
+    \circ 
+    \psi (\mathbf{o}_{1+}) 
+    \right ] 
+    ^T 
+  \end{align}
+where $\circ$ is [Hadamard product](https://en.wikipedia.org/wiki/Hadamard_product_(matrices)), or element-wise product of matrixes.
+::::
+:::
+
+- $\mathbb{V}_{1+}$ means $\mathbb{V}$ without the first row corresponding to the bias term. 
+
+- Why $\mathbb{V}_{1+}$ and $\mathbf{o}_{1+}$ instead of  $\mathbb{V}$ and $\mathbf{o}$? Beacuse a bias term has nothing to do with weights connecting previous layer to current layer. Its terms won't appear in partial derivatives. 
+
+
+<!-- # Backpropagation: an example
+::: {.columns}
+:::: {.column width=0.3}
+Let's consider the gradient of error/loss over one weight $w_{1,1}$:
   \begin{equation}
   { \partial J \over \partial w_{1,1}} 
         ={ \partial J \over \partial o_1}
         {\partial o_1 \over \partial w_{1,1}}
   \end{equation}
-
+![](figs/one_hidden_layer.pdf){width=100%}
+::::
+:::: {.column width=0.73}
+- We keep assuming that loss is neg-log-loss and activation function is logistic. 
 - Expand the first term (partially making use of results in Eq. \ref{eq:gradient_simplest})
-  <!-- \begin{align} -->
   $$
   { \partial J \over \partial o_1} 
   =  {\partial J \over \partial \hat{y} }  
@@ -500,10 +619,6 @@ ${\partial \hat{y} \over \partial \mathbf{w}^T\mathbf{x}}
   =   {\hat{y} - y \over \hat{y}(1-\hat{y}) }   \hat{y}(1-\hat{y})   v_1   
   =  (\hat{y}-y) v_1 
   $$
-  <!-- \end{align} -->
-
-<!-- - Thus, the gradient of $J$ over $\hat{y}$, i.e., $\hat{y}-y$ is backpropagated to $o_1$ by a factor of $v_1$.  -->
-
 - Expand the second term
   $${ \partial o_1 \over \partial w_{1,1}} 
   = {\partial \phi(\mathbf{w}_1 \mathbf{x}) \over \partial \mathbf{w}_1 \mathbf{x}} 
@@ -512,14 +627,14 @@ ${\partial \hat{y} \over \partial \mathbf{w}^T\mathbf{x}}
   $$
 
 - Put together: 
-  ${ \partial J \over \partial w_{1,1}} 
+  $${ \partial J \over \partial w_{1,1}} 
         ={ \partial J \over \partial o_1}
         {\partial \mathbf{o} \over \partial w_{1,1}}
-    = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \right ) x_1$
+    = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \right ) x_1$$
 ::::
-:::
+::: -->
 
-# Backpropagation: an example II
+<!-- # Backpropagation: an example II
 ::: {.columns}
 :::: {.column width=0.3}
 ![](figs/one_hidden_layer.pdf){width=100%}
@@ -531,16 +646,8 @@ ${\partial J / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
   ${\partial J / \partial \mathbf{w}_2} = (\hat{y}-y) (v_2) \left ( o_2(1-o_2) \right ) \mathbf{x}$
 
   (Note the change from $v_1$ to $v_2$ and that from $o_1$ to $o_2$)
-- Denote the partial derivative ${\partial o_i \over \partial \mathbf{w}_i \mathbf{x}}  = {\partial \phi(\mathbf{w}_i \mathbf{x}) \over \partial \mathbf{w}_i \mathbf{x}}$ as 
+- Stack ${\partial J / \partial \mathbf{w}_1}$ and ${\partial J / \partial \mathbf{w}_2}$ together:
   \begin{equation}
-  \psi(o_i) = \phi'(\phi^{-1} (o_i)). \label{eq:psi} 
-  \end{equation} where $\phi'(\cdot)$ and $\phi^{-1}(\cdot)$ mean the first derivative and inverse of function $\phi$. 
-  When the activation function is logistic, we have $\psi(o_i) = o_i(1-o_i).$ \label{page:psi}
-- Stack ${\partial J / \partial \mathbf{w}_1}$ and ${\partial J / \partial \mathbf{w}_2}$ together:  
-::::
-:::
-
-  \begin{align}
   \underbrace{
     \begin{pmatrix}
     \horzbar & \left ( \partial J / \partial \mathbf{w_1} \right )^T & \horzbar \\
@@ -549,10 +656,10 @@ ${\partial J / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
   }_{2\times (d+1)}
   = 
   \underbrace{
+    (\hat{y}-y)
     \begin{pmatrix}
         v_1  \\ v_2
     \end{pmatrix}
-    (\hat{y}-y)
   }_{2\times 1}
   \circ  
   \begin{pmatrix}
@@ -560,34 +667,68 @@ ${\partial J / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
     o_2 (1-o_2) \\
   \end{pmatrix}
   \mathbf{x}^T 
-  =   
+  \label{eq:partial_hidden_to_weights}
+  \end{equation}
+  where $\circ$ is [Hadamard product](https://en.wikipedia.org/wiki/Hadamard_product_(matrices)), or element-wise product of matrixes.
+::::
+:::
+
+
+- To generalize to any activation function, denote the partial derivative ${\partial o_i \over \partial \mathbf{w}_i \mathbf{x}}  = {\partial \phi(\mathbf{w}_i \mathbf{x}) \over \partial \mathbf{w}_i \mathbf{x}}$ as 
+  \begin{equation}
+  \psi(o_i) = \phi'(\phi^{-1} (o_i)). \label{eq:psi} 
+  \end{equation} where $\phi'(\cdot)$ and $\phi^{-1}(\cdot)$ mean the first derivative and inverse of function $\phi$. 
+  When the activation function is logistic, we have $\psi(o_i) = o_i(1-o_i).$ \label{page:psi} -->
+
+<!-- 
+
+# Backpropagation: an example III
+
+::: {.columns}
+:::: {.column width=0.3}
+![](figs/one_hidden_layer.pdf){width=100%}
+::::
+:::: {.column width=0.73}
+
+- With the newly introduced $\psi$, we now generalize Eq. (\ref{eq:partial_hidden_to_weights}) to any loss function and activation functions: 
+
+
+  $$
+  \begin{pmatrix}
+    \horzbar & \left ( \partial J / \partial \mathbf{w_1} \right )^T & \horzbar \\
+    \horzbar & \left ( \partial J / \partial \mathbf{w_2} \right )^T & \horzbar 
+    \end{pmatrix}
+  = 
   \underbrace{
+    \overbrace{
+    {\partial J \over \partial \hat{y}}
+    \psi(\hat{y})
+    }^{\text{was }\hat{y}-y}
     \mathbb{V}_{1+}
-    (\hat{y}-y)
     \circ  
     \psi (\mathbf{o}_{1+})
   }_{2\times 1}
   \underbrace{
       \mathbf{x}^T 
   }_{1\times (d+1)}
-  \label{eq:partial_hidden_to_weights}
-  \end{align}
-  where $\circ$ is [Hadamard product](https://en.wikipedia.org/wiki/Hadamard_product_(matrices)), or element-wise product of matrixes. 
+  $$
 
-# Backpropagation: an example III
+- $\mathbb{V}_{1+}$ means $\mathbb{V}$ without the first row corresponding to the bias term. 
 
 - Why $\mathbb{V}_{1+}$ and $\mathbf{o}_{1+}$ instead of  $\mathbb{V}$ and $\mathbf{o}$?
 
-- Because the error propagated to $o_0$ plays no role when further propagating to layer $\mathbf{x}$. 
+- Because the loss propagated to $o_0$ plays no role when further propagating to layer $\mathbf{x}$. 
 
-- $v_0$ and $o_0$ have no contribution to previous layers. 
+- $v_0$ and $o_0$ have no contribution to previous layers. They are not covered in the transfer matrixes $\mathbb{W}$ and $\mathbb{V}$.
 
-- Thus, when we backpropagate, we need to drop the error on bias terms. 
+- Thus, when we backpropagate, we drop the loss on bias terms. 
 
+::::
+::: -->
 
-# Backpropagation: an example IV
-- Let's think one more step further: If there is another layer $\mathbf{a}$  before $\mathbf{x}$, how do we backpropagate the derivative of error from $\partial J \over \partial \mathbf{o}$ to $\partial J \over \partial \mathbf{a}$?
-- Use $\partial J / \partial x_1$ as an example: the error onto $x_1$ is a composition of the error onto $o_1$ propagated thru $w_{1,1}$ and the error onto $o_2$ propagated thru $w_{1,2}$. 
+# Backpropagation: further upstream 
+- Let's think one more step further: If there is another layer $\mathbf{a}$  before $\mathbf{x}$, how do we backpropagate the derivative of loss from $\partial J \over \partial \mathbf{o}$ to $\partial J \over \partial \mathbf{a}$?
+- Use $\partial J / \partial x_1$ as an example: the loss onto $x_1$ is a composition of the loss onto $o_1$ propagated thru $w_{1,1}$ and the loss onto $o_2$ propagated thru $w_{1,2}$. 
 
 ::: {.columns}
 :::: {.column width=0.33}
@@ -597,25 +738,23 @@ ${\partial J / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
 - Thus (don't be overwhelmed by the amount of math...)
   \begin{align}
     & {\partial J \over \partial x_1} = 
-    {\partial J \over \partial \hat{y}}
-    \psi(\hat{y})  
-    {\partial \mathbf{v}^T \mathbf{o} \over o_1}
+    {\partial J \over o_1} \cdot 
     {\partial o_1 \over x_1}
     + 
-    {\partial J \over \partial \hat{y}}
-    \psi(\hat{y})
-    {\partial \mathbf{v}^T \mathbf{o} \over o_2}
+    {\partial J \over o_2} \cdot 
     {\partial o_2 \over x_1} \nonumber \\
     = &
     {\partial J \over \partial \hat{y}}   
     \psi(\hat{y})
     {\partial \mathbf{v}^T \mathbf{o} \over o_1}
+    \cdot 
     {\partial o_1 \over \mathbf{w_1}^T \mathbf{x}}
     {\partial \mathbf{w_1}^T \mathbf{x}\over x_1}
     + 
     {\partial J \over \partial \hat{y}}   
     \psi(\hat{y})  
     {\partial \mathbf{v}^T \mathbf{o} \over o_2}
+    \cdot 
     {\partial o_2 \over \mathbf{w_2}^T \mathbf{x}}
     {\partial \mathbf{w_2}^T \mathbf{x}\over x_1} \nonumber \\
     = & 
@@ -635,9 +774,10 @@ ${\partial J / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
     {\text{row $1$ of } \mathbb{W}}
     \Bigg [
         \underbrace{
+        \psi 
         \begin{pmatrix}
-        \psi(o_1) \\
-        \psi(o_2) \\
+        o_1 \\
+        o_2 \\
         \end{pmatrix}}_{\psi(\mathbf{o}_{1+}), 2\times1}        
         \circ 
         \Bigg [
@@ -656,7 +796,7 @@ ${\partial J / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
 ::::
 :::
 
-# Backpropagation: a more generalized example V
+# Backpropagation: a more generalized example I
 ::: {.columns}
 :::: {.column width=0.4}
 ![](figs/backprop_two_hidden_layer.pdf){width=100%}
@@ -674,17 +814,18 @@ ${\partial J / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
     \end{pmatrix}
     \Bigg [
         \underbrace{
+        \psi 
         \begin{pmatrix}
-        \psi(o_1) \\
-        \psi(o_2) \\
-        \end{pmatrix}}_{\psi(\mathbf{o}), 2\times1}        
+        o_1 \\
+        o_2 \\
+        \end{pmatrix}}_{\psi(\mathbf{o}_{1+}), 2\times1}        
         \circ 
         \bigg [
             \underbrace{
             \begin{pmatrix}
             v_1  \\
             v_2  \\
-            \end{pmatrix}}_{\mathbb{V} }
+            \end{pmatrix}}_{\mathbb{V}_{1+} }
             \underbrace{
             {\partial J \over \partial \hat{y}}   
             \psi(\hat{y})}_{\bm{\delta}^{(-1)}}
@@ -698,58 +839,67 @@ ${\partial J / \partial \mathbf{w}_1} = (\hat{y}-y) (v_1) \left ( o_1(1-o_1) \ri
      \bm{\delta}^{(-2)}_{1+}
     \label{eq:delta_2_from_1_general}
     \end{align}
-    where $\bm{\delta}^{(-2)} = \bigg [
-    \psi\left (\mathbf{o} \right ) \circ \left ( \mathbb{V} \bm{\delta}^{(-1)} \right ) \bigg ]$, whereas $\bm{\delta}^{(-2)}_{1+}$ consists of elements of $\bm{\delta}^{(-2)}$ starting from index $1$. 
+    where $\bm{\delta}^{(-2)}_{1+}$ are elements of $\bm{\delta}^{(-2)} = \bigg [
+    \psi\left (\mathbf{o} \right ) \circ \left ( \mathbb{V} \bm{\delta}^{(-1)} \right ) \bigg ]$ starting from index $1$. 
 
 - Why not $\bm{\delta}^{(-1)}_{1+}$? Because no bias term in the output layer. 
 ::::
 :::
 
-# Backpropagation: a more genaralized example VI
+# Backpropagation: a more genaralized example II
 
 With $\underbrace{\partial J / \partial \mathbf{x}}_{(d+1)\times1}$ in hand, we can compute 
 $\underbrace{\partial J  / \partial \mathbb{U}}_{c\times d}
 =
-{\partial J \over \partial \mathbf{x}} {\partial \mathbf{x} \over \partial {\mathbb{U}}}$, where $\mathbf{x} = \mathbb{U}\mathbf{a}$ and $\mathbf{a}=[a_0, a_1, \dots, a_c]$. Again, error does not propagate from $x_0$ to previous layer ($\mathbf{a}$ layer) -- because no connection. 
+{\partial J \over \partial \mathbf{x}} {\partial \mathbf{x} \over \partial {\mathbb{U}}}$, where $\mathbf{x} = \mathbb{U}^T\mathbf{a}$ and $\mathbf{a}=[a_0, a_1, \dots, a_c]^T$. Again, loss does not propagate from $x_0$ to previous layer ($\mathbf{a}$ layer) -- because no connection. 
 \begin{align} 
    \left ( {\partial J \over \partial \mathbb{U}}  \right )^T
    = &
      \underbrace{
     \begin{pmatrix}
-    \horzbar & \left ( \partial J \over \partial \mathbf{u_1} \right )^T & \horzbar \\
-    \horzbar & \left ( \partial J \over \partial \mathbf{u_2} \right )^T & \horzbar 
+    \horzbar & \left ( \partial J \over \partial \mathbf{u_{*, 1}} \right )^T & \horzbar \\
+    \horzbar & \left ( \partial J \over \partial \mathbf{u_{*, 2}} \right )^T & \horzbar \\
+    & \cdots & \\
+    \horzbar & \left ( \partial J \over \partial \mathbf{u_{*, d}} \right )^T & \horzbar 
     \end{pmatrix}
-  }_{d\times \dim(\mathbf{I})}
+  }_{d\times c}
   = 
   \underbrace{
    \left [ {\partial J \over \partial \mathbf{x}_{1+}} \circ {\partial \mathbf{x}_{1+} \over \partial \mathbb{U}^T\mathbf{a}}  \right ]
-   }_{d\times 1, \text{ skip error on } x_0}
+   }_{d\times 1, \text{ skip loss on } x_0}
    {\partial \mathbb{U}^T\mathbf{a} \over \partial \mathbb{U}}
   = 
   \underbrace{
    \left [ {\partial J \over \partial \mathbf{x}} \circ {\partial \mathbf{x} \over \partial \mathbb{U}^T\mathbf{a}}  \right ]_{1+}
-   }_{d\times 1, \text{ skip error on } x_0}
+   }_{d\times 1, \text{ skip loss on } x_0}
    \underbrace{\partial \mathbf{a}^T\mathbb{U} \over \partial \mathbb{U}}_{1 \times c} \nonumber \\
   = &  \underbrace{
+      \bigg [
+         \Big ( \mathbb{W} \bm{\delta}^{(-2)}_{1+} \Big ) 
+         \circ \psi(\mathbf{x})
+             \bigg ]_{1+}
+  }_{\bm{\delta}^{(-3)}_{1+}} 
+      \mathbf{a}^T
+  = s \underbrace{
       \bigg [
          \psi(\mathbf{x}) \circ \Big ( \mathbb{W} 
             \bm{\delta}^{(-2)}_{1+} \Big )  \bigg ]_{1+}
   }_{\bm{\delta}^{(-3)}_{1+}} 
-       [a_0, a_1, \dots, a_c]
+      \mathbf{a}^T
   = \bm{\delta}^{(-3)}_{1+} \mathbf{a}^T
   \label{eq:delta_3_from_2}
   \end{align}
 
-- Transpose both sides of Eq. (\ref{eq:delta_3_from_2}), we get ${\partial J \over \partial \mathbb{U}} =
+- Transpose both sides of Eq. (\ref{eq:delta_3_from_2}): ${\partial J \over \partial \mathbb{U}} =
    \begin{pmatrix}
-  \vertbar & \vertbar &  \\
-  {\partial J \over \partial \mathbf{u}_1} & {\partial J \over \partial \mathbf{u}_2} & \cdots  \\
-  \vertbar & \vertbar &  \\
+  \vertbar & \vertbar & & \vertbar \\
+  {\partial J \over \partial \mathbf{u}_{*,1}} & {\partial J \over \partial \mathbf{u}_{*,2}} & \cdots & {\partial J \over \partial \mathbf{u}_{*,d}} \\
+  \vertbar & \vertbar & & \vertbar \\
   \end{pmatrix}
   =
   \left( \bm{\delta}^{(-3)}_{1+} \mathbf{a}^T \right )^T = \mathbf{a} \left(\bm{\delta}^{(-3)}_{1+}\right)^T$
 
-# Backpropagation VII: Do you see any pattern? 
+# Backpropagation: Do you see a recursive pattern? 
 ::: {.columns}
 :::: {.column width=0.6}
 With the definitions of $\bm{\delta}^{(-2)}$ from Eq. (\ref{eq:delta_2_from_1_general}) and $\bm{\delta}^{(-1)}$ from Eq. (\ref{eq:delta_2_from_1_special}), we can expand Eq. (\ref{eq:delta_3_from_2}) all the way to 
@@ -796,7 +946,7 @@ With the definitions of $\bm{\delta}^{(-2)}$ from Eq. (\ref{eq:delta_2_from_1_ge
 :::: {.column width=0.4}
 - We see a recursive pattern that a transform matrix $\mathbb{W}$ or $\mathbb{V}$ is left-multiplied with a term and then Hadamard product ($\circ$) with a $\psi(\cdot)$ term. 
 
-- It does two things: first, distribute the gradient on error one layer backward/upstream, and second pass the gradient thru the activation function. Then the gradient is ready to be partial derivated with weights. 
+- It does two things: first, distribute the gradient on loss one layer backward/upstream, and second pass the gradient thru the activation function. Then the gradient is ready to be partial derivated with weights. 
 
 - If we keep applying this, we can compute the gradient of loss/error over weights of more upstream layers. 
 ::::
@@ -827,7 +977,7 @@ There is NO $\delta_0^{(l)}$ if layer $l$ is output.
 - Yes, $\bm{\delta}^{(l)}$ is a vector. What's its shape? 
 
 
-- We will use the notation $\delta_i^{(l)}$ to denote the pre-activation error on the $i$-th neuron at layer $l$. For example, to the network on the left, 
+- We will use the notation $\delta_i^{(l)}$ to denote the pre-activation loss on the $i$-th neuron at layer $l$. For example, to the network on the left, 
 $\bm{\delta}^{(2)} 
 = [
    \delta_0^{(2)} ,  \delta_1^{(2)} , \delta_2^{(2)}  , \delta_3^{(2)} 
@@ -840,7 +990,7 @@ $\bm{\delta}^{(2)}
 
 # Generalized backpropagation I 
 
-- Let the error/loss **backpropagated** to layer $l$ be $\bm{\delta}^{(l)}$ where the error on the bias term is $\bm{\delta}_0^{(l)}$. 
+- Let the error/loss **backpropagated** to layer $l$ be $\bm{\delta}^{(l)}$ where the loss on the bias term is $\bm{\delta}_0^{(l)}$. 
 
 - Then the error/loss one layer back (pre-activation) is 
   $$\bm{\delta}^{(l-1)} 
@@ -849,13 +999,13 @@ $\bm{\delta}^{(2)}
    \psi(\mathbf{x}^{(l-1)}) \circ \left ( \mathbb{W}^{(l-1)} \bm{\delta}^{(l)}_{1+} \right ) &  \text{if $l$ is not output layer}\\
    \psi(\mathbf{x}^{(l-1)}) \circ \left ( \mathbb{W}^{(l-1)} \bm{\delta}^{(l)} \right ) & \text{otherwise}
    \end{cases}   
-   $$ where $\bm{\delta}^{(l)}_{1+}$ means dropping the error $\bm{\delta}_0^{(l)}$ on the bias term (Why?),  $x^{(l-1)}$ is the output from layer $l-1$ and $\mathbb{W}^{(l-1)}$ is the transfer matrix from layers $l-1$ to $l$. This applies when there are multiple output neurons.
+   $$ where $\bm{\delta}^{(l)}_{1+}$ means dropping the loss $\bm{\delta}_0^{(l)}$ on the bias term (Why?),  $x^{(l-1)}$ is the output from layer $l-1$ and $\mathbb{W}^{(l-1)}$ is the transfer matrix from layers $l-1$ to $l$. This applies when there are multiple output neurons.
 
 - Finally, for a weight $w_{i,j}^{(l-2)}$ connecting the $i$-th neuron in the $l-2$ layer to the $j$-th neuron in the $l-1$ layer, the partial derivative 
   $${\partial J \over \partial w^{(l-2)}_{i,j}} 
   = \underbrace{
        {\partial J \over \partial \mathbf{w}^{(l-2)}_j \mathbf{x}^{(l-2)}}
-    }_{\text{scalar, pre-activation error on neuron $x_j^{(l-1)}$}}
+    }_{\text{scalar, pre-activation loss on neuron $x_j^{(l-1)}$}}
        {\partial \mathbf{w}^{(l-2)}_j \mathbf{x}^{(l-2)} \over \partial w^{(l-2)}_{i,j}} 
   = \delta^{(l-1)}_j x^{(l-2)}_i$$
 
@@ -871,7 +1021,7 @@ $$
 {\partial J \over \partial \mathbb{W}^{(l-2)}} 
   = \underbrace{
        {\partial J \over \partial \mathbb{W}^{(l-2)T} \mathbf{x}^{(l-2)}}
-    }_{\substack{\text{pre-activation error to}\\ \text{all neurons at layer $l-1$}}}
+    }_{\substack{\text{pre-activation loss to}\\ \text{all neurons at layer $l-1$}}}
        {\partial \mathbb{W}^{(l-2)T} \mathbf{x}^{(l-2)} \over \partial \mathbb{W}^{(l-2)}} 
   =  
   \begin{cases}
@@ -1006,7 +1156,7 @@ $\mathbb{W}^{(1)} =
 ::::
 :::
 
-- With $\delta$'s, we can compute the gradient of error over all weights: 
+- With $\delta$'s, we can compute the gradient of loss over all weights: 
 - $\nabla^{(1)} = \partial J / \partial \mathbb{W}^{(1)}
   =
    \mathbf{x}^{(1)}  \left ( \bm{\delta}^{(2)} \right )^T
@@ -1080,9 +1230,9 @@ See the MiniNN demo.
 - The backpropagation discussed above updates weights for every sample. 
 - It is also doable in batches, for saving time, and other benefits, e.g., avoiding overfitting or making the ANN more stable. 
 - For example: 
-  1. Collect errors on multiple samples. 
-  2. Use the mean error (of course, errors should not cancel out) to compute the gradient
-  3. Backpropagate using the gradient on mean error. 
+  1. Collect losss on multiple samples. 
+  2. Use the mean loss (of course, losss should not cancel out) to compute the gradient
+  3. Backpropagate using the gradient on mean loss. 
   4. Repeat with another set (called **batch** or **minibatch**) of multiple samples. 
 
 # Epoch in ANN training
