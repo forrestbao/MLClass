@@ -24,6 +24,15 @@ There maybe delays in PDF syncing.
 10. Ensemble Learning
 11. CV, NLP, tiny ML
 
+## Reading list
+### Image style generation and transfer in generative networks and generative adversarial networks (GANs)
+* [Texture Synthesis Using Convolutional Neural Networks, NIPS 2015](https://arxiv.org/pdf/1505.07376.pdf)
+* [A Learned Representation For Artistic Style, ICLR 2017](https://arxiv.org/pdf/1610.07629.pdf)
+* [Texture Networks: Feed-forward Synthesis of Textures and Stylized Images, ICML 2016](https://arxiv.org/pdf/1603.03417.pdf)
+* [A Learned Representation For Artistic Style, ICLR 2017](https://arxiv.org/pdf/1610.07629.pdf)
+* [A Style-Based Generator Architecture for Generative Adversarial Networks, StyleGAN, CVPR 2019](https://arxiv.org/pdf/1812.04948)
+
+
 ## How to audit (for ISU students only) 
 
 Now students can request to audit a course electronically by going to AccessPlus, clicking on the Student tab, clicking on Registrar Forms, and clicking  "Schedule Change Form". They will need to attach an e-mail from their instructor saying they have permission to audit the course. After attaching documentation, the form can then be routed for approval. 
