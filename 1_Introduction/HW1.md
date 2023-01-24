@@ -1,7 +1,7 @@
 # Homework 1
 
 ## Due  
-**Sunday Feb 6, 11:59PM US Central time**
+**Sunday Feb 5, 11:59PM US Central time**
 
 ## Coding assignment
 
