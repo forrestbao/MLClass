@@ -32,8 +32,20 @@ header-includes: |
 
 - We are lazy. We want to shift the heavy lifting to the computers. 
 - We are incompetent. No kidding! Sometimes it is very difficult to come up with step-by-step instructions. 
-- Examples: Self-driving, AlphaGo, Automated circuit routing, Machine translation, Commonsense reasoning, text entailment, Document generation, auto-reply of messages/emails, [fly a helicoper inversely](https://www.youtube.com/watch?v=M-QUkgk3HyE), [van-Gogh-lize paints](https://blogs.nvidia.com/blog/2016/05/25/deep-learning-paints-videos/). 
+- Examples: Self-driving, AlphaGo, Automated circuit routing, Machine translation, Commonsense reasoning, text entailment, Document generation, auto-reply of messages/emails, [fly a helicoper inversely](https://www.youtube.com/watch?v=M-QUkgk3HyE). 
 - It is a dream. "Creating an artificial being has been the dream since the beginning of science." -- Movie A.I., Spielberg et al., 2001
+
+# Functions
+
+* A function is a many(incl. one)-to-one mapping between data!
+* It does not need to have an analytic form and the domain/range does not have to be of real numbers.
+* An example of edge detection in Wolfram Mathematica:
+![](./figs/Wolfram_edgedetect.png){width=50%}
+
+# Supervised ML as function approximation
+* Another example in machine translation
+
+![](./figs/Wolfram_translate.png){width=40%}
 
 # Three types of MLs
 

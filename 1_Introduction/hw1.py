@@ -4,6 +4,7 @@ import sklearn.neural_network
 import numpy
 import matplotlib.pyplot
 
+import hashlib
 import itertools 
 
 def test_NN(Ts, Hs, max_iter=200):
@@ -15,22 +16,42 @@ def test_NN(Ts, Hs, max_iter=200):
         )
     Ts = Ts.reshape(-1, 1) # learned from error
     NN.fit(Ts, Hs)
-#     predictions = NN.predict(Ts)
+    predictions = NN.predict(Ts)
     score = NN.score(Ts, Hs)
-    return score
+    return predictions, score
 
-def learning_curve(Ts, Hs, filename):
-    max_iters, scores = None, None # place holder 
-    # INSERT YOUR CODE HERE 
+def generate_data(N):
+    g = 9.8
     
-    return max_iters, scores
+    # If using Python's own random number generator
+#     Ts = [random.random() for _ in range(N)]
+#     Hs = [g*(t**2)/2 for t in Ts]
 
-def self_checker(*args): 
-    X, y = learning_curve(*args)
-    print (type(X), X)
-    print (type(y), y)
-    import hashlib
-    print (hashlib.md5(open(args[2], "rb").read()).hexdigest())
+    numpy.random.seed(1)
+    # If using Numpy random number generator
+    Ts = numpy.random.rand(N)
+    Ts.sort()
+    Hs = g*(Ts**2)/2
+    
+    return Ts, Hs
+
+def learning_curve(N, max_iter, filename="test.png"):
+    """
+
+    N: int, number of data points
+    max_iter: int, number of iterations to train the neural network
+    filename: str, name of the file to save the plot
+    """
+    
+    # INSERT YOUR CODE BELOW
+
+
+    # INSERT YOUR CODE ABOVE 
+
+    matplotlib.pyplot.savefig(filename) # save the plot to a file 
+
+    # The return line is for self-checking purposes
+    return hashlib.md5(open(filename, "rb").read()).hexdigest()
 
 def f(a, b, c):
     """
@@ -43,6 +64,6 @@ if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")
 
-    self_checker(numpy.array([1,2]), numpy.array([3,4]), "test.png")
-    print()
-    self_checker(numpy.array([1,2,3,4]), numpy.array([-1,-1,-1,-1]), "test.png")
+    print (
+        learning_curve(100, 200, "test.png")
+    )
