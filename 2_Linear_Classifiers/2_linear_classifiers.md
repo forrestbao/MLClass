@@ -21,9 +21,6 @@ header-includes: |
 ---
 
 # Vectors
-<!-- - Quite often, some operations are applied to a batch of numbers in parallel, 
-  or to two batches of numbers with one-to-one correspondence. 
-  -->
 - Imagine a grocery store selling the following items: 
   - juice, at 1 dollar per bottle
   - sugar, at 2 dollars per bag
@@ -228,15 +225,15 @@ $$
   - Further, since both $\mathbf{x}$ and $\mathbf{w}$ are vectors, $\mathbf{x}^T \mathbf{w} = \mathbf{w}^T \mathbf{x}$. 
 
 # The hyperplane (cond.)
-  - Expand to $n$-dimension. 
+  - Expand to $D$-dimension. 
     $$
       \mathbf{x} = \begin{pmatrix}
-                      x_1 \\ x_2 \\ \vdots \\ x_n \\ 1 
+                      x_1 \\ x_2 \\ \vdots \\ x_D \\ 1 
                    \end{pmatrix}
     $$  
     and
     $$\mathbf{w} = \begin{pmatrix}
-                      w_1 \\ w_2 \\ \vdots \\w_n \\ -w_1w_2\cdots w_n
+                      w_1 \\ w_2 \\ \vdots \\w_D \\ -w_1w_2\cdots w_D
                    \end{pmatrix}.
     $$ 
 
@@ -326,8 +323,7 @@ $$
   - Hence, 
   $\sum\limits_{i=1}^N \mathbf{x}_i \mathbf{x}_i^T \mathbf{w} = \sum\limits_{i=1}^N \mathbf{x}_i y_i$
   - The sum of a column vector multiplied with a row vector produces a matrix.
- $$ 
-\sum_{i=1}^N \mathbf{x}_i \mathbf{x}_i^T = 
+ $$ \sum_{i=1}^N \mathbf{x}_i \mathbf{x}_i^T = 
   \begin{pmatrix}
     \vertbar & \vertbar & & \vertbar \\
     \mathbf{x}_1 & \mathbf{x}_2 & \cdots & \mathbf{x}_N \\
@@ -339,8 +335,7 @@ $$
         &       \vdots        &   \\
     \horzbar & \mathbf{x}_N^T & \horzbar \\
   \end{pmatrix}
-  =\mathbb{X}^T \mathbb{X}
-$$
+  =\mathbb{X}^T \mathbb{X}$$
 
 
 # Finding the linear classifier via zero-gradient (cond.)
@@ -355,13 +350,11 @@ $$
   y_2 \\
   \vdots   \\
   y_N \\
-\end{pmatrix}
-=\mathbb{X}^T \mathbf{y}
-$$
+\end{pmatrix}$$
+=$\mathbb{X}^T \mathbf{y}$
 - $\mathbb{X}^T\mathbb{X}\mathbf{w} = \mathbb{X}^T \mathbf{y}$
 - $(\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T\mathbb{X}\mathbf{w} = (\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T \mathbf{y}$
-- $\mathbf{w} 
- = (\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T \mathbf{y}$
+- $\mathbf{w} = (\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T \mathbf{y}$
 
 
 # Gradient descent approach
@@ -386,7 +379,45 @@ $$
   \end{columns}
 
 # Gradient descent approach (cond.)
-  In many cases, the $\rho(k)$'s amplitude (why amplitude but not the value?)  decreases as $k$ increases, e.g., $\rho(k) = \frac{1}{k}$, in order to shrink the adjustment.Also in some cases, the stop condition is $\rho(k)\nabla J(\mathbf{w}) > \theta$. The limit on $k$ can also be included in stop condition -- do not run forever. 
+  In many cases, the $\rho(k)$'s amplitude (why amplitude but not the value?)  decreases as $k$ increases, e.g., $\rho(k) = \frac{1}{k}$, in order to shrink the adjustment.Also in some cases, the stop condition is $\rho(k)\nabla J(\mathbf{w}) > \theta$. The limit on $k$ can also be included in stop condition -- do not run forever.  -->
+
+# Gradient descent on $J(w)$?
+- Recall that $J(\mathbf{w}) = \sum_{i=1}^N (\mathbf{w}^T\mathbf{x}_i -y_i)^2 = \sum_{i=1}^N (\mathbf{x}_i^T \mathbf{w} -y_i)^2$
+- And that  $\nabla J_w = \frac{\partial J(\mathbf{w})}{\partial \mathbf{w}} = 2\sum\limits_{i=1}^N \mathbf{x}_i (\mathbf{x}_i^T \mathbf{w} - y_i)$ 
+- Do it matrixly: 
+   $\mathbf{A}= \mathbf{x}_i^T \mathbf{w} - y_i
+    = \underbrace{    \begin{pmatrix}
+       \horzbar & \mathbf{x}_1^T & \horzbar \\
+       \horzbar & \mathbf{x}_2^T & \horzbar \\
+           &       \vdots        &   \\
+       \horzbar & \mathbf{x}_N^T & \horzbar \\
+     \end{pmatrix}
+     \begin{pmatrix}
+       w_1 \\
+       w_2 \\
+       \vdots \\
+       w_{D+1}  \\
+     \end{pmatrix}
+   }_{N\times 1}
+   - 
+   \begin{pmatrix}
+       y_1 \\
+       y_2 \\
+       \vdots \\
+       y_{N}  \\
+   \end{pmatrix} = \mathbb{X} \mathbf{w} - \mathbf{y}$
+- $\nabla J_w = 2 \sum  \underbrace{\mathbf{x}_1 A_1}_{D+1 \times 1} + \mathbf{x}_2 A_2 + \cdots$
+- ```python
+    N = X.shape[0]    
+    X_augmented = numpy.hstack((X, numpy.ones((N,1)) )) # augment
+    A = numpy.matmul(X_augmented, w) - y  # this results in a 1-D array, not a column vector
+    gradient = X_augmented * A[:, numpy.newaxis]
+    gradient = numpy.sum(gradient, axis=0)
+  ``` 
+
+# Gradient descent
+- [Demo notebook](./gradient_descent_linear_classifier.ipynb)
+- [Videe file](learning_visual/learning_process.mp4)
 
 
 # Fisher's linear discriminant

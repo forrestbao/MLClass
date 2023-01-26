@@ -12,8 +12,8 @@ There maybe delays in PDF syncing.
 
 **Precompiled PDFs are given below:** 
 
-1. [Introduction](https://www.dropbox.com/s/qrdppq2i8zd8rs9/1_intro.pdf?dl=0)
-2. [Linear classifiers](https://www.dropbox.com/s/b27oqkc3b1su6p2/2_linear_classifiers.pdf?dl=0)
+1. [Introduction](./1_Introduction/1_intro.pdf)
+2. [Linear classifiers](./2_Linear_Classifiers/2_linear_classifiers.pdf)
 3. [Decision trees](https://www.dropbox.com/s/3ajxaa1v5rykcjl/3_decision_trees.pdf?dl=0)
 4. [SVMs](https://www.dropbox.com/s/3u4of1nju1x908g/4_SVMs.pdf?dl=0)
 5. [Regression](https://www.dropbox.com/s/m2ilyiyqhuclrov/5_regression.pdf?dl=0)
