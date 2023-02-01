@@ -100,7 +100,6 @@ In TF: matmul
   23\\
   11
   \end{pmatrix}
-  <!-- \label{eq:wrong_matrix} -->
   $$
 - In principle, yes. In notation, no. 
 
@@ -143,7 +142,6 @@ In TF: matmul
   \begin{pmatrix}
   23 &  11
   \end{pmatrix}
-  <!-- \label{eq:wrong_matrix} -->
   $$
 - What is the superscript T? 
 
@@ -195,7 +193,7 @@ $$
 \underbrace{
     \begin{pmatrix}
       x_1 \\ x_2 \\ 1
-    \end{pmatrix}^T 
+    \end{pmatrix}
     }_{\mathbf{x}^T}
 \underbrace{
     \begin{pmatrix}
@@ -237,7 +235,7 @@ $$
                    \end{pmatrix}.
     $$ 
 
-    Then $\mathbf{x}^T \cdot \mathbf{w} = 0$, denoted as the \emph{hyperplane} in $\mathbb{R}^n$.
+    Then $\mathbf{x}^T \cdot \mathbf{w} = 0$, denoted as the \emph{hyperplane} in $\mathbb{R}^D$.
   
 
 # Binary Linear Classifier
@@ -297,7 +295,7 @@ $$
       \end{pmatrix}
     =   
       \begin{pmatrix}
-        2x_1+ 2x_2 -4 \\
+        2x_1+ 2x_2 + 4 \\
         4x_2 + 2x_1 + 2
       \end{pmatrix}$$
   - The gradient is a special case of \emph{Jacobian matrix}. (see also: \emph{Hessian matrix} for second-order partial derivatives.)
@@ -336,6 +334,58 @@ $$
     \horzbar & \mathbf{x}_N^T & \horzbar \\
   \end{pmatrix}
   =\mathbb{X}^T \mathbb{X}$$
+  - Why? Continue on next page. 
+
+# Finding the linear classifier via zero-gradient (cond.)
+  $$ \mathbf{x}_i \mathbf{x}_i^T  
+  = \begin{pmatrix}
+      \vertbar \\
+      \mathbf{x}_i\\
+      \vertbar 
+    \end{pmatrix}
+    \begin{pmatrix}
+      \horzbar &   \mathbf{x}_i  &  \horzbar  
+    \end{pmatrix}
+  =   \begin{pmatrix}
+      \mathbf{x}_i[1] \cdot \mathbf{x}_i[1] & \mathbf{x}_i[1]\cdot \mathbf{x}_i[2] & \mathbf{x}_i[1]\cdot \mathbf{x}_i[3] &  \cdots \\
+      \mathbf{x}_i[2] \cdot \mathbf{x}_i[1] & \mathbf{x}_i[2]\cdot \mathbf{x}_i[2] & \mathbf{x}_i[2]\cdot \mathbf{x}_i[3] &  \cdots \\
+     \vdots & \vdots & \vdots & \ddots 
+    \end{pmatrix}
+  $$
+
+  $$\begin{split}
+      \sum_{i=1}^N \mathbf{x}_i \mathbf{x}_i^T 
+  & = 
+      \begin{pmatrix}
+        \sum_i  \mathbf{x}_i[1] \cdot \mathbf{x}_i[1] & \sum_i \mathbf{x}_i[1]\cdot \mathbf{x}_i[2] & \sum_i \mathbf{x}_i[1]\cdot \mathbf{x}_i[3] & \cdots \\
+        \sum_i \mathbf{x}_i[2] \cdot \mathbf{x}_i[1] & \sum_i \mathbf{x}_i[2]\cdot \mathbf{x}_i[2]  & \sum_i \mathbf{x}_i[2]\cdot \mathbf{x}_i[3]  & \cdots \\
+      \vdots & \vdots & \vdots & \ddots 
+      \end{pmatrix} \\
+  & = 
+      \begin{pmatrix}
+        \mathbf{x}_1[1] & \mathbf{x}_2[1] & \mathbf{x}_3[1] & \cdots \\
+        \mathbf{x}_1[2] & \mathbf{x}_2[2] & \mathbf{x}_3[2] & \cdots  \\
+        \vdots  & \vdots & \vdots & \ddots
+      \end{pmatrix}
+      \begin{pmatrix}
+        \mathbf{x}_1[1] & \mathbf{x}_2[1] & \mathbf{x}_3[1] & \cdots \\
+        \mathbf{x}_2[1] & \mathbf{x}_2[2] & \mathbf{x}_3[2] & \cdots  \\
+        \vdots  & \vdots & \vdots & \ddots 
+      \end{pmatrix} \\
+  & =   
+      \begin{pmatrix}
+        \vertbar & \vertbar & & \vertbar \\
+        \mathbf{x}_1 & \mathbf{x}_2 & \cdots & \mathbf{x}_N \\
+        \vertbar & \vertbar & & \vertbar 
+      \end{pmatrix}
+      \begin{pmatrix}
+        \horzbar & \mathbf{x}_1^T & \horzbar \\
+        \horzbar & \mathbf{x}_2^T & \horzbar \\
+            &       \vdots        &   \\
+        \horzbar & \mathbf{x}_N^T & \horzbar \\
+      \end{pmatrix}
+      =\mathbb{X}^T \mathbb{X}
+  \end{split}$$
 
 
 # Finding the linear classifier via zero-gradient (cond.)
