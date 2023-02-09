@@ -18,6 +18,19 @@ header-includes: |
      \newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
      \newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
      \setlength{\leftmargini}{0pt}
+     \usepackage{hyperref}
+     \hypersetup{
+        colorlinks=false,
+        linkcolor=blue,
+        filecolor=magenta,
+        pdfborderstyle={/S/U/W 1},
+        urlcolor=cyan,
+        pdftitle={Linear Classifiers},
+        pdfpagemode=FullScreen, 
+        linkbordercolor=red,
+        citebordercolor=green,
+        filebordercolor=magenta,
+        urlbordercolor=cyan}
 ---
 
 # Vectors
@@ -587,6 +600,8 @@ $$
 - The task to find the best hyperparameters is called **hyperparameter tuning**.
 
 # Cross-validation (CV)
+::::::::::::::: {.columns}
+::: {.column width=60%}
 - If we have fixed training-validation-test sets, we can only evaluate the model using the one and only fixed validation/test set.
 - This is not ideal. We cannot use other data to evaluate the model. What if the test set is not representative? 
 - Corss-validation is thus proposed. 
@@ -594,11 +609,15 @@ $$
 - $k$-fold cross-validation: split the entire data set into $k$ folds, and use each fold as the validation/test set once.
 - CV is a way to tune hyperparameters. 
 - CV is not popular in deep learning, because the test set is usually large enough to ensure representativeness and the training process is slow.
-![](https://scikit-learn.org/stable/_images/grid_search_cross_validation.png)
+::: 
+::: {.column width=40%}
+![](https://scikit-learn.org/stable/_images/grid_search_cross_validation.png){width=100%}
+:::
+:::::::::::::::
 
 # Grid search and hyperparameter tuning
 - Grid search: try all possible combinations of hyperparameters and pick the best one.
-- At each point (which is a combinaton of hyperparameter values) on the grid, we run CV to evaluate the model. 
+- At each point (which is a combinaton of hyperparameter values) on the grid, we run CV to evaluate the model -- which in turn tells us whether the hyperparameter choice is good. 
 - Finally, we pick the hyperparameter combination that gives the best CV score.
-- Read more https://scikit-learn.org/stable/modules/grid_search.html#grid-search
-- An example of Grid Search on various model: https://github.com/garrettroell/SyngasMachineLearning/blob/main/notebooks/E_time_as_a_variable.ipynb 
+- [Read this](https://scikit-learn.org/stable/modules/grid_search.html#grid-search)
+- [An example of Grid Search on various models](https://github.com/garrettroell/SyngasMachineLearning/blob/main/notebooks/E_time_as_a_variable.ipynb)
