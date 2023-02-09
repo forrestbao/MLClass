@@ -368,8 +368,8 @@ $$
         \vdots  & \vdots & \vdots & \ddots
       \end{pmatrix}
       \begin{pmatrix}
-        \mathbf{x}_1[1] & \mathbf{x}_2[1] & \mathbf{x}_3[1] & \cdots \\
-        \mathbf{x}_2[1] & \mathbf{x}_2[2] & \mathbf{x}_3[2] & \cdots  \\
+        \mathbf{x}_1[1] & \mathbf{x}_1[2] & \mathbf{x}_1[3] & \cdots \\
+        \mathbf{x}_2[1] & \mathbf{x}_2[2] & \mathbf{x}_2[3] & \cdots  \\
         \vdots  & \vdots & \vdots & \ddots 
       \end{pmatrix} \\
   & =   
@@ -400,8 +400,7 @@ $$
   y_2 \\
   \vdots   \\
   y_N \\
-\end{pmatrix}$$
-=$\mathbb{X}^T \mathbf{y}$
+\end{pmatrix}=\mathbb{X}^T \mathbf{y}$$
 - $\mathbb{X}^T\mathbb{X}\mathbf{w} = \mathbb{X}^T \mathbf{y}$
 - $(\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T\mathbb{X}\mathbf{w} = (\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T \mathbf{y}$
 - $\mathbf{w} = (\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T \mathbf{y}$
@@ -456,7 +455,8 @@ $$
        \vdots \\
        y_{N}  \\
    \end{pmatrix} = \mathbb{X} \mathbf{w} - \mathbf{y}$
-- $\nabla J_w = 2 \sum  \underbrace{\mathbf{x}_1 A_1}_{D+1 \times 1} + \mathbf{x}_2 A_2 + \cdots$
+- $A_i = \mathbf{x}_i^T \mathbf{w} - y_i$, a scalar
+- $\nabla J_w = 2 ( \underbrace{\mathbf{x}_1 A_1}_{(D+1) \times 1} + \mathbf{x}_2 A_2 + \cdots)$ 
 - ```python
     N = X.shape[0]    
     X_augmented = numpy.hstack((X, numpy.ones((N,1)) )) # augment
@@ -467,7 +467,7 @@ $$
 
 # Gradient descent
 - [Demo notebook](./gradient_descent_linear_classifier.ipynb)
-- [Videe file](learning_visual/learning_process.mp4)
+- [Video file](learning_visual/learning_process.mp4)
 
 
 # Fisher's linear discriminant
@@ -479,9 +479,8 @@ $$
    <!-- =   {{\text separation between the center of the two classes} \over{]\text divergence within each class}}$$  -->
     $\tilde{m}_i = \frac{1}{|C_i|} \sum\limits_{\mathbf{x} \in C_i} \mathbf{w}^T\mathbf{x}$ is the post-projection center of class $i$ and
     $\tilde{\mathbf{s}}^2_i = \sum\limits_{\mathbf{x}\in C_i} (\mathbf{w}^T \mathbf{x} - \tilde{m}_i)^2$ is the post-projection, inter-class variance for class $i$. 
-- Tails of the distributions of both classes is less likely to overlap. A new sample projected is clearly proximate to one of the two classes. 
+- Tails of the distributions of both classes is less likely to overlap. A new sample projected is clearly proximate to one of the two classes.
    
-
 
 # Fisher's (cond.)
   - $(\tilde{m}_1 - \tilde{m}_2)^2 = (\mathbf{w}^T (\mathbf{m_1} - \mathbf{m_2}))^2 
@@ -532,3 +531,74 @@ $$
     $\mathbf{S}_B = (\mathbf{m_1} - \mathbf{m_2}) (\mathbf{m_1} - \mathbf{m_2}) ^T$.
     We have
     $$J(\mathbf{w}) = \frac{\mathbf{w}^T \mathbf{S}_B \mathbf{w}}{\mathbf{w}^T \mathbf{S}_w \mathbf{w}}$$ -->
+
+
+# Model Evaluation
+- What it does: evaluating the performance of an ML model.
+- key concepts: 
+  - Training, validation, test sets
+  - Metrics
+  - Overfitting and underfitting
+  - Bias and variance
+  - Hyperparameters vs. parameters 
+  - Cross-validation
+  - Grid search and hyperparameter tuning
+
+# Training, validation, test sets (or data)
+- The names are very easy to understand.
+- Training set: used to train the model.
+- Validation set: to gauge how good the training process is, e.g,. whether the hyperparameters are good, whether the model is overfitting, etc. 
+- Test set: to gauge how good the model ACTUALLY is. 
+- Purpose: to see whether the model really learns rather than memorizing. 
+- The three datasets should not overlap. Otherwise, the problem of **data leakage** occurs. 
+- The validation set is optional, and is usually split from the training set. In non-deep learning, usually we do not need validaton set. 
+- Common split ratios (the ratio of the amount of data in each set in one dataset): 
+  - Training set: 60% (or 80%)
+  - Validation set: 20% (or 10%)
+  - Test set: 20% (or 10%)
+- Example: https://huggingface.co/datasets/cnn_dailymail#data-splits
+
+# Metrics and losses
+- Used to evaluate the performance of a model.
+- The loss is the objective function (Usually denoted as $\mathcal{L}$ or $J$) that the model tries to minimize, i.e., we compute the gradient on and use the gradient to update the model. 
+- Besides the loss, you can use other metrics to evaluate the model. 
+- If the model is a classifier, the metrics are usually accuracy, precision, recall, F1 score, etc.
+- True/false positive/negative: https://en.wikipedia.org/wiki/Confusion_matrix
+- Precision vs. recall: https://en.wikipedia.org/wiki/Precision_and_recall
+- Sensitivity vs. specificity: https://en.wikipedia.org/wiki/Sensitivity_and_specificity
+
+# Overfitting and underfitting
+- Overfitting: the model is too complex for the data, i.e., the model is too good at memorizing the training data.
+- How to tell if the model is overfitting? 
+  - The training loss is low, but the validation/test loss is high. 
+- Underfitting: the model is too simple for the data, i.e., the model is not good enough to capture the patterns in the data.
+- How to tell if the model is underfitting? 
+  - The training loss is high, and the validation/test loss is also high.
+
+# Bias and variance
+- Related to overfitting and underfitting.
+- https://towardsdatascience.com/understanding-bias-variance-trade-off-in-3-minutes-c516cb013513 
+
+# Hyperparameters vs. parameters
+- Parameters: variables in the model determined thru training, e.g., the weight $\mathbf{w}$ for a linear classifier.
+- Hyperparameters: variables that are not determined thru training, e.g., the learning rate $\alpha$ for gradient descent. Set by the user.
+- Hyperparameters are important to the performance of the model.
+- Many approaches are very sensitive to hyperparameters, e.g., neural networks.
+- The task to find the best hyperparameters is called **hyperparameter tuning**.
+
+# Cross-validation (CV)
+- If we have fixed training-validation-test sets, we can only evaluate the model using the one and only fixed validation/test set.
+- This is not ideal. We cannot use other data to evaluate the model. What if the test set is not representative? 
+- Corss-validation is thus proposed. 
+- It iterate the train-test process for multiple times and use different training/validation/test sets each time. 
+- $k$-fold cross-validation: split the entire data set into $k$ folds, and use each fold as the validation/test set once.
+- CV is a way to tune hyperparameters. 
+- CV is not popular in deep learning, because the test set is usually large enough to ensure representativeness and the training process is slow.
+![](https://scikit-learn.org/stable/_images/grid_search_cross_validation.png)
+
+# Grid search and hyperparameter tuning
+- Grid search: try all possible combinations of hyperparameters and pick the best one.
+- At each point (which is a combinaton of hyperparameter values) on the grid, we run CV to evaluate the model. 
+- Finally, we pick the hyperparameter combination that gives the best CV score.
+- Read more https://scikit-learn.org/stable/modules/grid_search.html#grid-search
+- An example of Grid Search on various model: https://github.com/garrettroell/SyngasMachineLearning/blob/main/notebooks/E_time_as_a_variable.ipynb 
