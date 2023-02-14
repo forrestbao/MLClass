@@ -9,6 +9,9 @@ urlcolor: blue
 
 # Homework 2
 
+Due Feb 26, 2023, Sunday, 11:59pm
+Central time 
+
 ## How to view this in nice PDF
 `pandoc -s hw2.md -o hw2.pdf` 
 
@@ -22,31 +25,23 @@ Unless otherwise stated,
    * the classification problem is binary. 
    * a lower case letter variable is a scalar or vector, where a upper case letter (in any font) is a matrix.
 
-1. Given a sample with feature vector $x=[1.1, 2.2, 3.3]^T$,  what is its augmented feature vector? 
+1. Given a sample with feature vector $x=[1.1, 2.2, 3.3]^T$,  what is its  corresponding augmented feature vector? 
 
 2. If the weight vector of a linear classifier is $w=[1, 0, 1, 0]^T$, and we define that a sample belongs to class $+1$ if $w^Tx>0$ and $-1$ if $w^Tx<0$ where $x$ is the augmented feature vector of the sample, what is the class of the sample? 
 
-3. When discussing the sum of error squares loss function in the class, we used augmented but not normalized augmented (normalized and augmented) feature vectors. Please rewrite that loss function
-$J(\mathbf{W}) = \sum_{i=1}^N (\mathbf{x}_i^T \mathbf{W} -y_i)^2$
- in terms of 
-**normalized augmented** feature vectors. Let $x''_i$ be the normalized augmented feature vector of the $i$-th sample, and $w$ be the weight vector of the classifier. A correct prediction shall satisfy $w^Tx''_i>0$ regardless of the class of the sample because $x''_i$ has been normalized. You may use a computational algebra system to help -- but it is not required. It might be easier by hand on scratch paper.
+3. What is the difference between hyperparameters and parameters? Which one is learned from data? Which one is set by the user?
 
-4. Please find the solution for minimizing the new loss function. Keep variables and font style consistent with those in the class notes/slides, except that you can reuse the matrix
-$\mathbb{X}=   \begin{pmatrix}
-    \horzbar & \mathbf{x''}_1^T & \horzbar \\
-    \horzbar & \mathbf{x''}_2^T & \horzbar \\
-        &       \vdots        &   \\
-    \horzbar & \mathbf{x''}_N^T & \horzbar \\
-  \end{pmatrix}$, 
-  each **row** of which is re-purposed into a normalized and augmented feature vector. The right most column of the new $\mathbb{X}$ should contain only $1$'s and $-1$'s.
+4. Neither the validation set nor the test set is used in training. So what is the purpose to distinguish the two? 
 
-5. There is no problem 5. 
+## Before you start the programming part 
+You are strongly encouraged to review the following materials that were discussed in class before you start the programming part.
+* [gradient descent demo](https://github.com/forrestbao/MLClass/blob/master/2_Linear_Classifiers/gradient_descent_linear_classifier.ipynb) You will not be able to run all code in this demo because one function used here is the homework problem.
+* [Numpy introduction](https://github.com/forrestbao/MLClass/blob/master/2_Linear_Classifiers/numpy.ipynb)
+* [snippets of code to find a linear decision hyperplane via zero-gradient](https://github.com/forrestbao/MLClass/blob/master/2_Linear_Classifiers/2_Linear_Classifiers.ipynb)
 
 ## Programming
 
-A template [`hw2.py`](https://github.com/forrestbao/MLClass/blob/master/2_Linear_Classifiers/hw2.py) is provided. Insert your code into the place marked as `# your code here`. A helper function `generate_data` is included in `hw2.py` to generate data. The test cases are given in docstring in `hw2.py`. To test whether your program works properly, you may take advantage of the `doctest` code in it. Information on `doctest` is given [here](https://docs.python.org/3/library/doctest.html).
-
-The demo code discussed in class is in [`2_Linear_Classifiers.ipynb`](https://github.com/forrestbao/MLClass/blob/master/2_Linear_Classifiers/2_Linear_Classifiers.ipynb)
+A template [`hw2.py`](https://github.com/forrestbao/MLClass/blob/master/2_Linear_Classifiers/hw2.py) is provided. Insert your code between the lines  `# your code below` and `# your code above`. A helper function `generate_data` is included in `hw2.py` to generate data. The test cases are given in docstring in `hw2.py`. To test whether your program works properly, you may take advantage of the `doctest` code in it. Information on `doctest` is given [here](https://docs.python.org/3/library/doctest.html).
 
 6. [2pts] 2-D scatter plots and line plots. 
 
@@ -61,7 +56,7 @@ The demo code discussed in class is in [`2_Linear_Classifiers.ipynb`](https://gi
     * `X`: a 2-D numpy array such that `X[i]`, which is 1-D numpy array, corresponds to the i-th sample's feature vector (not augmented). The shape of `X[i]` is 1-by-2. Note this `X` is NOT augmented nor normalized. (See programming hints below.)
     * `y`: a 1-D numpy array such that `y[i]`, which is a scalar $\in[+1, -1]$, is the label of the i-th sample. 
     * `w`: the weight vector of the classifier, where the 1st element corresponds to the 1st dimension of a feature vector, the 2nd element corresponds to the 2nd dimension of a feature vector, and the last term is the bias. 
-    * `filename`: a string ending in `.png` or `.pdf`, the path to save the plot into a PNG or PDF file. 
+    * `filename`: a string ending in `.png` or `.pdf`, the path to save the plot into a PNG or PDF file.                                
 
     The function shall have NO RETURNs. 
 
@@ -111,7 +106,7 @@ The demo code discussed in class is in [`2_Linear_Classifiers.ipynb`](https://gi
       ```
 
       
-7. [2pts] The demo [`2_Linear_classifiers.ipynb`](./2_Linear_classifiers.ipynb) provides snippets of code to achieve a linear classifier using the minimization of the sum of the squared errors, and the visualization of the classifier. Now please define a function `plot_mse` that visualizes the training samples and the classifier on the sample plot. 
+7. [2pts] The demo [`2_Linear_classifiers.ipynb`](./2_Linear_classifiers.ipynb) provides snippets of code to achieve a linear classifier using the minimization of the sum of the squared errors, and the visualization of the classifier. Now please define a function `learn_and_visual_mse` that trains a linear classifier (i.e., compute $\mathbf{w} = (\mathbb{X}^T\mathbb{X})^{-1}\mathbb{X}^T \mathbf{y}$) and visualizes it alone with the training samples. 
 
     Inputs/arguments: 
 
@@ -123,7 +118,7 @@ The demo code discussed in class is in [`2_Linear_Classifiers.ipynb`](https://gi
 
     * `w`: the weight vector of the classifier, where the 1st element corresponds to the 1st dimension of a feature vector, the 2nd element corresponds to the 2nd dimension of a feature vector, and the last term is the bias. 
 
-8. [2pts] Redo the function above using Fisher's linear discriminant. Save the function as `plot_fisher`. 
+8. [2pts, **bonus**] Redo the function above using Fisher's linear discriminant. Save the function as `learn_and_visual_fisher`. 
 
    Note that on the slides, when discussing Fisher's, the $\mathbf{w}$ does not contain the bias. But when returning $\mathbf{w}$ here, please add the bias as the last element.
 

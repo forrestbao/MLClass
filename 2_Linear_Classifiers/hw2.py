@@ -26,7 +26,7 @@ def generate_data(Para1, Para2, seed=0):
     X2 = numpy.vstack((numpy.random.normal(Para2['mx'], Para2['ux'], Para2['N']), 
                        numpy.random.normal(Para2['my'], Para2['uy'], Para2['N'])))
     Y = numpy.hstack(( Para1['y']*numpy.ones(Para1['N']), 
-                       Para2['y']*numpy.ones(Para2['N'])  ))            
+                       Para2['y']*numpy.ones(Para2['N'])))            
     X = numpy.hstack((X1, X2)) 
     X = numpy.transpose(X)
     return X, Y 
@@ -48,12 +48,14 @@ def plot_data_hyperplane(X, y, w, filename):
     >>> filename = "test.png"
     >>> plot_data_hyperplane(X, y, w, filename)
     >>> hashlib.md5(open(filename, 'rb').read()).hexdigest()
-    '242f39ee1cf8d7874609b98de8585fa0'
+    '37f373b22ce2ebd3bae54b6a39810fc7'
     """
 
-    # your code here
+    # your code below
 
-def plot_mse(X, y, filename):
+    # your code above 
+
+def learn_and_visual_mse(X, y, filename):
     """
     X: 2-D numpy array, each row is a sample, not augmented 
     y: 1-D numpy array
@@ -76,7 +78,9 @@ def plot_mse(X, y, filename):
     """
     w = np.array([0,0,0]) # just a placeholder
 
-    # your code here
+    # your code below
+
+    # your code above 
     
 
     # Plot after you have w. 
@@ -84,7 +88,7 @@ def plot_mse(X, y, filename):
 
     return w
 
-def plot_fisher(X, y, filename): 
+def learn_and_visual_fisher(X, y, filename): 
     """
     X: 2-D numpy array, each row is a sample, not augmented 
     y: 1-D numpy array
@@ -107,7 +111,7 @@ def plot_fisher(X, y, filename):
 
     w = np.array([0,0,0]) # just a placeholder
 
-    # your code here 
+    # your code h
 
 
     # Plot after you have w. 
