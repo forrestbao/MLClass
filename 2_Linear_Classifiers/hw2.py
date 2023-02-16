@@ -66,14 +66,14 @@ def learn_and_visual_mse(X, y, filename):
         {'mx':1,'my':2, 'ux':0.1, 'uy':1, 'y':1, 'N':20}, \
         {'mx':2,'my':4, 'ux':.1, 'uy':1, 'y':-1, 'N':50},\
         seed=10)
-    >>> plot_mse(X, y, 'test1.png')
+    >>> learn_and_visual_fisher(X, y, 'test1.png')
     array([-1.8650779 , -0.03934209,  2.91707992])
     >>> X,y = generate_data(\
     {'mx':1,'my':-2, 'ux':0.1, 'uy':1, 'y':1, 'N':20}, \
     {'mx':-1,'my':4, 'ux':.1, 'uy':1, 'y':-1, 'N':50},\
     seed=10)
     >>> # print (X, y)
-    >>> plot_mse(X, y, 'test2.png')
+    >>> learn_and_visual_fisher(X, y, 'test2.png')
     array([ 0.93061084, -0.01833983,  0.01127093])
     """
     w = np.array([0,0,0]) # just a placeholder
@@ -99,13 +99,13 @@ def learn_and_visual_fisher(X, y, filename):
         {'mx':1,'my':2, 'ux':0.1, 'uy':1, 'y':1, 'N':20}, \
         {'mx':2,'my':4, 'ux':.1, 'uy':1, 'y':-1, 'N':50},\
         seed=10)
-    >>> plot_fisher(X, y, 'test3.png')
+    >>> learn_and_visual_fisher(X, y, 'test3.png')
     array([-1.61707972, -0.0341108 ,  2.54419773])
     >>> X,y = generate_data(\
         {'mx':-1.5,'my':2, 'ux':0.1, 'uy':2, 'y':1, 'N':200}, \
         {'mx':2,'my':-4, 'ux':.1, 'uy':1, 'y':-1, 'N':50},\
         seed=1)
-    >>> plot_fisher(X, y, 'test4.png')
+    >>> learn_and_visual_fisher(X, y, 'test4.png')
     array([-1.54593468,  0.00366625,  0.40890079])
     """
 
