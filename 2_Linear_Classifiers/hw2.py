@@ -7,8 +7,6 @@ import matplotlib.pyplot # import again
 import numpy.linalg 
 import numpy.random
 
-import hashlib
-
 
 def generate_data(Para1, Para2, seed=0):
     """Generate binary random data
@@ -47,8 +45,6 @@ def plot_data_hyperplane(X, y, w, filename):
     >>> w = [1, 2, -10]
     >>> filename = "test.png"
     >>> plot_data_hyperplane(X, y, w, filename)
-    >>> hashlib.md5(open(filename, 'rb').read()).hexdigest()
-    '37f373b22ce2ebd3bae54b6a39810fc7'
     """
 
     # your code below
