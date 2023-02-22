@@ -1,7 +1,7 @@
 ---
 title: | 
-         CS 474/574 Machine Learning \
-         4. Support Vector Machines (SVMs)
+        CS 474/574 Machine Learning \
+        4 . Support Vector Machines (SVMs)
 author: |
           Prof. Dr. Forrest Sheng Bao \
           Dept. of Computer Science \
@@ -9,14 +9,14 @@ author: |
           Ames, IA, USA \
 date:   \today
 header-includes: |
-     \usepackage{amssymb}
-     \usefonttheme[onlymath]{serif}
-     \usepackage[vlined,algoruled,titlenotnumbered,linesnumbered]{algorithm2e}
-     \usepackage{algorithmic}
-     \setbeamercolor{math text}{fg=green!50!black}
-     \setbeamercolor{normal text in math text}{parent=math text}
-     \newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
-     \newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+    \usepackage{amssymb}
+    \usefonttheme[onlymath]{serif}
+    \usepackage[vlined,algoruled,titlenotnumbered,linesnumbered]{algorithm2e}
+    \usepackage{algorithmic}
+    \setbeamercolor{math text}{fg=green!50!black}
+    \setbeamercolor{normal text in math text}{parent=math text}
+    \newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+    \newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
 
 classoption:
 - aspectratio=169
@@ -67,21 +67,18 @@ classoption:
 
 -   Update $\mathbf{w}$ whenever a sample is misclassified.
 
-    1.  Initially, $\mathbf{w}$ has arbitrary values. $k=1$.
+    1.  Initially, $\mathbf{w}$ has arbitrary values. Timestep (or iteration) $t=1$.
 
-    2.  In the $k$-th iteration, use sample $\mathbf{x}_j$ such that
-        $j = k \mod n$ to update the $\mathbf{w}$ by:
-        $$        \mathbf{w}_{k+1} = \begin{cases}
-                                 \mathbf{w}_k + \rho \mathbf{x}_j y_j & \text{, if } \mathbf{w}_j^T \mathbf{x_j} y_j \leq 0, \text{~(wrong prediction)} \\
-                                 \mathbf{w}_k  & \text{, if } \mathbf{w}_j^T \mathbf{x_j} y_j > 0 \text{~(correct classification)}
+    2.  In the $t$-th iteration, use sample $\mathbf{x}_j$ such that
+        $j = t \mod n$ to update the $\mathbf{w}$ by:
+        $$        \mathbf{w}_{t+1} = \begin{cases}
+                                 \mathbf{w}_t + \rho \mathbf{x}_j y_j & \text{, if } \mathbf{w}_j^T \mathbf{x_j} y_j \leq 0, \text{~(wrong prediction)} \\
+                                 \mathbf{w}_t  & \text{, if } \mathbf{w}_j^T \mathbf{x_j} y_j > 0 \text{~(correct classification)}
                                \end{cases}        $$
         where $\rho$ is a constant called **learning rate**.
 
     3.  The algorithm terminates when all samples are classified
         correctly.
-
--   Note that $\mathbf{x}_k$ is not necessarily the $k$-th training
-    sample due to the loop.
 
 
 # An example of single-sample preceptron algorithm
@@ -261,7 +258,7 @@ Now let's begin the SVM journey.
 
 ::: {.column width="50%"}
 
-5.   Finally, $v = \overbrace{\mathbf{w}^T \mathbf{z} + w_b}^{prediction} / ||\mathbf{w}||$. 
+5.   Finally, $v = \overbrace{(\mathbf{w}^T \mathbf{z} + w_b)}^{prediction=d} / ||\mathbf{w}||$. 
 
 6. **Conclusion**: a sample $\mathbf{z}$'s distance to a hyperplane $\mathbf{w}^T\mathbf{x}+w_b=0$ is $d/||\mathbf{w}||$ **if and only if** the prediction for it $\mathbf{w}^T\mathbf{z}+w_b$ is $\pm d$. (The sign ahead of $d$ depends on which side the sample is on.)
 
@@ -381,7 +378,7 @@ $\mathbf{w}^T\mathbf{x} + w_b = - d_2$ where no sample falls into.
                s.t. & y_k(\mathbf{w}^T\mathbf{x}_k + w_b) \ge 1, \forall \mathbf{x}_k.
             \end{cases}$
   its Lagrangian function is: 
-$$L(\mathbf{w}, \mathbf{\lambda}) = {1\over 2} \mathbf{w}^T \mathbf{w} - \sum_{k=1}^{K} y_k(\mathbf{w}^T\mathbf{x}_k + w_b) - 1$$
+$$L(\mathbf{w}, w_b, \mathbf{\lambda}) = {1\over 2} \mathbf{w}^T \mathbf{w} -  \sum_{k=1}^{K} \lambda_k [y_k(\mathbf{w}^T\mathbf{x}_k + w_b) - 1]$$
    where $K$ is the total number of samples. 
 
 # The KKT conditions and properties of hard margin linear SVM
@@ -396,7 +393,7 @@ For an SVM problem, the KKT conditions thus are: $$\begin{cases}
 . . . 
 
 From Eqs. A and B, 
-$$\frac{\partial L}{\partial \mathbf{w}} = \mathbf{w} - \sum_{k=1}^K \lambda_k y_k \mathbf{x_k} \Rightarrow \mathbf{w} = \sum_{k=1}^K \lambda_k y_k \mathbf{x_k} $$
+    $$\frac{\partial L}{\partial \mathbf{w}} = \mathbf{w} - \sum_{k=1}^K \lambda_k y_k \mathbf{x_k} = \mathbf{0} \Rightarrow \mathbf{w} = \sum_{k=1}^K \lambda_k y_k \mathbf{x_k} $$
 $$\frac{\partial L}{\partial w_b} = \sum_{k=1}^K \lambda_k y_k = 0 $$
 
 . . .
@@ -544,11 +541,11 @@ $$\begin{cases}
 - SVM dual form using the kernel function $\mathcal{K}$ (to solve, not for prediction): 
   $$\begin{cases}   
     \max & -\frac{1}{2} \sum\limits_{i=1}^K \sum\limits_{j=1}^K \lambda_i \lambda_j y_i y_j 
-  \mathcal{K}(\mathbf{x}_i^T, \mathbf{x}_j) + \sum\limits_{k=1}^K\lambda_k \\
+  \mathcal{K}(\mathbf{x}_i, \mathbf{x}_j) + \sum\limits_{k=1}^K\lambda_k \\
     s.t. & \lambda_k \ge 0, \forall k \in [1..K], \sum\limits_{k=1}^K \lambda_ky_k=0
   \end{cases}$$ 
 
-- An SVM using the kernel function (predicting): $\sum_{k=1}^K \lambda_k y_k \mathcal{K}(\mathbf{x}^T \mathbf{x_k}) + w_b$
+- An SVM using the kernel function (predicting): $\sum_{k=1}^K \lambda_k y_k \mathcal{K}(\mathbf{x}, \mathbf{x_k}) + w_b$
 
 # Types of kernels
 - Linear kernels: what we have seen so far in SVMs. 
@@ -631,35 +628,16 @@ Source: Wikipedia/SVM.
     and minimizing the quality, instead of quantity, of
     misclassification.
 
-- Next: How to find $C$ and why is slack variable defined so. 
+- How to find $C$? Grid search using cross-validation.
 
 :::
 :::::::::::::: 
 
-# Grid search for hyperparameters
+# Hyperparameters of SVMs
+- C: the trade-off between the margin and the misclassification error. For soft-margin SVMs only. The larger the C, the less tolerant the SVM is to misclassification errors.
 
-- Hyperparameters: Parameters of a model that is not updated in training but set based on experience or arbitrarily. 
+- $\gamma$ (also denoted as $\sigma$ as in $\exp \left( ||\mathbf{x} - \mathbf{y}||^2 \over \sigma \right )$): the kernel coefficient. For Gaussian kernels only. The larger the $\gamma$, the more influence the samples have on the decision boundary.
 
-- Grid search: Create a sequence of values for each hyperparameter and form a grid from them using Cartesian product. Then for each point on the grid, evaluate the performance of the model. Finally, use the one that yields the best performance. 
-
-- How to evaluate the performance of a classifer? 
-
-# Test set
-- It would be unfair to evaluate the performance of a classifier using samples seen by the model during training. 
-
-- Samples unseen in training and used to evaluate the performance of a model form the **test set**. 
-
-- So, from all your data, you split them into two groups **training set** and test set. 
-
-- But, is just one test set good? 
-
-# Cross-validation 
-
-- Cross validation (CV): split your data into many pairs of training and test sets. Then evaluate the performance of the classifier on each pair. Usually the test sets do not overlap. And, of course, the training and test sets in each pair do not overlap. 
-
-- k-fold CV: Split all data into $k$ folds, equal-size and **non-overlapping**. In each round the CV, use $k-1$ folds for training and the rest one fold for test. Then rotate on the test set. Stop after every fold has been used as test set exactly $k$ times. 
-
-- leave-N-out CV (LNOCV): A special case of k-fold CV that only N samples are the test set. When $N=1$, it becomes leave-one-out CV (LOOCV). 
 
 # The slack variable and hinge loss
 
@@ -671,5 +649,10 @@ Source: Wikipedia/SVM.
 
 - The expression $\max(0, 1-y\cdot \hat{y})$ where $y\in\{+1, -1\}$ is the ground truth label and $\hat{y}$ is prediction for a classifier, is called a **hinge loss**. It's "hinge" because as long as the classification is correct, the loss/error is (capped at) 0. 
 
-# Extended reading
-* A Gentle Introduction to Support Vector Machines in Biomedicine, Statnikov et al., AIMA 2019
+# Recap
+* Intution: making the most similar samples of two classes (the support vectors) as different as possible, e.g., banana-looking apples vs apple-looking bananas. 
+* The support vectors are the closest samples to the decision hyperplane.
+* Only support vectors determine the decision hyperplane.
+* Soft-margin SVMs: allow some samples to fall into the margin in exchange for a wider margin. 
+* Non-linear SVMs: transform the input space to a feature space where the two classes are linearly separable.
+* Future reading: A Gentle Introduction to Support Vector Machines in Biomedicine, Statnikov et al., AIMA 2019
