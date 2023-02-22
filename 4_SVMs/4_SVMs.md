@@ -649,10 +649,23 @@ Source: Wikipedia/SVM.
 
 - The expression $\max(0, 1-y\cdot \hat{y})$ where $y\in\{+1, -1\}$ is the ground truth label and $\hat{y}$ is prediction for a classifier, is called a **hinge loss**. It's "hinge" because as long as the classification is correct, the loss/error is (capped at) 0. 
 
+# Scaling is important
+* Like in many ML approaches, scaling is important for SVMs -- to prevent features of large amplitude from dominating the model. 
+* For example, if $\mathbf{x} = [1, 100, 1]$, then the two 1's will have little influence to $\mathbf{w}^T\mathbf{x}$.
+* This may not be a big issue for vanilla linear classifiers, but because SVM is a similarity-based classifier, large-amplitude features will dominate the similarity measure.
+* Common scaling strategy: min-max-scaler. 
+
+
+# Discussion
+* The more support vectors are better or the fewer support vectors are better?
+* In worse case, every training sample is a support vector -- a very overfitted model. 
+
 # Recap
 * Intution: making the most similar samples of two classes (the support vectors) as different as possible, e.g., banana-looking apples vs apple-looking bananas. 
 * The support vectors are the closest samples to the decision hyperplane.
 * Only support vectors determine the decision hyperplane.
 * Soft-margin SVMs: allow some samples to fall into the margin in exchange for a wider margin. 
 * Non-linear SVMs: transform the input space to a feature space where the two classes are linearly separable.
-* Future reading: A Gentle Introduction to Support Vector Machines in Biomedicine, Statnikov et al., AIMA 2019
+* Future reading: 
+  * A Gentle Introduction to Support Vector Machines in Biomedicine, Statnikov et al., AIMA 2019, https://www.eecis.udel.edu/~shatkay/Course/papers/UOSVMAlliferisWithoutTears.pdf 
+  * A Practical Guide to Support Vector Classification, Hsu et al., 2003-2016, https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf
