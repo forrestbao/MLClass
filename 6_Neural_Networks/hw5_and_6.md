@@ -9,12 +9,7 @@ header-includes:
 
 # HW 5: Neural networks I and HW 6: Neural networks II
 
-HW5 due Apr. 18 and HW6 due Apr. 25. Both are Sundays and both at 11:59PM central time. 
-
-Help sessions for answering HW-related questions:
-
-* HW5: Saturday, Apr. 17, 7-8PM
-* HW6: Saturday, Apr. 24, 7-8PM
+HW5 due Apr. 16 and HW6 due Apr. 23. Both are Sundays and both at 11:59PM central time. 
 
 **Pre-compiled PDF** is [here](https://www.dropbox.com/s/ziub9g1d5sjws4l/hw5_and_6.pdf?dl=0). Command to compile on your own: `pandoc hw5_and_6.md -o hw5_and_6.pdf`  Figures were compiled from their LaTeX source files under `figs` folder. 
 
